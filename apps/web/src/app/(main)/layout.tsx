@@ -29,7 +29,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 key={href}
                 href={href}
                 className={`flex flex-col items-center gap-1 px-3 py-2 text-xs transition-colors ${
-                  isActive ? 'text-indigo-400' : 'text-zinc-500 hover:text-zinc-300'
+                  isActive ? 'text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'
                 }`}
               >
                 <Icon className="h-5 w-5" aria-hidden="true" />

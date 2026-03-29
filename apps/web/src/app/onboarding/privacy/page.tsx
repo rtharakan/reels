@@ -37,7 +37,7 @@ export default function PrivacyConsentPage() {
           type="checkbox"
           checked={agreed}
           onChange={(e) => setAgreed(e.target.checked)}
-          className="mt-0.5 h-5 w-5 rounded border-zinc-700 bg-zinc-800 text-indigo-600 focus:ring-indigo-500"
+          className="mt-0.5 h-5 w-5 rounded border-zinc-700 bg-zinc-800 text-zinc-100 focus:ring-zinc-400"
           aria-label="I agree to the privacy policy"
         />
         <span className="text-sm text-zinc-300">
@@ -49,7 +49,7 @@ export default function PrivacyConsentPage() {
       <button
         onClick={() => router.push('/onboarding/profile')}
         disabled={!agreed}
-        className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Continue
       </button>

@@ -57,14 +57,14 @@ export default function WatchlistImportPage() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="your-username"
-          className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-white placeholder-zinc-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white placeholder-zinc-500 focus:ring-2 focus:ring-zinc-400 focus:outline-none"
         />
         {error && <p className="mt-2 text-sm text-red-400" role="alert">{error}</p>}
       </div>
 
       {importMutation.isPending && (
         <div className="flex items-center gap-2 text-sm text-zinc-400">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
           Importing your watchlist...
         </div>
       )}
@@ -73,7 +73,7 @@ export default function WatchlistImportPage() {
         <button
           onClick={handleImport}
           disabled={importMutation.isPending}
-          className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
+          className="w-full rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50"
         >
           Import watchlist
         </button>

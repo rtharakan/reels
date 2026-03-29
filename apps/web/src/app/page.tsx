@@ -8,7 +8,7 @@ export default function HomePage() {
       <header className="border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-indigo-400" />
+            <Popcorn className="h-6 w-6 text-zinc-300" />
             <span className="text-lg font-bold text-white">Reels</span>
           </div>
           <div className="flex items-center gap-3">
@@ -20,7 +20,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/signup"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+              className="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-900 shadow-sm hover:bg-white transition-colors"
             >
               Get Started
             </Link>
@@ -30,13 +30,13 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="flex flex-col items-center justify-center px-4 pt-24 pb-16">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-indigo-500 to-pink-500 shadow-lg shadow-indigo-500/25">
-          <Heart className="h-10 w-10 text-white" />
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-zinc-800 border border-zinc-700">
+          <Heart className="h-10 w-10 text-zinc-300" />
         </div>
         <h1 className="text-5xl font-bold tracking-tight text-white sm:text-7xl text-center">
           Find your people
           <br />
-          <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">
+          <span className="text-zinc-400">
             through film
           </span>
         </h1>
@@ -46,7 +46,7 @@ export default function HomePage() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link
             href="/signup"
-            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm hover:bg-white transition-colors"
           >
             <Sparkles className="h-4 w-4" />
             Create Account
@@ -65,8 +65,8 @@ export default function HomePage() {
       <section className="mx-auto max-w-4xl px-4 py-16">
         <div className="grid gap-8 sm:grid-cols-3">
           <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-950/50">
-              <Film className="h-6 w-6 text-indigo-400" />
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800">
+              <Film className="h-6 w-6 text-zinc-400" />
             </div>
             <h3 className="font-semibold text-white mb-2">Import Watchlist</h3>
             <p className="text-sm text-zinc-500">
@@ -74,8 +74,8 @@ export default function HomePage() {
             </p>
           </div>
           <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-pink-950/50">
-              <Users className="h-6 w-6 text-pink-400" />
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800">
+              <Users className="h-6 w-6 text-zinc-400" />
             </div>
             <h3 className="font-semibold text-white mb-2">Discover Matches</h3>
             <p className="text-sm text-zinc-500">
@@ -83,8 +83,8 @@ export default function HomePage() {
             </p>
           </div>
           <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-950/50">
-              <Heart className="h-6 w-6 text-emerald-400" />
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800">
+              <Heart className="h-6 w-6 text-zinc-400" />
             </div>
             <h3 className="font-semibold text-white mb-2">Connect</h3>
             <p className="text-sm text-zinc-500">
@@ -96,7 +96,7 @@ export default function HomePage() {
 
       {/* Explore CTA */}
       <section className="mx-auto max-w-4xl px-4 pb-16">
-        <div className="rounded-2xl border border-indigo-900/50 bg-gradient-to-br from-indigo-950/30 to-pink-950/30 p-8 text-center">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-2">No account needed</h2>
           <p className="text-zinc-400 mb-6 max-w-lg mx-auto">
             Try our Explore feature — compare any two Letterboxd profiles and see
@@ -104,7 +104,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/explore"
-            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm hover:bg-white transition-colors"
           >
             <Sparkles className="h-4 w-4" />
             Try Explore Now
