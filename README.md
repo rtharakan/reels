@@ -48,7 +48,7 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 - [Full README](docs/README.md) — architecture, tech stack, matching engine details
 - [Contributing Guide](docs/CONTRIBUTING.md) — how to set up, branch, and submit PRs
 - [Code of Conduct](docs/CODE_OF_CONDUCT.md)
-- [License](docs/LICENSE) — MIT
+- [License](LICENSE) — MIT
 
 ---
 

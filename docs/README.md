@@ -115,7 +115,7 @@ All contributions must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 - [x] Web MVP — onboarding, discover, matches, profile, safety
 - [x] Explore tool — public profile comparison + Dutch cinema date planner
-- [ ] Visual polish — refined color palette, poster fidelity
+- [x] Visual polish — pastel green/blue/creme palette, DM Sans typography
 - [ ] iOS app — native SwiftUI client with push notifications
 - [ ] Rate limiting and production hardening
 - [ ] GDPR data export and scheduled cleanup
