@@ -1,26 +1,38 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
-## Our Pledge
+## The Short Version
 
-We pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+Be respectful, be constructive, be welcoming. We're building something together.
 
-## Our Standards
+## The Longer Version
 
-Examples of behavior that contributes to a positive environment include:
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
+We want Reels to be a project where anyone can contribute — regardless of experience level, background, identity, or where they're from. To make that work, we hold ourselves to a few straightforward standards.
 
-Examples of unacceptable behavior include:
-- Trolling, insulting or derogatory comments, and personal or political attacks
-- Public or private harassment
-- Publishing others' private information without explicit permission
+### Expected Behaviour
 
-## Enforcement
+- Treat others the way you'd want to be treated in a code review.
+- Give and accept feedback gracefully.
+- Default to assuming good intent.
+- Ask questions. Help newcomers.
+- Credit others' work when building on it.
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the project team. All complaints will be reviewed and investigated.
+### Unacceptable Behaviour
 
-## Attribution
+- Harassment, insults, or personal attacks — in any form.
+- Publishing someone's private information without their consent.
+- Sustained disruption of discussions or contributions.
+- Any conduct that would be inappropriate in a professional setting.
 
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/), version 2.1.
+### Scope
+
+This applies everywhere the project lives: issues, pull requests, discussions, chat, and any public space where you're representing the project.
+
+### Enforcement
+
+If something feels wrong, report it to the maintainers. All reports will be reviewed and taken seriously. We'll respond privately and act proportionally.
+
+Maintainers who don't uphold this code of conduct may be temporarily or permanently removed from the project team.
+
+### Attribution
+
+Adapted from the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/), version 2.1.
