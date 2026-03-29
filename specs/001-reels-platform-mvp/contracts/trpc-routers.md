@@ -75,8 +75,8 @@ type OnboardingInput = {
   location: string;        // required, 1–100 chars
   bio: string;             // required, 1–500 chars
   intent: Intent;          // required
-  letterboxdUsername: string; // required
-  prompts: { question: string; answer: string }[]; // 1–3 entries
+  letterboxdUsername?: string; // optional — user may skip watchlist import
+  prompts: { question: string; answer: string }[]; // 1–3 entries, answer 1–300 chars
   topFilmIds?: string[];   // optional, max 4
   timezone: string;        // IANA timezone
 };
@@ -131,7 +131,7 @@ type FilmPreview = {
   tmdbId: number | null;
   title: string;
   year: number | null;
-  posterUrl: string | null; // Full TMDB poster URL
+  posterUrl: string | null; // Full TMDB poster URL (constructed from Film.posterPath: `https://image.tmdb.org/t/p/w500${posterPath}`)
   genreIds: number[];
 };
 ```
@@ -206,7 +206,7 @@ type MatchDetail = {
   otherUser: PublicProfile;
   score: number;
   sharedFilms: FilmPreview[];
-  genreOverlap: { genre: string; count: number }[]; // Shared genre breakdown
+  genreOverlap: { genreName: string; count: number }[]; // Shared genre breakdown — genre names resolved from TMDB genre ID→name mapping at query time
   createdAt: string;
 };
 ```

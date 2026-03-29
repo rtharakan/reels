@@ -73,7 +73,7 @@ BetterAuth creates the User record at authentication time — before onboarding 
 |-------|------|-------------|-------|
 | id | String | PK, cuid() | |
 | email | String | unique | Auth provider email |
-| name | String | required | Display name |
+| name | String | required | Display name — set by auth provider at account creation (Google/Apple profile name or email prefix for magic link). Updated by user during onboarding. |
 | age | Int? | nullable | Validated ≥17 at app layer; null until onboarding |
 | location | String? | nullable | Free text city/region; null until onboarding |
 | bio | String? | nullable | Max 500 chars |

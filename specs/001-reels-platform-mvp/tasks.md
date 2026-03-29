@@ -221,18 +221,43 @@
 
 **Purpose**: Quality, performance, documentation, and accessibility hardening across all stories.
 
-- [ ] T094 [P] Add rate limiting middleware to auth endpoints and `watchlist.import` in `apps/web/src/server/middleware/rate-limit.ts`
-- [ ] T095 [P] Add TMDB "Powered by TMDB" attribution logo to pages displaying poster images in `apps/web/src/components/tmdb-attribution.tsx`
-- [ ] T096 [P] Implement scheduled hard-delete job: purge soft-deleted users older than 30 days with cascading data removal in `apps/web/src/server/services/gdpr-cleanup.ts`
+- [ ] T094 [P] Add rate limiting middleware to auth endpoints (10 req/min per IP), `watchlist.import` (5 req/hr per user), and `discover.expressInterest`/`discover.skip` (30 req/min per user) in `apps/web/src/server/middleware/rate-limit.ts` (NFR-001)
+- [ ] T095 [P] Add TMDB "Powered by TMDB" attribution logo to pages displaying poster images in `apps/web/src/components/tmdb-attribution.tsx` (NFR-003)
+- [ ] T096 [P] Implement scheduled hard-delete job: purge soft-deleted users older than 30 days with cascading data removal in `apps/web/src/server/services/gdpr-cleanup.ts` (NFR-009)
 - [ ] T097 [P] Add Playwright axe-core accessibility tests for all key pages (login, onboarding, discover, matches, profile) in `apps/web/tests/e2e/accessibility.spec.ts`. Include onboarding flow timing assertion: full flow must complete in <5 min wall clock (SC-001).
 - [ ] T098 [P] Add `pnpm audit` step to CI pipeline in `.github/workflows/ci.yml`
 - [ ] T099 [P] Configure GitHub Actions CI: typecheck, lint, format check, commitlint, audit, Vitest, Playwright e2e, axe-core accessibility in `.github/workflows/ci.yml`
-- [ ] T100 Run quickstart.md validation: verify all steps in `specs/001-reels-platform-mvp/quickstart.md` execute successfully from a clean clone
+- [ ] T100 Run quickstart.md validation: verify all steps in `specs/001-reels-platform-mvp/quickstart.md` execute successfully from a clean clone (DEP-006)
 - [ ] T101 [P] Add `prefers-reduced-motion` tests verifying animations are disabled when the flag is active
 - [ ] T102 Final review: verify all user-facing strings are extractable (no hard-coded text), all images have alt text, all interactive elements have aria labels
 - [ ] T103 [P] Add API response time benchmark for `discover.getFeed` using autocannon (100 concurrent, 30 s) against a 10K-user seeded database; p95 must be <2 s (SC-003) in `apps/web/tests/bench/discover-bench.ts`
-- [ ] T104 [P] Generate and review `EXPLAIN ANALYZE` query plans for Discover feed query, MatchScore lookups, and SeenUser exclusions at 10K-user scale; document optimization notes in `specs/001-reels-platform-mvp/research.md` appendix
+- [ ] T104 [P] Generate and review `EXPLAIN ANALYZE` query plans for Discover feed query, MatchScore lookups, and SeenUser exclusions at 10K-user scale; document optimization notes in `specs/001-reels-platform-mvp/research.md` appendix (SC-006)
 - [ ] T105 Implement SeenUser re-eligibility on watchlist re-import: when ≥30% of resolved films are new (not in previous import), prune SeenUser entries where the re-importing user is the `seenUserId` in `apps/web/src/server/services/watchlist-import.ts` (FR-022a)
+- [ ] T110 [P] Add structured JSON logging middleware (timestamp, level, requestId, userId, action) in `apps/web/src/server/middleware/logger.ts` (NFR-004)
+- [ ] T111 [P] Integrate error tracking (Sentry) with alert threshold configuration (≥10 errors/min) in `apps/web/src/lib/sentry.ts` and `apps/web/src/app/layout.tsx` (NFR-005)
+- [ ] T112 [P] Add Content-Security-Policy and security headers via Next.js `next.config.ts` `headers()` function (NFR-002)
+- [ ] T113 [P] Add lightweight analytics event emitter for `onboarding.completed`, `discover.interest`, `discover.skip`, `match.created`, `session.started` — privacy-respecting (no PII), first-party endpoint in `apps/web/src/lib/analytics.ts` (NFR-006)
+- [ ] T114 [P] Switch Prisma production workflow from `db push` to `prisma migrate dev` / `prisma migrate deploy`; create initial migration file in `apps/web/prisma/migrations/` (NFR-008)
+
+---
+
+## Phase 10: Ship Readiness
+
+**Purpose**: Legal documents, deployment pipeline, App Store preparation, and final pre-launch gates.
+
+- [ ] T115 [P] Draft and deploy privacy policy at `/privacy` and terms of service at `/terms` — plain language, GDPR-compliant, referencing data collected per PrivacyInfo.xcprivacy (NFR-011, FR-002)
+- [ ] T116 [P] Create `vercel.json` configuration (if needed) and verify `apps/web` deploys to Vercel with environment variables (DEP-001)
+- [ ] T117 [P] Configure CD: Vercel auto-deploy staging on `main` merge, manual production promotion via Vercel environment (DEP-003)
+- [ ] T118 [P] Create `.env.staging` and `.env.production` templates with all required secrets documented; verify secrets are set in Vercel Environment Variables (DEP-004)
+- [ ] T119 [P] Implement GDPR data export endpoint `user.exportData` tRPC query returning JSON of all user data (profile, watchlist, matches, interests) in `apps/web/src/server/routers/user.ts` (NFR-012)
+- [ ] T120 [P] Prepare App Store Connect metadata: description, keywords, category, screenshots (6.7" + 6.1"), age rating questionnaire (17+, dating intent) (IOS-001)
+- [ ] T121 [P] Finalize `PrivacyInfo.xcprivacy` with all collected data types and privacy nutrition labels (IOS-002)
+- [ ] T122 [P] Configure Apple Developer certificates, provisioning profiles, App ID, and push notification entitlement (IOS-003)
+- [ ] T123 [P] Configure TestFlight internal testing; run full end-to-end pass before App Store submission (IOS-005)
+- [ ] T124 Verify iOS account deletion is accessible from within the app (Settings → Delete Account) per Apple requirements (IOS-004)
+- [ ] T125 Final pre-ship gate: all CI checks green, quickstart validated (T100), staging deploy verified, privacy/terms pages live, all P1+P2 user stories passing e2e tests
+
+**Checkpoint**: All artifacts verified — web deployed to staging, iOS on TestFlight, legal docs live, analytics wired, monitoring active. Ready for production promotion and App Store submission.
 
 ---
 
@@ -249,6 +274,7 @@
 - **Phase 7 (US5 — Safety)**: Depends on Phase 2 — independent, but integrates with Discover (US2) and Profile (US4) UI
 - **Phase 8 (US6 — iOS)**: Depends on Phase 2 + all web API routers from US1–US5 — start after web is functional
 - **Phase 9 (Polish)**: Depends on desired user stories being complete
+- **Phase 10 (Ship Readiness)**: Depends on Phase 9; legal/deployment tasks can start in parallel with Phase 9
 
 ### User Story Dependencies
 
@@ -276,6 +302,9 @@ Phase 2 (Foundational) ──── BLOCKS ALL ────┐
     └──▶ Phase 8: US6 (iOS)                │
                                             │
          Phase 9 (Polish) ◄─────────────────┘
+                │
+                ▼
+         Phase 10 (Ship Readiness)
 ```
 
 ### Within Each User Story
@@ -301,7 +330,9 @@ Phase 2 (Foundational) ──── BLOCKS ALL ────┐
 
 **Phase 8 (US6)**: T078 can start while other iOS views are being built.
 
-**Phase 9**: T094–T099, T101, T103, T104 can all run in parallel (different files).
+**Phase 9**: T094–T099, T101, T103, T104, T110–T114 can all run in parallel (different files).
+
+**Phase 10**: T115–T123 can all run in parallel (different files/domains).
 
 ---
 
@@ -355,7 +386,8 @@ T020: apps/web/src/lib/trpc.ts (depends on T017)
 4. US3 (Match) → Test → Deploy
 5. US4 (Profile) + US5 (Safety) → Test → Deploy (can parallel)
 6. US6 (iOS) → Test → Submit to App Store
-7. Polish → Final QA → Ship
+7. Polish → Final QA
+8. Ship Readiness → Deploy staging → TestFlight → Production promote → App Store submit
 
 ### Suggested MVP Scope
 
@@ -372,7 +404,7 @@ T020: apps/web/src/lib/trpc.ts (depends on T017)
 - All user-facing text must be extractable (no hard-coded strings) — verify per FR-009
 - All images must have meaningful alt text — verify per FR-031
 - All interactive elements must be keyboard accessible — verify per FR-029
-- Total tasks: 109 (T001–T102 original + T103–T109 added in revision 2)
+- Total tasks: 125 (T001–T109 original + T110–T125 added in revision 3: logging, monitoring, CSP, analytics, migrations, legal, deployment, GDPR export, App Store prep)
 
 ---
 

@@ -2,7 +2,7 @@
 
 **Branch**: `001-reels-platform-mvp` | **Date**: 2026-03-29 | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `/specs/001-reels-platform-mvp/spec.md`
-**Revision**: 2 — addresses analysis report findings (2 critical, 5 high, 2 low)
+**Revision**: 3 — addresses readiness checklist findings (75 items: spec gaps, contract conflicts, missing NFR/deployment/App Store requirements)", "oldString": "**Revision**: 2 — addresses analysis report findings (2 critical, 5 high, 2 low)
 
 ## Summary
 
@@ -14,7 +14,7 @@ Build a film-driven social matching platform MVP as a Turborepo monorepo with a 
 **Primary Dependencies**: Next.js 14 (App Router) · tRPC v11 · Prisma ORM · BetterAuth · Tailwind CSS · Turborepo · SwiftUI · Cheerio (scraping) · TMDB API (film metadata)
 **Storage**: PostgreSQL (Supabase-hosted) · Supabase Storage (profile photos, posters) · iOS SwiftData (offline cache)
 **Testing**: Vitest (unit/integration, web) · Playwright (e2e, web) · XCTest (iOS) · axe-core (accessibility CI) · autocannon (load benchmarks)
-**Target Platform**: Web (evergreen browsers) · iOS 17+ · Linux server (Node.js 20 LTS)
+**Target Platform**: Web (evergreen browsers) · iOS 17+ · Vercel (Node.js 20 LTS, production deployment)
 **Project Type**: Monorepo — web-service + mobile-app
 **Performance Goals**: Discover feed first card <2 s (SC-003) · onboarding flow <5 min (SC-001) · 90% watchlist import success (SC-002)
 **Constraints**: 10 Discover cards/day per user · JWT access ≤15 min / refresh ≤7 days · polite scraping (robots.txt, rate-limited) · WCAG 2.1 AA · App Store 17+ rating
@@ -27,10 +27,10 @@ Build a film-driven social matching platform MVP as a Turborepo monorepo with a 
 | # | Principle | Status | Evidence |
 |---|-----------|--------|----------|
 | I | Accessibility-First Design | ✅ PASS | FR-028–033 mandate WCAG 2.1 AA, keyboard nav, screen readers, 4.5:1 contrast, 44 pt touch targets, reduced-motion, alt text, semantic SwiftUI modifiers |
-| II | Privacy by Design | ✅ PASS | FR-002 (plain-language privacy policy before data collection), FR-003 (GDPR deletion), FR-011 (public data only), FR-013 (explicit user consent for scraping), encryption at rest/transit via Supabase, httpOnly cookies, Keychain storage. `privacyPolicyConsentedAt` timestamp provides audit trail. |
+| II | Privacy by Design | ✅ PASS | FR-002 (plain-language privacy policy before data collection), FR-003 (GDPR deletion), NFR-011 (privacy policy + ToS pages), NFR-012 (GDPR data export), FR-011 (public data only), FR-013 (explicit user consent for scraping), encryption at rest/transit via Supabase, httpOnly cookies, Keychain storage. `privacyPolicyConsentedAt` timestamp provides audit trail. |
 | III | Ethical UX — No Dark Patterns | ✅ PASS | FR-022 (10 cards/day finite feed), FR-023 (no nudge), FR-018 (transparent matching), FR-024/025 (block/report within 2 taps) |
 | IV | Type-Safe End-to-End | ✅ PASS | TypeScript strict mode everywhere, tRPC for API contracts, Prisma as single source of truth for DB types, iOS Codable models mirroring tRPC shapes |
-| V | Security by Default | ✅ PASS | OAuth 2.0 via BetterAuth (FR-001/004), FR-004a (JWT + rotating refresh tokens), input validation at API boundaries, pnpm audit in CI, rate limiting on auth/scraping endpoints |
+| V | Security by Default | ✅ PASS | OAuth 2.0 via BetterAuth (FR-001/004), FR-004a (JWT + rotating refresh tokens), NFR-001 (rate limiting with thresholds), NFR-002 (CSP headers), input validation at API boundaries, pnpm audit in CI, rate limiting on auth/scraping endpoints |
 | VI | Modular & Open Architecture | ✅ PASS | Turborepo monorepo with /apps and /packages, independent builds/tests, no internal imports across package boundaries, vendor abstraction (Supabase behind service interfaces), MIT license |
 | VII | Inclusive Community Standards | ✅ PASS | FR-009 (i18n readiness), FR-025/027 (report/moderation), CODE_OF_CONDUCT.md required, 17+ age rating, matching by film taste only — no demographic proxies |
 | — | Dev Workflow: Conventional Commits | ✅ PASS | commitlint + Husky `commit-msg` hook enforces format; CI validates on PR |
