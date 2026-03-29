@@ -1,0 +1,23 @@
+# Build artefacts
+.build/
+*.o
+*.d
+
+# Xcode
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# SPM
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Environment configs with real secrets (add locally after filling in values)
+# Config/Dev.xcconfig
+# Config/Prod.xcconfig

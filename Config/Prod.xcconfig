@@ -1,0 +1,5 @@
+// FIREBASE_API_KEY = YOUR_PROD_FIREBASE_API_KEY
+// FIREBASE_PROJECT_ID = your-prod-project-id
+// FIREBASE_BUNDLE_ID = com.reel.app
+// LETTERBOXD_BASE_URL = https://letterboxd.com
+// BUNDLE_ID_SUFFIX =

@@ -1,0 +1,29 @@
+included:
+  - App
+  - Core
+  - Features
+  - DesignSystem
+  - Networking
+  - Models
+  - Tests
+
+excluded:
+  - .build
+
+disabled_rules:
+  - trailing_whitespace
+
+opt_in_rules:
+  - array_init
+  - closure_spacing
+  - contains_over_filter_count
+  - empty_count
+  - explicit_init
+  - first_where
+  - force_unwrapping
+
+line_length: 120
+
+type_body_length:
+  warning: 300
+  error: 400
