@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Reels film-driven social matching platform MVP — monorepo with web and iOS apps, Letterboxd watchlist import, taste-based matching engine, and discover feed"
 
+## Clarifications
+
+### Session 2026-03-29
+
+- Q: What is the primary matching intent of Reels? → A: Both — user chooses intent per profile (friend or date mode).
+- Q: What is the minimum number of watchlist films required for matching? → A: 5 films.
+- Q: What session/token strategy should the platform use? → A: Short-lived JWT access tokens (15 min) + refresh tokens (7 days); httpOnly cookies on web, Keychain on iOS.
+- Q: What should the match score weight distribution be? → A: 70% direct film overlap / 30% genre similarity.
+- Q: How many Discover cards per session, and when does the feed reset? → A: 10 cards per day, resets at midnight local time.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — Sign Up & Onboarding (Priority: P1)
@@ -109,7 +119,7 @@ A user downloads the Reels iOS app, logs in (including Apple Sign-In), and acces
 
 ### Edge Cases
 
-- What happens when a user's Letterboxd watchlist is empty? → The system displays a message explaining that at least a minimum number of films is needed for matching and encourages the user to add films on Letterboxd, then re-import.
+- What happens when a user's Letterboxd watchlist is empty or has fewer than 5 resolved films? → The system displays a message explaining that at least 5 films are needed for matching and encourages the user to add films on Letterboxd, then re-import. The user can still complete onboarding but will not appear in the Discover feed until the threshold is met.
 - What happens when a new user has zero overlap with any existing user? → The Discover feed shows a message explaining no matches were found yet and suggests checking back as more users join.
 - What happens when Letterboxd is temporarily unreachable during import? → The system displays a clear error, invites the user to retry, and does not block account creation — the watchlist can be imported later.
 - How does the system handle duplicate accounts (same Letterboxd username)? → Each Letterboxd username can only be linked to one Reels account at a time.
@@ -126,6 +136,7 @@ A user downloads the Reels iOS app, logs in (including Apple Sign-In), and acces
 - **FR-002**: System MUST present the privacy policy in plain language during onboarding before any data collection beyond authentication.
 - **FR-003**: Users MUST be able to delete their account and all associated data at any time (GDPR compliance).
 - **FR-004**: System MUST support Apple Sign-In on the iOS app.
+- **FR-004a**: Authentication sessions MUST use short-lived JWT access tokens (≤15 min expiry) paired with refresh tokens (≤7 days expiry). Access tokens MUST be stored in httpOnly secure cookies on web and in the iOS Keychain on mobile. Refresh tokens MUST be rotated on each use.
 
 **Profile**
 
@@ -133,6 +144,8 @@ A user downloads the Reels iOS app, logs in (including Apple Sign-In), and acces
 - **FR-006**: Users MUST be able to select up to 4 "top films" for their profile (auto-populated from their watchlist or manually chosen).
 - **FR-007**: Users MUST be able to upload profile photos.
 - **FR-008**: Users MUST be able to edit all profile fields after onboarding.
+- **FR-008a**: Users MUST select a matching intent during onboarding: "Friends", "Dating", or "Both". This intent is displayed on their profile and can be changed at any time.
+- **FR-008b**: The Discover feed MUST only surface users whose matching intent is compatible (e.g., a "Friends"-only user is never shown to a "Dating"-only user; "Both" is compatible with either).
 - **FR-009**: User-facing text throughout the platform MUST be extractable for future localization (i18n readiness).
 
 **Watchlist Import**
@@ -146,8 +159,9 @@ A user downloads the Reels iOS app, logs in (including Apple Sign-In), and acces
 
 **Matching**
 
-- **FR-016**: System MUST compute a match score between users based on overlapping films in their watchlists.
-- **FR-017**: Match scoring MUST also factor in genre similarity across watchlists.
+- **FR-015a**: A user MUST have at least 5 resolved films in their watchlist to be eligible for matching and to appear in the Discover feed.
+- **FR-016**: System MUST compute a match score between users based on overlapping films in their watchlists. The match score MUST weight direct film overlap at 70% and genre similarity at 30%.
+- **FR-017**: Match scoring MUST also factor in genre similarity across watchlists. Genre similarity is computed from the aggregate genre distribution of each user's resolved watchlist films.
 - **FR-018**: Matching algorithm MUST be transparent — users MUST be able to see why they matched (shared films, genre overlap).
 - **FR-019**: A match is created only when both users have expressed mutual interest.
 
@@ -155,7 +169,8 @@ A user downloads the Reels iOS app, logs in (including Apple Sign-In), and acces
 
 - **FR-020**: System MUST present a card-based Discover feed showing potential matches ranked by overlap score.
 - **FR-021**: Each Discover card MUST display the other user's profile preview, shared film count, and shared film posters.
-- **FR-022**: The Discover feed MUST have a finite end per session — no infinite scroll.
+- **FR-022**: The Discover feed MUST have a finite end per session — no infinite scroll. A session serves a maximum of 10 Discover cards per day.
+- **FR-022a**: The daily Discover card allocation MUST reset at midnight in the user's local time zone. Previously seen/skipped users MUST NOT reappear unless re-imported into the eligible pool (e.g., after the other user re-imports a significantly changed watchlist).
 - **FR-023**: Users MUST NOT be nudged to continue once they have reviewed available matches.
 
 **Safety & Moderation**
@@ -183,7 +198,7 @@ A user downloads the Reels iOS app, logs in (including Apple Sign-In), and acces
 
 ### Key Entities
 
-- **User**: A person with a Reels account. Key attributes: name, email, age, location, bio, conversation prompts (up to 3), profile photos, linked Letterboxd username, top 4 films. A user has one watchlist and can have many matches.
+- **User**: A person with a Reels account. Key attributes: name, email, age, location, bio, conversation prompts (up to 3), profile photos, linked Letterboxd username, top 4 films, matching intent ("Friends", "Dating", or "Both"). A user has one watchlist and can have many matches.
 - **Watchlist Item**: A single film in a user's imported watchlist. Key attributes: canonical film ID, title, year, poster image. Belongs to one user.
 - **Match**: A connection between two users who have expressed mutual interest. Key attributes: the two matched users, creation timestamp, shared films that contributed to the match.
 - **Interest**: A record that one user has expressed interest in another via the Discover feed. Key attributes: the expressing user, the target user, timestamp. When reciprocal, triggers a Match.
@@ -215,5 +230,5 @@ A user downloads the Reels iOS app, logs in (including Apple Sign-In), and acces
 - No paid features or monetization for the initial release.
 - Dark mode is the default visual theme, consistent with the film-first aesthetic described in UX principles.
 - The target audience is 20–35 year old, culturally engaged, urban Letterboxd users. The platform enforces a 17+ age rating for App Store compliance.
-- Standard session-based or OAuth2 authentication is sufficient; no custom auth schemes.
+- Short-lived JWT access tokens (15 min) with rotating refresh tokens (7 days) are used for session management. Web stores tokens in httpOnly secure cookies; iOS stores them in the Keychain.
 - Performance targets follow standard web and mobile app expectations unless a specific metric is called out in Success Criteria.
