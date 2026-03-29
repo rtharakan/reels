@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.staging
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.tmp
+
+# Testing
+coverage/
+
+# Prisma
+apps/web/prisma/migrations/**/migration_lock.toml
+
+# Turbo
+.turbo/
+
+# Vercel
+.vercel/
+apps/web/tsconfig.tsbuildinfo
+*.tsbuildinfo

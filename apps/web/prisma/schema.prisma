@@ -1,0 +1,256 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Intent {
+  FRIENDS
+  DATING
+  BOTH
+}
+
+enum ReportReason {
+  SPAM
+  HARASSMENT
+  INAPPROPRIATE_CONTENT
+  FAKE_PROFILE
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  ACTIONED
+  DISMISSED
+}
+
+model User {
+  id                       String    @id @default(cuid())
+  email                    String    @unique
+  emailVerified            Boolean   @default(false)
+  name                     String
+  image                    String?
+  age                      Int?
+  location                 String?
+  bio                      String?
+  intent                   Intent?
+  timezone                 String?
+  letterboxdUsername        String?   @unique
+  profilePhotos            String[]
+  prompts                  Json?
+  topFilmIds               String[]
+  privacyPolicyConsentedAt DateTime?
+  onboardingCompletedAt    DateTime?
+  deletedAt                DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  // BetterAuth relations
+  sessions Session[]
+  accounts Account[]
+
+  // App relations
+  watchlistEntries WatchlistEntry[]
+  interestsSent    Interest[]       @relation("InterestFrom")
+  interestsReceived Interest[]     @relation("InterestTo")
+  matchesAsA       Match[]          @relation("MatchUserA")
+  matchesAsB       Match[]          @relation("MatchUserB")
+  blocksCreated    Block[]          @relation("Blocker")
+  blocksReceived   Block[]          @relation("Blocked")
+  reportsMade      Report[]         @relation("Reporter")
+  reportsReceived  Report[]         @relation("Reported")
+  matchScoresAsUser      MatchScore[] @relation("ScoreUser")
+  matchScoresAsCandidate MatchScore[] @relation("ScoreCandidate")
+  seenUsers        SeenUser[]       @relation("Viewer")
+  seenByUsers      SeenUser[]       @relation("Seen")
+  dailyAllocations DailyAllocation[]
+  deviceTokens     DeviceToken[]
+
+  @@index([deletedAt])
+  @@index([intent])
+  @@index([onboardingCompletedAt])
+}
+
+// BetterAuth Session model
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// BetterAuth Account model
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+// BetterAuth Verification model (for magic links)
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Film {
+  id         String   @id @default(cuid())
+  tmdbId     Int?     @unique
+  title      String
+  year       Int?
+  posterPath String?
+  genreIds   Int[]
+  createdAt  DateTime @default(now())
+
+  watchlistEntries WatchlistEntry[]
+
+  @@index([tmdbId])
+}
+
+model WatchlistEntry {
+  id         String   @id @default(cuid())
+  userId     String
+  filmId     String
+  importedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  film Film @relation(fields: [filmId], references: [id])
+
+  @@unique([userId, filmId])
+  @@index([userId])
+  @@index([filmId])
+}
+
+model Interest {
+  id         String   @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  createdAt  DateTime @default(now())
+
+  fromUser User @relation("InterestFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("InterestTo", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId])
+  @@index([toUserId])
+}
+
+model Match {
+  id            String   @id @default(cuid())
+  userAId       String
+  userBId       String
+  score         Float
+  sharedFilmIds String[]
+  createdAt     DateTime @default(now())
+
+  userA User @relation("MatchUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB User @relation("MatchUserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  @@unique([userAId, userBId])
+  @@index([userAId])
+  @@index([userBId])
+}
+
+model Block {
+  id            String   @id @default(cuid())
+  blockerId     String
+  blockedUserId String
+  createdAt     DateTime @default(now())
+
+  blocker     User @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedUser User @relation("Blocked", fields: [blockedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedUserId])
+  @@index([blockerId])
+  @@index([blockedUserId])
+}
+
+model Report {
+  id             String       @id @default(cuid())
+  reporterId     String
+  reportedUserId String
+  reason         ReportReason
+  description    String?
+  status         ReportStatus @default(PENDING)
+  createdAt      DateTime     @default(now())
+
+  reporter     User @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUser User @relation("Reported", fields: [reportedUserId], references: [id], onDelete: Cascade)
+
+  @@index([reportedUserId])
+  @@index([status])
+}
+
+model MatchScore {
+  id              String   @id @default(cuid())
+  userId          String
+  candidateId     String
+  filmOverlap     Float
+  genreSimilarity Float
+  totalScore      Float
+  sharedFilmIds   String[]
+  computedAt      DateTime @default(now())
+
+  user      User @relation("ScoreUser", fields: [userId], references: [id], onDelete: Cascade)
+  candidate User @relation("ScoreCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, candidateId])
+  @@index([userId, totalScore(sort: Desc)])
+}
+
+model SeenUser {
+  id         String   @id @default(cuid())
+  userId     String
+  seenUserId String
+  seenAt     DateTime @default(now())
+
+  user     User @relation("Viewer", fields: [userId], references: [id], onDelete: Cascade)
+  seenUser User @relation("Seen", fields: [seenUserId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, seenUserId])
+  @@index([userId])
+}
+
+model DailyAllocation {
+  id            String   @id @default(cuid())
+  userId        String
+  allocatedDate DateTime
+  cardCount     Int      @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, allocatedDate])
+  @@index([userId, allocatedDate])
+}
+
+model DeviceToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String
+  platform  String   @default("ios")
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

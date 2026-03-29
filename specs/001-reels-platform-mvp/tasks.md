@@ -26,19 +26,19 @@
 
 **Purpose**: Initialize the Turborepo monorepo, install dependencies, configure tooling, and create the project skeleton.
 
-- [ ] T001 Initialize Turborepo monorepo with pnpm workspaces in `package.json`, `pnpm-workspace.yaml`, and `turbo.json`
-- [ ] T002 Create root `tsconfig.base.json` with strict mode enabled and shared compiler options
-- [ ] T003 [P] Create `packages/shared-types/` package with `package.json`, `tsconfig.json`, and barrel export in `src/index.ts`
-- [ ] T004 [P] Create `packages/ui/` package with `package.json`, `tsconfig.json`, Tailwind CSS config, and barrel export in `src/index.ts`
-- [ ] T005 [P] Create `packages/matching-engine/` package with `package.json`, `tsconfig.json`, Vitest config, and barrel export in `src/index.ts`
-- [ ] T006 [P] Create `packages/letterboxd-scraper/` package with `package.json`, `tsconfig.json`, Vitest config, and barrel export in `src/index.ts`
-- [ ] T007 Initialize `apps/web/` Next.js 14 App Router project with `package.json`, `next.config.ts`, `tsconfig.json`, `tailwind.config.ts`, and `postcss.config.js`
+- [x] T001 Initialize Turborepo monorepo with pnpm workspaces in `package.json`, `pnpm-workspace.yaml`, and `turbo.json`
+- [x] T002 Create root `tsconfig.base.json` with strict mode enabled and shared compiler options
+- [x] T003 [P] Create `packages/shared-types/` package with `package.json`, `tsconfig.json`, and barrel export in `src/index.ts`
+- [x] T004 [P] Create `packages/ui/` package with `package.json`, `tsconfig.json`, Tailwind CSS config, and barrel export in `src/index.ts`
+- [x] T005 [P] Create `packages/matching-engine/` package with `package.json`, `tsconfig.json`, Vitest config, and barrel export in `src/index.ts`
+- [x] T006 [P] Create `packages/letterboxd-scraper/` package with `package.json`, `tsconfig.json`, Vitest config, and barrel export in `src/index.ts`
+- [x] T007 Initialize `apps/web/` Next.js 14 App Router project with `package.json`, `next.config.ts`, `tsconfig.json`, `tailwind.config.ts`, and `postcss.config.js`
 - [ ] T008 [P] Create `apps/ios/Reels.xcodeproj` Xcode project with SwiftUI app entry point in `apps/ios/Reels/App/ReelsApp.swift`
-- [ ] T009 [P] Configure ESLint (flat config `eslint.config.mjs`) + Prettier at root with shared config and `.prettierrc`
-- [ ] T010 [P] Create `.env.example` with all documented env vars (DATABASE_URL, BETTER_AUTH_SECRET, OAuth keys, TMDB token, SMTP config)
-- [ ] T011 [P] Create `docs/README.md`, `docs/CONTRIBUTING.md` (include branch protection guidance: require 1 approval, status checks on main), `docs/CODE_OF_CONDUCT.md`, and `docs/LICENSE` (MIT)
-- [ ] T106 [P] Install commitlint (`@commitlint/cli`, `@commitlint/config-conventional`) and Husky; configure `commit-msg` hook to enforce Conventional Commits in `commitlint.config.js`
-- [ ] T107 [P] Create `.github/pull_request_template.md` with constitutional compliance checklist (accessibility, privacy, security, type safety, ethical UX, modularity, community standards)
+- [x] T009 [P] Configure ESLint (flat config `eslint.config.mjs`) + Prettier at root with shared config and `.prettierrc`
+- [x] T010 [P] Create `.env.example` with all documented env vars (DATABASE_URL, BETTER_AUTH_SECRET, OAuth keys, TMDB token, SMTP config)
+- [x] T011 [P] Create `docs/README.md`, `docs/CONTRIBUTING.md` (include branch protection guidance: require 1 approval, status checks on main), `docs/CODE_OF_CONDUCT.md`, and `docs/LICENSE` (MIT)
+- [x] T106 [P] Install commitlint (`@commitlint/cli`, `@commitlint/config-conventional`) and Husky; configure `commit-msg` hook to enforce Conventional Commits in `commitlint.config.js`
+- [x] T107 [P] Create `.github/pull_request_template.md` with constitutional compliance checklist (accessibility, privacy, security, type safety, ethical UX, modularity, community standards)
 
 **Checkpoint**: Monorepo builds with `pnpm build`; all packages resolve; `pnpm typecheck` passes with zero errors.
 
@@ -50,27 +50,27 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T012 Define full Prisma schema with all entities (User, Film, WatchlistEntry, Interest, Match, Block, Report, MatchScore, SeenUser, DailyAllocation, DeviceToken) and enums (Intent, ReportReason, ReportStatus) in `apps/web/prisma/schema.prisma`. User onboarding fields (`age`, `location`, `intent`, `timezone`, `prompts`) MUST be nullable — BetterAuth creates the User at auth time before onboarding. Add `privacyPolicyConsentedAt: DateTime?` and `onboardingCompletedAt: DateTime?` fields. Add index on `onboardingCompletedAt`.
-- [ ] T013 Run `prisma db push` and `prisma generate` to create the database and generate the Prisma client
-- [ ] T014 [P] Define shared TypeScript types (UserProfile, PublicProfile, FilmPreview, Intent, DiscoverCard, MatchListItem, MatchDetail, ImportResult, etc.) in `packages/shared-types/src/user.ts`, `packages/shared-types/src/match.ts`, `packages/shared-types/src/watchlist.ts`
-- [ ] T015 [P] Configure BetterAuth with Prisma adapter, socialProviders (Google, Apple), magicLink plugin, bearer plugin, jwt plugin, and nextCookies plugin in `apps/web/src/lib/auth.ts`
-- [ ] T016 [P] Mount BetterAuth handler at `apps/web/src/app/api/auth/[...all]/route.ts` exporting toNextJsHandler as GET and POST
-- [ ] T017 Initialize tRPC with context that extracts BetterAuth session via `auth.api.getSession({ headers })` in `apps/web/src/server/trpc.ts`
-- [ ] T018 Create tRPC app router in `apps/web/src/server/routers/_app.ts`. Start with `user` and `watchlist` routers only (stub empty routers for others). Extend incrementally as new routers are built in later phases.
-- [ ] T019 [P] Create tRPC HTTP handler route at `apps/web/src/app/api/trpc/[trpc]/route.ts`
-- [ ] T020 [P] Create tRPC React client provider with queryClient in `apps/web/src/lib/trpc.ts` and wrap app in `apps/web/src/app/layout.tsx`
-- [ ] T021 [P] Implement robots.txt fetcher and compliance checker in `packages/letterboxd-scraper/src/robots.ts`
-- [ ] T022 Implement Cheerio-based Letterboxd watchlist HTML scraper with pagination, polite crawling (500ms delay, User-Agent header), and public-profile detection in `packages/letterboxd-scraper/src/scraper.ts`
-- [ ] T023 Implement TMDB API normalizer (search by title+year, extract tmdbId, posterPath, genreIds, handle 429 backoff, handle not-found) in `packages/letterboxd-scraper/src/normalizer.ts`
-- [ ] T024 [P] Implement Jaccard film overlap scorer in `packages/matching-engine/src/overlap.ts`
-- [ ] T025 [P] Implement cosine genre similarity scorer in `packages/matching-engine/src/genre-similarity.ts`
-- [ ] T026 Implement combined weighted score function (0.70 × filmOverlap + 0.30 × genreSimilarity) in `packages/matching-engine/src/score.ts`
-- [ ] T027 [P] Build shared UI primitives (Button, Card, Input, Avatar, Badge) with Tailwind CSS, dark mode default, 4.5:1 contrast ratios, keyboard focusability, and aria attributes in `packages/ui/src/`
-- [ ] T028 [P] Create root layout with dark theme, `<html lang="en">`, `prefers-reduced-motion` media query, and tRPC/auth providers in `apps/web/src/app/layout.tsx`
+- [x] T012 Define full Prisma schema with all entities (User, Film, WatchlistEntry, Interest, Match, Block, Report, MatchScore, SeenUser, DailyAllocation, DeviceToken) and enums (Intent, ReportReason, ReportStatus) in `apps/web/prisma/schema.prisma`. User onboarding fields (`age`, `location`, `intent`, `timezone`, `prompts`) MUST be nullable — BetterAuth creates the User at auth time before onboarding. Add `privacyPolicyConsentedAt: DateTime?` and `onboardingCompletedAt: DateTime?` fields. Add index on `onboardingCompletedAt`.
+- [x] T013 Run `prisma db push` and `prisma generate` to create the database and generate the Prisma client
+- [x] T014 [P] Define shared TypeScript types (UserProfile, PublicProfile, FilmPreview, Intent, DiscoverCard, MatchListItem, MatchDetail, ImportResult, etc.) in `packages/shared-types/src/user.ts`, `packages/shared-types/src/match.ts`, `packages/shared-types/src/watchlist.ts`
+- [x] T015 [P] Configure BetterAuth with Prisma adapter, socialProviders (Google, Apple), magicLink plugin, bearer plugin, jwt plugin, and nextCookies plugin in `apps/web/src/lib/auth.ts`
+- [x] T016 [P] Mount BetterAuth handler at `apps/web/src/app/api/auth/[...all]/route.ts` exporting toNextJsHandler as GET and POST
+- [x] T017 Initialize tRPC with context that extracts BetterAuth session via `auth.api.getSession({ headers })` in `apps/web/src/server/trpc.ts`
+- [x] T018 Create tRPC app router in `apps/web/src/server/routers/_app.ts`. Start with `user` and `watchlist` routers only (stub empty routers for others). Extend incrementally as new routers are built in later phases.
+- [x] T019 [P] Create tRPC HTTP handler route at `apps/web/src/app/api/trpc/[trpc]/route.ts`
+- [x] T020 [P] Create tRPC React client provider with queryClient in `apps/web/src/lib/trpc.ts` and wrap app in `apps/web/src/app/layout.tsx`
+- [x] T021 [P] Implement robots.txt fetcher and compliance checker in `packages/letterboxd-scraper/src/robots.ts`
+- [x] T022 Implement Cheerio-based Letterboxd watchlist HTML scraper with pagination, polite crawling (500ms delay, User-Agent header), and public-profile detection in `packages/letterboxd-scraper/src/scraper.ts`
+- [x] T023 Implement TMDB API normalizer (search by title+year, extract tmdbId, posterPath, genreIds, handle 429 backoff, handle not-found) in `packages/letterboxd-scraper/src/normalizer.ts`
+- [x] T024 [P] Implement Jaccard film overlap scorer in `packages/matching-engine/src/overlap.ts`
+- [x] T025 [P] Implement cosine genre similarity scorer in `packages/matching-engine/src/genre-similarity.ts`
+- [x] T026 Implement combined weighted score function (0.70 × filmOverlap + 0.30 × genreSimilarity) in `packages/matching-engine/src/score.ts`
+- [x] T027 [P] Build shared UI primitives (Button, Card, Input, Avatar, Badge) with Tailwind CSS, dark mode default, 4.5:1 contrast ratios, keyboard focusability, and aria attributes in `packages/ui/src/`
+- [x] T028 [P] Create root layout with dark theme, `<html lang="en">`, `prefers-reduced-motion` media query, and tRPC/auth providers in `apps/web/src/app/layout.tsx`
 - [ ] T029 [P] Create iOS Core networking layer: APIClient with URLSession, tRPC wire format encoding, Bearer token header injection in `apps/ios/Reels/Core/Networking/APIClient.swift`
 - [ ] T030 [P] Create iOS Keychain manager for JWT/bearer token storage in `apps/ios/Reels/Core/Networking/KeychainManager.swift`
 - [ ] T031 [P] Create iOS Codable models mirroring tRPC response envelope and domain types (UserProfile, FilmPreview, DiscoverCard, MatchDetail, etc.) in `apps/ios/Reels/Core/Models/`
-- [ ] T108 [P] Configure email transport for magic link delivery: install Resend SDK (`resend` npm package), wire into BetterAuth `sendMagicLink` callback with HTML template in `apps/web/src/lib/email.ts`
+- [x] T108 [P] Configure email transport for magic link delivery: install Resend SDK (`resend` npm package), wire into BetterAuth `sendMagicLink` callback with HTML template in `apps/web/src/lib/email.ts`
 - [ ] T109 [P] Create Supabase Storage bucket `profile-photos` (public read, max 5 MB, MIME types: jpeg/png/webp), configure CORS, implement signed-URL upload utility in `apps/web/src/server/services/storage.ts`
 
 **Checkpoint**: Foundation ready — `pnpm typecheck` passes; Prisma schema applied; BetterAuth serves `/api/auth/get-session`; tRPC responds at `/api/trpc/`; scraper package exports `scrapeWatchlist()`; matching-engine exports `computeMatchScore()`; iOS app builds and APIClient compiles.
@@ -85,18 +85,18 @@
 
 ### Implementation
 
-- [ ] T032 [P] [US1] Create auth pages (login, signup, magic-link-sent) with email input form and OAuth buttons in `apps/web/src/app/(auth)/login/page.tsx` and `apps/web/src/app/(auth)/signup/page.tsx`
-- [ ] T033 [P] [US1] Create onboarding multi-step form layout with progress indicator in `apps/web/src/app/onboarding/layout.tsx`
-- [ ] T034 [US1] Implement onboarding step 1: Privacy policy consent gate in `apps/web/src/app/onboarding/privacy/page.tsx`
-- [ ] T035 [US1] Implement onboarding step 2: Profile fields (name, age, location, bio, intent selector, prompts) with Zod validation in `apps/web/src/app/onboarding/profile/page.tsx`
-- [ ] T036 [US1] Implement onboarding step 3: Letterboxd username input with import trigger, loading state, error handling (invalid/private username, Letterboxd unreachable), import summary, and **skip/retry option** (user can complete onboarding without importing — watchlist can be imported later from profile) in `apps/web/src/app/onboarding/watchlist/page.tsx`
-- [ ] T037 [US1] Implement onboarding step 4: Top 4 film selector (auto-populated from imported watchlist) in `apps/web/src/app/onboarding/top-films/page.tsx`
-- [ ] T038 [US1] Implement `user.completeOnboarding` tRPC mutation with Zod input validation (OnboardingInput schema) in `apps/web/src/server/routers/user.ts`. Accept nullable `letterboxdUsername` (user may skip watchlist import). Set `onboardingCompletedAt` and `privacyPolicyConsentedAt` timestamps on the existing User record (created by BetterAuth at auth time).
-- [ ] T039 [US1] Implement `watchlist.import` tRPC mutation: call letterboxd-scraper, run TMDB normalization, upsert Film records, create WatchlistEntry records, return ImportResult in `apps/web/src/server/routers/watchlist.ts`
-- [ ] T040 [US1] Implement watchlist import service orchestrating scraper → normalizer → Prisma upserts with rate limiting in `apps/web/src/server/services/watchlist-import.ts`
-- [ ] T041 [US1] Implement match score recomputation trigger: after watchlist import, compute MatchScore for new user vs all existing eligible users using matching-engine package in `apps/web/src/server/services/match-score.ts`
-- [ ] T042 [US1] Implement `user.me` tRPC query returning full UserProfile with watchlistCount and topFilms in `apps/web/src/server/routers/user.ts`
-- [ ] T043 [US1] Add auth middleware redirect: unauthenticated → login, authenticated with `onboardingCompletedAt === null` → onboarding, onboarded → discover in `apps/web/src/middleware.ts`
+- [x] T032 [P] [US1] Create auth pages (login, signup, magic-link-sent) with email input form and OAuth buttons in `apps/web/src/app/(auth)/login/page.tsx` and `apps/web/src/app/(auth)/signup/page.tsx`
+- [x] T033 [P] [US1] Create onboarding multi-step form layout with progress indicator in `apps/web/src/app/onboarding/layout.tsx`
+- [x] T034 [US1] Implement onboarding step 1: Privacy policy consent gate in `apps/web/src/app/onboarding/privacy/page.tsx`
+- [x] T035 [US1] Implement onboarding step 2: Profile fields (name, age, location, bio, intent selector, prompts) with Zod validation in `apps/web/src/app/onboarding/profile/page.tsx`
+- [x] T036 [US1] Implement onboarding step 3: Letterboxd username input with import trigger, loading state, error handling (invalid/private username, Letterboxd unreachable), import summary, and **skip/retry option** (user can complete onboarding without importing — watchlist can be imported later from profile) in `apps/web/src/app/onboarding/watchlist/page.tsx`
+- [x] T037 [US1] Implement onboarding step 4: Top 4 film selector (auto-populated from imported watchlist) in `apps/web/src/app/onboarding/top-films/page.tsx`
+- [x] T038 [US1] Implement `user.completeOnboarding` tRPC mutation with Zod input validation (OnboardingInput schema) in `apps/web/src/server/routers/user.ts`. Accept nullable `letterboxdUsername` (user may skip watchlist import). Set `onboardingCompletedAt` and `privacyPolicyConsentedAt` timestamps on the existing User record (created by BetterAuth at auth time).
+- [x] T039 [US1] Implement `watchlist.import` tRPC mutation: call letterboxd-scraper, run TMDB normalization, upsert Film records, create WatchlistEntry records, return ImportResult in `apps/web/src/server/routers/watchlist.ts`
+- [x] T040 [US1] Implement watchlist import service orchestrating scraper → normalizer → Prisma upserts with rate limiting in `apps/web/src/server/services/watchlist-import.ts`
+- [x] T041 [US1] Implement match score recomputation trigger: after watchlist import, compute MatchScore for new user vs all existing eligible users using matching-engine package in `apps/web/src/server/services/match-score.ts`
+- [x] T042 [US1] Implement `user.me` tRPC query returning full UserProfile with watchlistCount and topFilms in `apps/web/src/server/routers/user.ts`
+- [x] T043 [US1] Add auth middleware redirect: unauthenticated → login, authenticated with `onboardingCompletedAt === null` → onboarding, onboarded → discover in `apps/web/src/middleware.ts`
 - [ ] T044 [US1] Add keyboard navigation, screen reader labels, and accessible error messages to all onboarding forms
 
 **Checkpoint**: User Story 1 fully functional — a user can sign up, complete onboarding, import watchlist, and be redirected to Discover. Watchlist films are resolved via TMDB and stored in the database.
@@ -111,13 +111,13 @@
 
 ### Implementation
 
-- [ ] T045 [US2] Implement `discover.getFeed` tRPC query: select top unseen/unblocked/intent-compatible candidates from MatchScore, enforce 10-card daily limit via DailyAllocation with timezone-aware midnight reset, return DiscoverFeed in `apps/web/src/server/routers/discover.ts`
-- [ ] T046 [US2] Implement Discover feed service with the candidate selection query (exclude SeenUser, Block bidirectional, soft-deleted, intent-incompatible, <5 films) in `apps/web/src/server/services/discover-feed.ts`
-- [ ] T047 [US2] Implement `discover.expressInterest` tRPC mutation: create Interest record, check reciprocal, insert SeenUser, increment DailyAllocation, return InterestResult in `apps/web/src/server/routers/discover.ts`
-- [ ] T048 [US2] Implement `discover.skip` tRPC mutation: insert SeenUser, increment DailyAllocation in `apps/web/src/server/routers/discover.ts`
+- [x] T045 [US2] Implement `discover.getFeed` tRPC query: select top unseen/unblocked/intent-compatible candidates from MatchScore, enforce 10-card daily limit via DailyAllocation with timezone-aware midnight reset, return DiscoverFeed in `apps/web/src/server/routers/discover.ts`
+- [x] T046 [US2] Implement Discover feed service with the candidate selection query (exclude SeenUser, Block bidirectional, soft-deleted, intent-incompatible, <5 films) in `apps/web/src/server/services/discover-feed.ts`
+- [x] T047 [US2] Implement `discover.expressInterest` tRPC mutation: create Interest record, check reciprocal, insert SeenUser, increment DailyAllocation, return InterestResult in `apps/web/src/server/routers/discover.ts`
+- [x] T048 [US2] Implement `discover.skip` tRPC mutation: insert SeenUser, increment DailyAllocation in `apps/web/src/server/routers/discover.ts`
 - [ ] T049 [P] [US2] Build DiscoverCard UI component displaying profile preview, shared film count, shared film posters (with alt text), intent badge, and overflow menu in `apps/web/src/components/discover-card.tsx`
-- [ ] T050 [US2] Build Discover feed page with card stack, interest/skip action buttons, keyboard shortcuts (→ skip, ← interest), and "You're all caught up" empty state in `apps/web/src/app/(main)/discover/page.tsx`
-- [ ] T051 [US2] Implement `user.getById` tRPC query returning PublicProfile for detailed profile view from Discover card tap in `apps/web/src/server/routers/user.ts`
+- [x] T050 [US2] Build Discover feed page with card stack, interest/skip action buttons, keyboard shortcuts (→ skip, ← interest), and "You're all caught up" empty state in `apps/web/src/app/(main)/discover/page.tsx`
+- [x] T051 [US2] Implement `user.getById` tRPC query returning PublicProfile for detailed profile view from Discover card tap in `apps/web/src/server/routers/user.ts`
 - [ ] T052 [US2] Build user profile detail modal/page showing bio, prompts, top films, shared films, and intent from Discover card tap in `apps/web/src/components/profile-detail.tsx`
 - [ ] T053 [US2] Add reduced-motion support: card transitions degrade to instant swap when `prefers-reduced-motion: reduce` is active
 - [ ] T054 [US2] Add keyboard navigation for card actions and screen reader announcements for card transitions
@@ -134,11 +134,11 @@
 
 ### Implementation
 
-- [ ] T055 [US3] Implement mutual match creation logic: on reciprocal Interest detection, create Match with canonical user ordering, populate sharedFilmIds, compute genre overlap in `apps/web/src/server/services/match-creation.ts`
-- [ ] T056 [US3] Implement `match.list` tRPC query returning all matches for current user with otherUser preview, sharedFilmCount, score in `apps/web/src/server/routers/match.ts`
-- [ ] T057 [US3] Implement `match.getById` tRPC query returning full MatchDetail with otherUser PublicProfile, sharedFilms, genreOverlap breakdown in `apps/web/src/server/routers/match.ts`
-- [ ] T058 [P] [US3] Build Matches list page showing match cards with other user's name, photo, shared film count, and match date in `apps/web/src/app/(main)/matches/page.tsx`
-- [ ] T059 [US3] Build Match detail page showing "Why you matched" section: shared films grid, genre overlap chart, match score, and other user's full profile in `apps/web/src/app/(main)/matches/[matchId]/page.tsx`
+- [x] T055 [US3] Implement mutual match creation logic: on reciprocal Interest detection, create Match with canonical user ordering, populate sharedFilmIds, compute genre overlap in `apps/web/src/server/services/match-creation.ts`
+- [x] T056 [US3] Implement `match.list` tRPC query returning all matches for current user with otherUser preview, sharedFilmCount, score in `apps/web/src/server/routers/match.ts`
+- [x] T057 [US3] Implement `match.getById` tRPC query returning full MatchDetail with otherUser PublicProfile, sharedFilms, genreOverlap breakdown in `apps/web/src/server/routers/match.ts`
+- [x] T058 [P] [US3] Build Matches list page showing match cards with other user's name, photo, shared film count, and match date in `apps/web/src/app/(main)/matches/page.tsx`
+- [x] T059 [US3] Build Match detail page showing "Why you matched" section: shared films grid, genre overlap chart, match score, and other user's full profile in `apps/web/src/app/(main)/matches/[matchId]/page.tsx`
 - [ ] T060 [US3] Add accessible live region announcement when a new match is created (triggered by InterestResult.isMatch) on the Discover feed
 - [ ] T061 [US3] Wire match notification: when a match is created, update Matches list badge/count in the navigation bar in `apps/web/src/components/nav-bar.tsx`
 
@@ -154,14 +154,14 @@
 
 ### Implementation
 
-- [ ] T062 [P] [US4] Build profile view page displaying all user fields, watchlist count, top films, prompts, and intent in `apps/web/src/app/(main)/profile/page.tsx`
-- [ ] T063 [US4] Build profile edit form with inline editing for name, age, location, bio, intent, prompts, top films, and profile photos in `apps/web/src/app/(main)/profile/edit/page.tsx`
-- [ ] T064 [US4] Implement `user.updateProfile` tRPC mutation with Zod validation (UpdateProfileInput schema) and Prisma update in `apps/web/src/server/routers/user.ts`
+- [x] T062 [P] [US4] Build profile view page displaying all user fields, watchlist count, top films, prompts, and intent in `apps/web/src/app/(main)/profile/page.tsx`
+- [x] T063 [US4] Build profile edit form with inline editing for name, age, location, bio, intent, prompts, top films, and profile photos in `apps/web/src/app/(main)/profile/edit/page.tsx`
+- [x] T064 [US4] Implement `user.updateProfile` tRPC mutation with Zod validation (UpdateProfileInput schema) and Prisma update in `apps/web/src/server/routers/user.ts`
 - [ ] T065 [US4] Implement profile photo upload: client-side resize/compress, upload to Supabase Storage/R2, store URL in user.profilePhotos in `apps/web/src/server/services/photo-upload.ts`
-- [ ] T066 [US4] Build watchlist re-import UI with trigger button, loading state, and updated import summary on profile page in `apps/web/src/app/(main)/profile/page.tsx`
-- [ ] T067 [US4] Implement `user.deleteAccount` tRPC mutation: soft-delete user (set `deletedAt`), cascade to remove from MatchScores, SeenUser exclusions, and DailyAllocations in `apps/web/src/server/routers/user.ts`
+- [x] T066 [US4] Build watchlist re-import UI with trigger button, loading state, and updated import summary on profile page in `apps/web/src/app/(main)/profile/page.tsx`
+- [x] T067 [US4] Implement `user.deleteAccount` tRPC mutation: soft-delete user (set `deletedAt`), cascade to remove from MatchScores, SeenUser exclusions, and DailyAllocations in `apps/web/src/server/routers/user.ts`
 - [ ] T068 [US4] Build account deletion confirmation dialog with clear warning text and double-confirmation in `apps/web/src/components/delete-account-dialog.tsx`
-- [ ] T069 [US4] Implement `watchlist.getMyWatchlist` tRPC query with cursor-based pagination in `apps/web/src/server/routers/watchlist.ts`
+- [x] T069 [US4] Implement `watchlist.getMyWatchlist` tRPC query with cursor-based pagination in `apps/web/src/server/routers/watchlist.ts`
 
 **Checkpoint**: User Story 4 fully functional — all profile fields editable, watchlist re-importable, account deletion removes user from all feeds. Works independently of US5–US6.
 
@@ -175,13 +175,13 @@
 
 ### Implementation
 
-- [ ] T070 [US5] Implement `safety.block` tRPC mutation: create Block record, delete existing Match/Interest between users, bidirectional Discover exclusion in `apps/web/src/server/routers/safety.ts`
-- [ ] T071 [US5] Implement `safety.unblock` tRPC mutation: remove Block record in `apps/web/src/server/routers/safety.ts`
-- [ ] T072 [US5] Implement `safety.report` tRPC mutation: create Report record with reason/description, validate input, return reportId in `apps/web/src/server/routers/safety.ts`
-- [ ] T073 [US5] Implement `safety.getBlockedUsers` tRPC query returning list of blocked users in `apps/web/src/server/routers/safety.ts`
+- [x] T070 [US5] Implement `safety.block` tRPC mutation: create Block record, delete existing Match/Interest between users, bidirectional Discover exclusion in `apps/web/src/server/routers/safety.ts`
+- [x] T071 [US5] Implement `safety.unblock` tRPC mutation: remove Block record in `apps/web/src/server/routers/safety.ts`
+- [x] T072 [US5] Implement `safety.report` tRPC mutation: create Report record with reason/description, validate input, return reportId in `apps/web/src/server/routers/safety.ts`
+- [x] T073 [US5] Implement `safety.getBlockedUsers` tRPC query returning list of blocked users in `apps/web/src/server/routers/safety.ts`
 - [ ] T074 [P] [US5] Build overflow menu component with "Block" and "Report" options accessible within two taps, usable from Discover cards and profile views in `apps/web/src/components/user-overflow-menu.tsx`
 - [ ] T075 [US5] Build Report dialog with reason selector (SPAM, HARASSMENT, INAPPROPRIATE_CONTENT, FAKE_PROFILE, OTHER), optional description, and submit confirmation in `apps/web/src/components/report-dialog.tsx`
-- [ ] T076 [US5] Build Blocked Users management page listing blocked users with unblock option in `apps/web/src/app/(main)/profile/blocked/page.tsx`
+- [x] T076 [US5] Build Blocked Users management page listing blocked users with unblock option in `apps/web/src/app/(main)/profile/blocked/page.tsx`
 - [ ] T077 [US5] Integrate overflow menu into DiscoverCard component and ProfileDetail component ensuring ≤2 taps to block/report (FR-024, FR-025)
 
 **Checkpoint**: User Story 5 fully functional — block removes user from all surfaces bidirectionally, report is recorded for moderation. Satisfies SC-005 (≤2 taps).
@@ -205,7 +205,7 @@
 - [ ] T084 [US6] Build Matches list and detail views with shared films, "why you matched" section, and VoiceOver support in `apps/ios/Reels/Features/Matches/MatchesListView.swift` and `apps/ios/Reels/Features/Matches/MatchDetailView.swift`
 - [ ] T085 [US6] Build Profile view and edit screens with all editable fields and re-import trigger in `apps/ios/Reels/Features/Profile/ProfileView.swift` and `apps/ios/Reels/Features/Profile/EditProfileView.swift`
 - [ ] T086 [US6] Implement block/report from overflow menu within 2 taps on profile and Discover views in `apps/ios/Reels/Features/Safety/BlockReportSheet.swift`
-- [ ] T087 [US6] Implement `device.registerPush` and `device.unregisterPush` tRPC mutations on the server in `apps/web/src/server/routers/device.ts`
+- [x] T087 [US6] Implement `device.registerPush` and `device.unregisterPush` tRPC mutations on the server in `apps/web/src/server/routers/device.ts`
 - [ ] T088 [US6] Implement server-side APNs push notification on match creation using `apns2` npm package in `apps/web/src/server/services/push-notification.ts`
 - [ ] T089 [US6] Register for remote notifications on app launch, send device token to server via `device.registerPush` in `apps/ios/Reels/App/ReelsApp.swift`
 - [ ] T090 [US6] Implement CoreData/SwiftData offline cache layer for Discover cards, Matches, and Profile in `apps/ios/Reels/Core/Persistence/CacheManager.swift`
@@ -235,7 +235,7 @@
 - [ ] T105 Implement SeenUser re-eligibility on watchlist re-import: when ≥30% of resolved films are new (not in previous import), prune SeenUser entries where the re-importing user is the `seenUserId` in `apps/web/src/server/services/watchlist-import.ts` (FR-022a)
 - [ ] T110 [P] Add structured JSON logging middleware (timestamp, level, requestId, userId, action) in `apps/web/src/server/middleware/logger.ts` (NFR-004)
 - [ ] T111 [P] Integrate error tracking (Sentry) with alert threshold configuration (≥10 errors/min) in `apps/web/src/lib/sentry.ts` and `apps/web/src/app/layout.tsx` (NFR-005)
-- [ ] T112 [P] Add Content-Security-Policy and security headers via Next.js `next.config.ts` `headers()` function (NFR-002)
+- [x] T112 [P] Add Content-Security-Policy and security headers via Next.js `next.config.ts` `headers()` function (NFR-002)
 - [ ] T113 [P] Add lightweight analytics event emitter for `onboarding.completed`, `discover.interest`, `discover.skip`, `match.created`, `session.started` — privacy-respecting (no PII), first-party endpoint in `apps/web/src/lib/analytics.ts` (NFR-006)
 - [ ] T114 [P] Switch Prisma production workflow from `db push` to `prisma migrate dev` / `prisma migrate deploy`; create initial migration file in `apps/web/prisma/migrations/` (NFR-008)
 
@@ -245,11 +245,11 @@
 
 **Purpose**: Legal documents, deployment pipeline, App Store preparation, and final pre-launch gates.
 
-- [ ] T115 [P] Draft and deploy privacy policy at `/privacy` and terms of service at `/terms` — plain language, GDPR-compliant, referencing data collected per PrivacyInfo.xcprivacy (NFR-011, FR-002)
+- [x] T115 [P] Draft and deploy privacy policy at `/privacy` and terms of service at `/terms` — plain language, GDPR-compliant, referencing data collected per PrivacyInfo.xcprivacy (NFR-011, FR-002)
 - [ ] T116 [P] Create `vercel.json` configuration (if needed) and verify `apps/web` deploys to Vercel with environment variables (DEP-001)
 - [ ] T117 [P] Configure CD: Vercel auto-deploy staging on `main` merge, manual production promotion via Vercel environment (DEP-003)
 - [ ] T118 [P] Create `.env.staging` and `.env.production` templates with all required secrets documented; verify secrets are set in Vercel Environment Variables (DEP-004)
-- [ ] T119 [P] Implement GDPR data export endpoint `user.exportData` tRPC query returning JSON of all user data (profile, watchlist, matches, interests) in `apps/web/src/server/routers/user.ts` (NFR-012)
+- [x] T119 [P] Implement GDPR data export endpoint `user.exportData` tRPC query returning JSON of all user data (profile, watchlist, matches, interests) in `apps/web/src/server/routers/user.ts` (NFR-012)
 - [ ] T120 [P] Prepare App Store Connect metadata: description, keywords, category, screenshots (6.7" + 6.1"), age rating questionnaire (17+, dating intent) (IOS-001)
 - [ ] T121 [P] Finalize `PrivacyInfo.xcprivacy` with all collected data types and privacy nutrition labels (IOS-002)
 - [ ] T122 [P] Configure Apple Developer certificates, provisioning profiles, App ID, and push notification entitlement (IOS-003)
