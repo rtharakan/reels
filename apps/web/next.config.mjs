@@ -8,6 +8,16 @@ const nextConfig = {
         hostname: 'image.tmdb.org',
         pathname: '/t/p/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'a.ltrbxd.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 's.ltrbxd.com',
+        pathname: '/**',
+      },
     ],
   },
   async headers() {
@@ -21,7 +31,7 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://image.tmdb.org data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https://image.tmdb.org https://a.ltrbxd.com https://s.ltrbxd.com data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';",
           },
           {
             key: 'Permissions-Policy',
