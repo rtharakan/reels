@@ -10,6 +10,53 @@ import { fetchExploreWatchlist } from '@/server/services/explore-scraper';
 import { computeExploreMatch } from '@/server/services/explore-matcher';
 import { fetchCityScreenings, DUTCH_CITIES } from '@/server/services/explore-screenings';
 import { findExploreMatchingScreenings } from '@/server/services/explore-film-matcher';
+import type { ExploreFilm } from '@/server/services/explore-scraper';
+
+const TMDB_API_BASE = 'https://api.themoviedb.org/3';
+
+async function resolveTMDBPoster(
+  title: string,
+  year: number | undefined,
+  apiToken: string,
+): Promise<string | null> {
+  const params = new URLSearchParams({ query: title });
+  if (year) params.set('primary_release_year', String(year));
+
+  const res = await fetch(`${TMDB_API_BASE}/search/movie?${params}`, {
+    headers: {
+      Authorization: `Bearer ${apiToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) return null;
+  const data = await res.json();
+  const movie = data.results?.[0];
+  if (!movie?.poster_path) return null;
+
+  return `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+}
+
+async function enrichPostersWithTMDB(
+  films: ExploreFilm[],
+): Promise<ExploreFilm[]> {
+  const apiToken = process.env.TMDB_API_TOKEN;
+  if (!apiToken) return films;
+
+  const enriched = await Promise.all(
+    films.slice(0, 30).map(async (film) => {
+      if (film.posterUrl) return film;
+      try {
+        const posterUrl = await resolveTMDBPoster(film.title, film.year, apiToken);
+        return posterUrl ? { ...film, posterUrl } : film;
+      } catch {
+        return film;
+      }
+    }),
+  );
+
+  return [...enriched, ...films.slice(30)];
+}
 
 // Basic username validation
 const USERNAME_REGEX = /^[a-zA-Z0-9_-]{1,40}$/;
@@ -88,6 +135,9 @@ export async function POST(request: NextRequest) {
     // Compute match
     const matchResult = computeExploreMatch(watchlist1.films, watchlist2.films);
 
+    // Enrich shared films with TMDB posters for missing poster URLs
+    const enrichedSharedFilms = await enrichPostersWithTMDB(matchResult.sharedFilms);
+
     // If a city is provided, find screenings of shared films
     let dateIdeas: {
       filmTitle: string;
@@ -135,7 +185,7 @@ export async function POST(request: NextRequest) {
         genreScore: matchResult.genreScore,
         combinedScore: matchResult.combinedScore,
         sharedFilmsCount: matchResult.sharedFilms.length,
-        sharedFilms: matchResult.sharedFilms.slice(0, 50), // limit response size
+        sharedFilms: enrichedSharedFilms.slice(0, 50), // limit response size
       },
       dateIdeas: dateIdeas.slice(0, 30),
       city: selectedCity,

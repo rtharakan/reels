@@ -14,9 +14,9 @@ export function Badge({ children, variant = 'default', className }: BadgeProps) 
         'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
         {
           'bg-zinc-700 text-zinc-200': variant === 'default',
-          'bg-emerald-900 text-emerald-200': variant === 'friends',
-          'bg-pink-900 text-pink-200': variant === 'dating',
-          'bg-violet-900 text-violet-200': variant === 'both',
+          'bg-zinc-700 text-zinc-200': variant === 'friends',
+          'bg-zinc-700 text-zinc-200': variant === 'dating',
+          'bg-zinc-700 text-zinc-200': variant === 'both',
         },
         className,
       )}

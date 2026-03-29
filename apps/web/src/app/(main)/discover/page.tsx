@@ -15,9 +15,9 @@ function getIntentLabel(intent: string) {
 
 function getIntentVariant(intent: string) {
   switch (intent) {
-    case 'FRIENDS': return 'bg-emerald-900 text-emerald-200';
-    case 'DATING': return 'bg-pink-900 text-pink-200';
-    default: return 'bg-violet-900 text-violet-200';
+    case 'FRIENDS': return 'bg-zinc-800 text-zinc-200';
+    case 'DATING': return 'bg-zinc-800 text-zinc-200';
+    default: return 'bg-zinc-800 text-zinc-200';
   }
 }
 
@@ -59,7 +59,7 @@ export default function DiscoverPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
       </div>
     );
   }
@@ -86,7 +86,7 @@ export default function DiscoverPage() {
       <h1 className="mb-6 text-xl font-bold text-white">Discover</h1>
 
       {matchAlert && (
-        <div className="mb-4 rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm font-medium text-white" role="alert" aria-live="polite">
+        <div className="mb-4 rounded-lg bg-zinc-100 px-4 py-3 text-center text-sm font-medium text-zinc-900" role="alert" aria-live="polite">
           {matchAlert}
         </div>
       )}
@@ -115,7 +115,7 @@ export default function DiscoverPage() {
 
           {/* Match info */}
           <div className="flex items-center gap-2 text-sm text-zinc-400">
-            <span className="font-semibold text-indigo-400">{Math.round(card.matchScore * 100)}% match</span>
+            <span className="font-semibold text-white">{Math.round(card.matchScore * 100)}% match</span>
             <span>·</span>
             <span>{card.sharedFilmCount} shared films</span>
           </div>
@@ -139,13 +139,15 @@ export default function DiscoverPage() {
           {card.sharedFilms.length > 0 && (
             <div>
               <h3 className="mb-2 text-sm font-medium text-zinc-400">Films you both love</h3>
-              <div className="flex gap-2 overflow-x-auto">
+              <div className="flex gap-2 overflow-x-auto pb-1">
                 {card.sharedFilms.map((film) => (
                   <div key={film.id} className="flex-shrink-0">
                     {film.posterUrl ? (
-                      <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="rounded" />
+                      <div className="aspect-[2/3] w-[80px] overflow-hidden rounded-lg">
+                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" />
+                      </div>
                     ) : (
-                      <div className="flex h-[120px] w-[80px] items-center justify-center rounded bg-zinc-800 text-xs text-zinc-500">
+                      <div className="flex h-[120px] w-[80px] items-center justify-center rounded-lg bg-zinc-800 text-xs text-zinc-500 p-1 text-center">
                         {film.title}
                       </div>
                     )}
@@ -165,7 +167,7 @@ export default function DiscoverPage() {
           </button>
           <div className="w-px bg-zinc-800" />
           <button onClick={handleInterest} disabled={expressInterest.isPending}
-            className="flex-1 py-4 text-sm font-medium text-indigo-400 hover:bg-zinc-800 hover:text-indigo-300 transition-colors"
+            className="flex-1 py-4 text-sm font-medium text-zinc-200 hover:bg-zinc-800 hover:text-white transition-colors"
             aria-label="Express interest in this person">
             Interested ❤️
           </button>

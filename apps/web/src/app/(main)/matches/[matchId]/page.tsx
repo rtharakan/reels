@@ -13,7 +13,7 @@ export default function MatchDetailPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
       </div>
     );
   }
@@ -40,7 +40,7 @@ export default function MatchDetailPage() {
           </div>
           <h1 className="mt-3 text-xl font-bold text-white">{match.otherUser.name}, {match.otherUser.age}</h1>
           <p className="text-sm text-zinc-400">{match.otherUser.location}</p>
-          <p className="mt-2 text-lg font-semibold text-indigo-400">{Math.round(match.score * 100)}% match</p>
+          <p className="mt-2 text-lg font-semibold text-zinc-200">{Math.round(match.score * 100)}% match</p>
         </div>
 
         {/* Why you matched */}
@@ -73,9 +73,11 @@ export default function MatchDetailPage() {
                 {match.sharedFilms.slice(0, 8).map((film) => (
                   <div key={film.id}>
                     {film.posterUrl ? (
-                      <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="rounded" />
+                      <div className="aspect-[2/3] overflow-hidden rounded-lg">
+                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" />
+                      </div>
                     ) : (
-                      <div className="flex h-[120px] items-center justify-center rounded bg-zinc-800 p-1 text-xs text-zinc-500 text-center">
+                      <div className="flex aspect-[2/3] items-center justify-center rounded-lg bg-zinc-800 p-1 text-xs text-zinc-500 text-center">
                         {film.title}
                       </div>
                     )}

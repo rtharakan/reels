@@ -64,11 +64,11 @@ interface MatchResponse {
 }
 
 function getCompatibilityLabel(score: number): { text: string; color: string; emoji: string } {
-  if (score >= 0.5) return { text: 'Soul Mates', color: 'text-pink-400', emoji: '💕' };
-  if (score >= 0.3) return { text: 'Great Match', color: 'text-emerald-400', emoji: '🎬' };
-  if (score >= 0.15) return { text: 'Good Vibes', color: 'text-amber-400', emoji: '✨' };
-  if (score >= 0.05) return { text: 'Some Overlap', color: 'text-blue-400', emoji: '🎞️' };
-  return { text: 'Opposites Attract?', color: 'text-zinc-400', emoji: '🌙' };
+  if (score >= 0.5) return { text: 'Soul Mates', color: 'text-zinc-100', emoji: '💕' };
+  if (score >= 0.3) return { text: 'Great Match', color: 'text-zinc-200', emoji: '🎬' };
+  if (score >= 0.15) return { text: 'Good Vibes', color: 'text-zinc-300', emoji: '✨' };
+  if (score >= 0.05) return { text: 'Some Overlap', color: 'text-zinc-400', emoji: '🎞️' };
+  return { text: 'Opposites Attract?', color: 'text-zinc-500', emoji: '🌙' };
 }
 
 function formatDate(dateStr: string): string {
@@ -155,7 +155,7 @@ export default function ExplorePage() {
       <header className="border-b border-zinc-800/50 bg-zinc-950/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-indigo-400" />
+            <Popcorn className="h-6 w-6 text-zinc-300" />
             <span className="text-lg font-bold text-white">Reels</span>
           </Link>
           <div className="flex items-center gap-3">
@@ -174,11 +174,11 @@ export default function ExplorePage() {
       <main className="mx-auto max-w-5xl px-4 py-8">
         {/* Hero Section */}
         <div className="mb-12 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-pink-500">
-            <Heart className="h-8 w-8 text-white" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-800 border border-zinc-700">
+            <Heart className="h-8 w-8 text-zinc-300" />
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            Film Taste <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">Match</span>
+            Film Taste <span className="text-zinc-400">Match</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
             Enter two Letterboxd profiles and discover your film compatibility.
@@ -190,7 +190,7 @@ export default function ExplorePage() {
         <Card className="mx-auto max-w-2xl mb-12">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-indigo-400" />
+              <Users className="h-5 w-5 text-zinc-400" />
               Compare Profiles
             </CardTitle>
             <CardDescription>
@@ -232,7 +232,7 @@ export default function ExplorePage() {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   disabled={isLoading}
-                  className="flex h-10 w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  className="flex h-10 w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
                 >
                   {cities.map((c) => (
                     <option key={c.slug} value={c.slug}>
@@ -275,8 +275,8 @@ export default function ExplorePage() {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Compatibility Score */}
             <Card className="mx-auto max-w-2xl overflow-hidden">
-              <div className="relative bg-gradient-to-br from-indigo-950/50 to-pink-950/50 p-8 text-center">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(99,102,241,0.15),transparent_70%)]" />
+              <div className="relative bg-zinc-900 p-8 text-center">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03),transparent_70%)]" />
                 <div className="relative">
                   <p className="text-5xl mb-2">{compatibility.emoji}</p>
                   <h2 className={`text-3xl font-bold ${compatibility.color}`}>
@@ -307,19 +307,19 @@ export default function ExplorePage() {
 
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <p className="text-2xl font-bold text-indigo-400">
+                    <p className="text-2xl font-bold text-zinc-200">
                       {result.match.sharedFilmsCount}
                     </p>
                     <p className="text-xs text-zinc-500">shared films</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-emerald-400">
+                    <p className="text-2xl font-bold text-zinc-300">
                       {Math.round(result.match.overlapScore * 100)}%
                     </p>
                     <p className="text-xs text-zinc-500">overlap</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-amber-400">
+                    <p className="text-2xl font-bold text-zinc-300">
                       {Math.round(result.match.genreScore * 100)}%
                     </p>
                     <p className="text-xs text-zinc-500">taste match</p>
@@ -350,43 +350,36 @@ export default function ExplorePage() {
                     </CardContent>
                   </Card>
                 ) : (
-                  <div className="grid gap-3">
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                     {result.match.sharedFilms.map((film) => (
-                      <Card key={film.letterboxdSlug} className="overflow-hidden">
-                        <div className="flex items-center gap-4 p-4">
+                      <a
+                        key={film.letterboxdSlug}
+                        href={film.letterboxdUrl || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group block"
+                      >
+                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-zinc-800">
                           {film.posterUrl ? (
                             <Image
                               src={film.posterUrl}
                               alt={film.title}
-                              width={48}
-                              height={72}
-                              className="rounded-md object-cover"
+                              width={180}
+                              height={270}
+                              className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
                               unoptimized
                             />
                           ) : (
-                            <div className="flex h-[72px] w-[48px] items-center justify-center rounded-md bg-zinc-800">
-                              <Film className="h-5 w-5 text-zinc-600" />
+                            <div className="flex h-full items-center justify-center p-2 text-center">
+                              <span className="text-xs text-zinc-500">{film.title}</span>
                             </div>
                           )}
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-white truncate">{film.title}</p>
-                            {film.year && (
-                              <p className="text-sm text-zinc-500">{film.year}</p>
-                            )}
-                          </div>
-                          {film.letterboxdUrl && (
-                            <a
-                              href={film.letterboxdUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-zinc-500 hover:text-indigo-400 transition-colors"
-                              aria-label={`View ${film.title} on Letterboxd`}
-                            >
-                              <ExternalLink className="h-4 w-4" />
-                            </a>
-                          )}
                         </div>
-                      </Card>
+                        <p className="mt-1.5 text-xs text-zinc-400 truncate">{film.title}</p>
+                        {film.year && (
+                          <p className="text-xs text-zinc-600">{film.year}</p>
+                        )}
+                      </a>
                     ))}
                   </div>
                 )}
@@ -416,7 +409,7 @@ export default function ExplorePage() {
                     {result.dateIdeas.map((idea, i) => (
                       <Card key={`${idea.filmTitle}-${idea.date}-${idea.time}-${i}`}>
                         <div className="flex items-center gap-4 p-4">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-950/50 text-indigo-400 shrink-0">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-800 text-zinc-400 shrink-0">
                             <Ticket className="h-5 w-5" />
                           </div>
                           <div className="flex-1 min-w-0">
@@ -458,9 +451,9 @@ export default function ExplorePage() {
             </Tabs>
 
             {/* CTA */}
-            <Card className="mx-auto max-w-2xl bg-gradient-to-br from-indigo-950/30 to-pink-950/30 border-indigo-900/50">
+            <Card className="mx-auto max-w-2xl bg-zinc-900 border-zinc-800">
               <CardContent className="flex flex-col items-center py-8 text-center">
-                <Sparkles className="h-8 w-8 text-indigo-400 mb-3" />
+                <Sparkles className="h-8 w-8 text-zinc-400 mb-3" />
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Want to find more film lovers?
                 </h3>
@@ -488,8 +481,8 @@ export default function ExplorePage() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-950/50">
-                    <Users className="h-6 w-6 text-indigo-400" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800">
+                    <Users className="h-6 w-6 text-zinc-400" />
                   </div>
                   <h3 className="font-medium text-white mb-1">Enter profiles</h3>
                   <p className="text-sm text-zinc-500">
@@ -499,8 +492,8 @@ export default function ExplorePage() {
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-pink-950/50">
-                    <Heart className="h-6 w-6 text-pink-400" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800">
+                    <Heart className="h-6 w-6 text-zinc-400" />
                   </div>
                   <h3 className="font-medium text-white mb-1">See your match</h3>
                   <p className="text-sm text-zinc-500">
@@ -510,8 +503,8 @@ export default function ExplorePage() {
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-950/50">
-                    <Ticket className="h-6 w-6 text-emerald-400" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800">
+                    <Ticket className="h-6 w-6 text-zinc-400" />
                   </div>
                   <h3 className="font-medium text-white mb-1">Plan a date</h3>
                   <p className="text-sm text-zinc-500">

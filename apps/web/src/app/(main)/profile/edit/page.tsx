@@ -45,22 +45,22 @@ export default function EditProfilePage() {
         <div>
           <label htmlFor="edit-name" className="block text-sm font-medium text-zinc-300">Name</label>
           <input id="edit-name" type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={50}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
         </div>
         <div>
           <label htmlFor="edit-age" className="block text-sm font-medium text-zinc-300">Age</label>
           <input id="edit-age" type="number" min={17} value={age} onChange={(e) => setAge(e.target.value)}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
         </div>
         <div>
           <label htmlFor="edit-location" className="block text-sm font-medium text-zinc-300">Location</label>
           <input id="edit-location" type="text" value={location} onChange={(e) => setLocation(e.target.value)} maxLength={100}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
         </div>
         <div>
           <label htmlFor="edit-bio" className="block text-sm font-medium text-zinc-300">Bio</label>
           <textarea id="edit-bio" rows={3} value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none" />
+            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none resize-none" />
         </div>
         <fieldset>
           <legend className="block text-sm font-medium text-zinc-300 mb-2">Looking for</legend>
@@ -68,7 +68,7 @@ export default function EditProfilePage() {
             {(['FRIENDS', 'DATING', 'BOTH'] as const).map((option) => (
               <button key={option} onClick={() => setIntent(option)} type="button"
                 className={`rounded-full px-4 py-1.5 text-sm font-medium ${
-                  intent === option ? 'bg-indigo-600 text-white' : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                  intent === option ? 'bg-zinc-100 text-zinc-900' : 'bg-zinc-800 text-zinc-400 hover:text-white'
                 }`}>
                 {option === 'FRIENDS' ? 'Friends' : option === 'DATING' ? 'Dating' : 'Both'}
               </button>
@@ -81,7 +81,7 @@ export default function EditProfilePage() {
             Cancel
           </button>
           <button onClick={handleSave} disabled={updateMutation.isPending}
-            className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50">
+            className="flex-1 rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50">
             {updateMutation.isPending ? 'Saving...' : 'Save'}
           </button>
         </div>

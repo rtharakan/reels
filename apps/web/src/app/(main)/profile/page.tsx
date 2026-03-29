@@ -27,7 +27,7 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
       </div>
     );
   }
@@ -78,9 +78,11 @@ export default function ProfilePage() {
               {user.topFilms.map((film) => (
                 <div key={film.id} className="flex-shrink-0">
                   {film.posterUrl ? (
-                    <Image src={film.posterUrl} alt={`${film.title} poster`} width={60} height={90} className="rounded" />
+                    <div className="aspect-[2/3] w-[60px] overflow-hidden rounded-lg">
+                      <Image src={film.posterUrl} alt={`${film.title} poster`} width={60} height={90} className="h-full w-full object-cover" />
+                    </div>
                   ) : (
-                    <div className="flex h-[90px] w-[60px] items-center justify-center rounded bg-zinc-800 text-xs text-zinc-500">
+                    <div className="flex h-[90px] w-[60px] items-center justify-center rounded-lg bg-zinc-800 text-xs text-zinc-500 p-1 text-center">
                       {film.title}
                     </div>
                   )}
