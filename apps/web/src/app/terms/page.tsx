@@ -3,13 +3,13 @@ import Link from 'next/link';
 export default function TermsOfServicePage() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="text-3xl font-bold text-white">Terms of Service</h1>
-      <p className="mt-2 text-sm text-zinc-500">Effective Date: March 29, 2026</p>
+      <h1 className="text-3xl font-bold text-stone-800">Terms of Service</h1>
+      <p className="mt-2 text-sm text-slate-400">Effective Date: March 29, 2026</p>
 
-      <div className="mt-8 space-y-8 text-sm leading-relaxed text-zinc-300">
+      <div className="mt-8 space-y-8 text-sm leading-relaxed text-stone-500">
         {/* 1. Introduction */}
         <section>
-          <h2 className="text-lg font-semibold text-white">1. Introduction</h2>
+          <h2 className="text-lg font-semibold text-stone-800">1. Introduction</h2>
           <p className="mt-2">
             Welcome to Reels (&quot;Platform&quot;, &quot;Service&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). Reels is a
             film-driven social matching platform that connects people through shared cinema
@@ -20,7 +20,7 @@ export default function TermsOfServicePage() {
           <p className="mt-2">
             These Terms constitute a legally binding agreement between you and Reels. Please
             read them carefully alongside our{' '}
-            <Link href="/privacy" className="text-zinc-100 underline underline-offset-2 hover:text-white">
+            <Link href="/privacy" className="text-stone-700 underline underline-offset-2 hover:text-stone-800">
               Privacy Policy
             </Link>
             , which explains how we collect, use, and protect your information.
@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
 
         {/* 2. Eligibility */}
         <section>
-          <h2 className="text-lg font-semibold text-white">2. Eligibility</h2>
+          <h2 className="text-lg font-semibold text-stone-800">2. Eligibility</h2>
           <p className="mt-2">To use Reels, you must:</p>
           <ul className="mt-2 list-disc pl-6 space-y-1">
             <li>Be at least 18 years of age</li>
@@ -47,7 +47,7 @@ export default function TermsOfServicePage() {
 
         {/* 3. Your Account */}
         <section>
-          <h2 className="text-lg font-semibold text-white">3. Your Account</h2>
+          <h2 className="text-lg font-semibold text-stone-800">3. Your Account</h2>
           <p className="mt-2">
             You are responsible for maintaining the confidentiality of your login credentials
             and for all activity that occurs under your account. You agree to:
@@ -67,7 +67,7 @@ export default function TermsOfServicePage() {
 
         {/* 4. How Reels Works */}
         <section>
-          <h2 className="text-lg font-semibold text-white">4. How Reels Works</h2>
+          <h2 className="text-lg font-semibold text-stone-800">4. How Reels Works</h2>
           <p className="mt-2">
             Reels connects users based on shared film taste. When you use the Service, you may:
           </p>
@@ -87,7 +87,7 @@ export default function TermsOfServicePage() {
 
         {/* 5. Community Standards */}
         <section>
-          <h2 className="text-lg font-semibold text-white">5. Community Standards</h2>
+          <h2 className="text-lg font-semibold text-stone-800">5. Community Standards</h2>
           <p className="mt-2">
             Reels is built on respect. To maintain a safe and welcoming environment, you agree
             not to:
@@ -113,22 +113,22 @@ export default function TermsOfServicePage() {
 
         {/* 6. Content and Intellectual Property */}
         <section>
-          <h2 className="text-lg font-semibold text-white">6. Content and Intellectual Property</h2>
+          <h2 className="text-lg font-semibold text-stone-800">6. Content and Intellectual Property</h2>
           <p className="mt-2">
-            <strong className="text-white">Your Content.</strong> You retain ownership of all content you create
+            <strong className="text-stone-800">Your Content.</strong> You retain ownership of all content you create
             and share on Reels (photos, bio text, conversation prompts). By posting content, you
             grant Reels a limited, non-exclusive, royalty-free license to display, distribute,
             and reproduce that content solely for the purpose of operating and improving the
             Service. This license ends when you delete your content or account.
           </p>
           <p className="mt-2">
-            <strong className="text-white">Third-Party Content.</strong> Film metadata and poster images are
+            <strong className="text-stone-800">Third-Party Content.</strong> Film metadata and poster images are
             sourced from The Movie Database (TMDB). Letterboxd data is imported from publicly
             accessible profiles with your explicit consent. We do not claim ownership of
             third-party content.
           </p>
           <p className="mt-2">
-            <strong className="text-white">Our Content.</strong> The Reels name, logo, design, and software are
+            <strong className="text-stone-800">Our Content.</strong> The Reels name, logo, design, and software are
             owned by Reels. You may not copy, modify, distribute, or create derivative works
             based on our intellectual property without prior written consent.
           </p>
@@ -136,14 +136,14 @@ export default function TermsOfServicePage() {
 
         {/* 7. Safety and Reporting */}
         <section>
-          <h2 className="text-lg font-semibold text-white">7. Safety and Reporting</h2>
+          <h2 className="text-lg font-semibold text-stone-800">7. Safety and Reporting</h2>
           <p className="mt-2">
             Your safety is a priority. Reels provides the following safety tools:
           </p>
           <ul className="mt-2 list-disc pl-6 space-y-1">
-            <li><strong className="text-white">Block:</strong> Prevent a user from seeing your profile or contacting you. Blocking is immediate and discreet — the blocked user is not notified.</li>
-            <li><strong className="text-white">Report:</strong> Flag a user for spam, harassment, inappropriate content, fake profiles, or other violations. Reports are reviewed by our team.</li>
-            <li><strong className="text-white">Unmatch:</strong> Remove a match at any time. The other user will no longer be able to contact you.</li>
+            <li><strong className="text-stone-800">Block:</strong> Prevent a user from seeing your profile or contacting you. Blocking is immediate and discreet — the blocked user is not notified.</li>
+            <li><strong className="text-stone-800">Report:</strong> Flag a user for spam, harassment, inappropriate content, fake profiles, or other violations. Reports are reviewed by our team.</li>
+            <li><strong className="text-stone-800">Unmatch:</strong> Remove a match at any time. The other user will no longer be able to contact you.</li>
           </ul>
           <p className="mt-2">
             While we take reasonable measures to promote safety, we cannot guarantee the conduct
@@ -155,7 +155,7 @@ export default function TermsOfServicePage() {
 
         {/* 8. Interactions Between Users */}
         <section>
-          <h2 className="text-lg font-semibold text-white">8. Interactions Between Users</h2>
+          <h2 className="text-lg font-semibold text-stone-800">8. Interactions Between Users</h2>
           <p className="mt-2">
             Reels is not responsible for the conduct of any user, whether on or off the
             Platform. You agree to use caution in all interactions, especially if you decide to
@@ -170,7 +170,7 @@ export default function TermsOfServicePage() {
 
         {/* 9. Account Deletion and Data */}
         <section>
-          <h2 className="text-lg font-semibold text-white">9. Account Deletion and Data</h2>
+          <h2 className="text-lg font-semibold text-stone-800">9. Account Deletion and Data</h2>
           <p className="mt-2">
             You may delete your account at any time from your profile settings. When you delete
             your account:
@@ -184,7 +184,7 @@ export default function TermsOfServicePage() {
           <p className="mt-2">
             You may also request a copy of your data or request deletion by contacting us at the
             email address listed below. See our{' '}
-            <Link href="/privacy" className="text-zinc-100 underline underline-offset-2 hover:text-white">
+            <Link href="/privacy" className="text-stone-700 underline underline-offset-2 hover:text-stone-800">
               Privacy Policy
             </Link>{' '}
             for full details on data retention and your rights.
@@ -193,7 +193,7 @@ export default function TermsOfServicePage() {
 
         {/* 10. Termination */}
         <section>
-          <h2 className="text-lg font-semibold text-white">10. Termination</h2>
+          <h2 className="text-lg font-semibold text-stone-800">10. Termination</h2>
           <p className="mt-2">
             We may suspend or terminate your account at any time, with or without notice, if we
             reasonably believe:
@@ -212,7 +212,7 @@ export default function TermsOfServicePage() {
 
         {/* 11. Disclaimers */}
         <section>
-          <h2 className="text-lg font-semibold text-white">11. Disclaimers</h2>
+          <h2 className="text-lg font-semibold text-stone-800">11. Disclaimers</h2>
           <p className="mt-2">
             THE SERVICE IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT WARRANTIES OF ANY KIND,
             EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF
@@ -227,7 +227,7 @@ export default function TermsOfServicePage() {
 
         {/* 12. Limitation of Liability */}
         <section>
-          <h2 className="text-lg font-semibold text-white">12. Limitation of Liability</h2>
+          <h2 className="text-lg font-semibold text-stone-800">12. Limitation of Liability</h2>
           <p className="mt-2">
             TO THE FULLEST EXTENT PERMITTED BY LAW, REELS AND ITS OFFICERS, DIRECTORS,
             EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL,
@@ -248,7 +248,7 @@ export default function TermsOfServicePage() {
 
         {/* 13. Indemnification */}
         <section>
-          <h2 className="text-lg font-semibold text-white">13. Indemnification</h2>
+          <h2 className="text-lg font-semibold text-stone-800">13. Indemnification</h2>
           <p className="mt-2">
             You agree to indemnify and hold harmless Reels and its affiliates, officers,
             directors, employees, and agents from any claims, liabilities, damages, losses, or
@@ -259,7 +259,7 @@ export default function TermsOfServicePage() {
 
         {/* 14. Dispute Resolution */}
         <section>
-          <h2 className="text-lg font-semibold text-white">14. Dispute Resolution</h2>
+          <h2 className="text-lg font-semibold text-stone-800">14. Dispute Resolution</h2>
           <p className="mt-2">
             We want to address your concerns without the need for formal legal proceedings. If
             you have a dispute, please contact us first and we will attempt to resolve it
@@ -276,7 +276,7 @@ export default function TermsOfServicePage() {
 
         {/* 15. Governing Law */}
         <section>
-          <h2 className="text-lg font-semibold text-white">15. Governing Law</h2>
+          <h2 className="text-lg font-semibold text-stone-800">15. Governing Law</h2>
           <p className="mt-2">
             These Terms are governed by and construed in accordance with the laws of the
             Netherlands, without regard to conflict of law principles. If you are located in the
@@ -287,7 +287,7 @@ export default function TermsOfServicePage() {
 
         {/* 16. Changes to These Terms */}
         <section>
-          <h2 className="text-lg font-semibold text-white">16. Changes to These Terms</h2>
+          <h2 className="text-lg font-semibold text-stone-800">16. Changes to These Terms</h2>
           <p className="mt-2">
             We may update these Terms from time to time. When we make material changes, we will
             notify you through the Service or by email at least 30 days before the changes take
@@ -302,7 +302,7 @@ export default function TermsOfServicePage() {
 
         {/* 17. Severability */}
         <section>
-          <h2 className="text-lg font-semibold text-white">17. Severability</h2>
+          <h2 className="text-lg font-semibold text-stone-800">17. Severability</h2>
           <p className="mt-2">
             If any provision of these Terms is found to be unenforceable or invalid, that
             provision will be limited or eliminated to the minimum extent necessary, and the
@@ -312,20 +312,20 @@ export default function TermsOfServicePage() {
 
         {/* 18. Contact */}
         <section>
-          <h2 className="text-lg font-semibold text-white">18. Contact Us</h2>
+          <h2 className="text-lg font-semibold text-stone-800">18. Contact Us</h2>
           <p className="mt-2">
             If you have questions about these Terms, wish to report a violation, or need to
             appeal an account action, please contact us at:
           </p>
-          <p className="mt-2 text-zinc-100">
+          <p className="mt-2 text-stone-700">
             legal@reelsapp.com
           </p>
         </section>
       </div>
 
-      <footer className="mt-12 border-t border-zinc-800 pt-6 text-xs text-zinc-600">
+      <footer className="mt-12 border-t border-emerald-100 pt-6 text-xs text-slate-300">
         <div className="flex items-center justify-between">
-          <Link href="/privacy" className="hover:text-zinc-400 transition-colors">
+          <Link href="/privacy" className="hover:text-slate-500 transition-colors">
             Privacy Policy
           </Link>
           <span>&copy; {new Date().getFullYear()} Reels. All rights reserved.</span>

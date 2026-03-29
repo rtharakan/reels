@@ -44,45 +44,45 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">Create your profile</h1>
+      <h1 className="text-2xl font-bold text-stone-800">Create your profile</h1>
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-zinc-300">Display name</label>
+          <label htmlFor="name" className="block text-sm font-medium text-stone-500">Display name</label>
           <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={50}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
           {errors.name && <p className="mt-1 text-sm text-red-400" role="alert">{errors.name}</p>}
         </div>
 
         <div>
-          <label htmlFor="age" className="block text-sm font-medium text-zinc-300">Age</label>
+          <label htmlFor="age" className="block text-sm font-medium text-stone-500">Age</label>
           <input id="age" type="number" min={17} value={age} onChange={(e) => setAge(e.target.value)}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
           {errors.age && <p className="mt-1 text-sm text-red-400" role="alert">{errors.age}</p>}
         </div>
 
         <div>
-          <label htmlFor="location" className="block text-sm font-medium text-zinc-300">Location</label>
+          <label htmlFor="location" className="block text-sm font-medium text-stone-500">Location</label>
           <input id="location" type="text" value={location} onChange={(e) => setLocation(e.target.value)} maxLength={100} placeholder="City, Country"
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white placeholder-zinc-500 focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 placeholder-slate-400 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
           {errors.location && <p className="mt-1 text-sm text-red-400" role="alert">{errors.location}</p>}
         </div>
 
         <div>
-          <label htmlFor="bio" className="block text-sm font-medium text-zinc-300">Bio</label>
+          <label htmlFor="bio" className="block text-sm font-medium text-stone-500">Bio</label>
           <textarea id="bio" rows={3} value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none resize-none" />
-          <p className="mt-1 text-xs text-zinc-500">{bio.length}/500</p>
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none resize-none" />
+          <p className="mt-1 text-xs text-slate-400">{bio.length}/500</p>
           {errors.bio && <p className="text-sm text-red-400" role="alert">{errors.bio}</p>}
         </div>
 
         <fieldset>
-          <legend className="block text-sm font-medium text-zinc-300 mb-2">What are you looking for?</legend>
+          <legend className="block text-sm font-medium text-stone-500 mb-2">What are you looking for?</legend>
           <div className="flex gap-2">
             {(['FRIENDS', 'DATING', 'BOTH'] as const).map((option) => (
               <button key={option} onClick={() => setIntent(option)} type="button"
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  intent === option ? 'bg-zinc-100 text-zinc-900' : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                  intent === option ? 'bg-teal-600 text-white' : 'bg-emerald-50 text-slate-500 hover:text-stone-800'
                 }`}
               >
                 {option === 'FRIENDS' ? 'Friends' : option === 'DATING' ? 'Dating' : 'Both'}
@@ -92,24 +92,24 @@ export default function ProfilePage() {
         </fieldset>
 
         <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-2">Conversation prompt</label>
+          <label className="block text-sm font-medium text-stone-500 mb-2">Conversation prompt</label>
           {prompts.map((prompt, i) => (
             <div key={i} className="space-y-1 mb-3">
-              <p className="text-xs text-zinc-500">{prompt.question}</p>
+              <p className="text-xs text-slate-400">{prompt.question}</p>
               <input type="text" value={prompt.answer} maxLength={300}
                 onChange={(e) => {
                   const updated = [...prompts];
                   updated[i] = { ...prompt, answer: e.target.value };
                   setPrompts(updated);
                 }}
-                className="block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white text-sm focus:ring-2 focus:ring-zinc-400 focus:outline-none"
+                className="block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 text-sm focus:ring-2 focus:ring-teal-300 focus:outline-none"
                 aria-label={`Answer for: ${prompt.question}`}
               />
             </div>
           ))}
           {prompts.length < 3 && (
             <button type="button" onClick={() => setPrompts([...prompts, { question: PROMPTS[prompts.length]!, answer: '' }])}
-              className="text-sm text-zinc-400 hover:text-zinc-200">
+              className="text-sm text-slate-500 hover:text-stone-600">
               + Add another prompt
             </button>
           )}
@@ -118,7 +118,7 @@ export default function ProfilePage() {
       </div>
 
       <button onClick={handleContinue}
-        className="w-full rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-white">
+        className="w-full rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700">
         Continue
       </button>
     </div>

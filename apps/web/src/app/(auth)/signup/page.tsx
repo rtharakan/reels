@@ -30,29 +30,29 @@ export default function SignupPage() {
 
   if (sent) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+      <main className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
         <div className="w-full max-w-sm space-y-6 text-center">
-          <h1 className="text-2xl font-bold text-white">Check your email</h1>
-          <p className="text-zinc-400">
-            We sent a sign-up link to <strong className="text-white">{email}</strong>.
+          <h1 className="text-2xl font-bold text-stone-800">Check your email</h1>
+          <p className="text-slate-500">
+            We sent a sign-up link to <strong className="text-stone-800">{email}</strong>.
           </p>
-          <p className="text-sm text-zinc-500">The link expires in 10 minutes.</p>
+          <p className="text-sm text-slate-400">The link expires in 10 minutes.</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+    <main className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white">Reels</h1>
-          <p className="mt-2 text-zinc-400">Create your account</p>
+          <h1 className="text-3xl font-bold text-stone-800">Reels</h1>
+          <p className="mt-2 text-slate-500">Create your account</p>
         </div>
 
         <form onSubmit={handleSignUp} className="space-y-4">
           <div>
-            <label htmlFor="signup-email" className="block text-sm font-medium text-zinc-300">
+            <label htmlFor="signup-email" className="block text-sm font-medium text-stone-500">
               Email address
             </label>
             <input
@@ -61,7 +61,7 @@ export default function SignupPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white placeholder-zinc-500 focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400"
+              className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 placeholder-slate-400 focus:border-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-300"
               placeholder="you@example.com"
             />
           </div>
@@ -69,7 +69,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50"
+            className="w-full rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50"
           >
             {loading ? 'Sending...' : 'Sign up with email'}
           </button>
@@ -77,16 +77,16 @@ export default function SignupPage() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-zinc-700" />
+            <div className="w-full border-t border-slate-200" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-zinc-950 px-2 text-zinc-500">Or continue with</span>
+            <span className="bg-stone-50 px-2 text-slate-400">Or continue with</span>
           </div>
         </div>
 
         <button
           onClick={handleGoogleSignUp}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2.5 text-sm font-medium text-white hover:bg-zinc-700"
+          className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-stone-800 hover:bg-teal-100"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -97,9 +97,9 @@ export default function SignupPage() {
           Sign up with Google
         </button>
 
-        <p className="text-center text-sm text-zinc-500">
+        <p className="text-center text-sm text-slate-400">
           Already have an account?{' '}
-          <Link href="/login" className="text-zinc-300 hover:text-white">
+          <Link href="/login" className="text-stone-500 hover:text-stone-800">
             Sign in
           </Link>
         </p>

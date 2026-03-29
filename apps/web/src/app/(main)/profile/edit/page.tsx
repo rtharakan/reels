@@ -39,36 +39,36 @@ export default function EditProfilePage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 pt-6">
-      <h1 className="mb-6 text-xl font-bold text-white">Edit Profile</h1>
+      <h1 className="mb-6 text-xl font-bold text-stone-800">Edit Profile</h1>
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="edit-name" className="block text-sm font-medium text-zinc-300">Name</label>
+          <label htmlFor="edit-name" className="block text-sm font-medium text-stone-500">Name</label>
           <input id="edit-name" type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={50}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
         </div>
         <div>
-          <label htmlFor="edit-age" className="block text-sm font-medium text-zinc-300">Age</label>
+          <label htmlFor="edit-age" className="block text-sm font-medium text-stone-500">Age</label>
           <input id="edit-age" type="number" min={17} value={age} onChange={(e) => setAge(e.target.value)}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
         </div>
         <div>
-          <label htmlFor="edit-location" className="block text-sm font-medium text-zinc-300">Location</label>
+          <label htmlFor="edit-location" className="block text-sm font-medium text-stone-500">Location</label>
           <input id="edit-location" type="text" value={location} onChange={(e) => setLocation(e.target.value)} maxLength={100}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
         </div>
         <div>
-          <label htmlFor="edit-bio" className="block text-sm font-medium text-zinc-300">Bio</label>
+          <label htmlFor="edit-bio" className="block text-sm font-medium text-stone-500">Bio</label>
           <textarea id="edit-bio" rows={3} value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500}
-            className="mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-white focus:ring-2 focus:ring-zinc-400 focus:outline-none resize-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none resize-none" />
         </div>
         <fieldset>
-          <legend className="block text-sm font-medium text-zinc-300 mb-2">Looking for</legend>
+          <legend className="block text-sm font-medium text-stone-500 mb-2">Looking for</legend>
           <div className="flex gap-2">
             {(['FRIENDS', 'DATING', 'BOTH'] as const).map((option) => (
               <button key={option} onClick={() => setIntent(option)} type="button"
                 className={`rounded-full px-4 py-1.5 text-sm font-medium ${
-                  intent === option ? 'bg-zinc-100 text-zinc-900' : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                  intent === option ? 'bg-teal-600 text-white' : 'bg-emerald-50 text-slate-500 hover:text-stone-800'
                 }`}>
                 {option === 'FRIENDS' ? 'Friends' : option === 'DATING' ? 'Dating' : 'Both'}
               </button>
@@ -77,11 +77,11 @@ export default function EditProfilePage() {
         </fieldset>
 
         <div className="flex gap-3 pt-4">
-          <button onClick={() => router.back()} className="flex-1 rounded-lg border border-zinc-700 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800">
+          <button onClick={() => router.back()} className="flex-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm text-stone-500 hover:bg-emerald-50">
             Cancel
           </button>
           <button onClick={handleSave} disabled={updateMutation.isPending}
-            className="flex-1 rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-white disabled:opacity-50">
+            className="flex-1 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50">
             {updateMutation.isPending ? 'Saving...' : 'Save'}
           </button>
         </div>

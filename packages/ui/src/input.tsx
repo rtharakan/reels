@@ -11,15 +11,15 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
   return (
     <div className="space-y-1">
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-zinc-300">
+        <label htmlFor={inputId} className="block text-sm font-medium text-stone-500">
           {label}
         </label>
       )}
       <input
         id={inputId}
         className={clsx(
-          'block w-full rounded-lg border bg-zinc-800 px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400',
-          error ? 'border-red-500' : 'border-zinc-700',
+          'block w-full rounded-lg border bg-emerald-50 px-3 py-2 text-stone-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-300',
+          error ? 'border-red-500' : 'border-slate-200',
           className,
         )}
         aria-invalid={error ? 'true' : undefined}
