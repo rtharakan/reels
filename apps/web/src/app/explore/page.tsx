@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -64,11 +63,11 @@ interface MatchResponse {
 }
 
 function getCompatibilityLabel(score: number): { text: string; color: string; emoji: string } {
-  if (score >= 0.5) return { text: 'Soul Mates', color: 'text-stone-700', emoji: '💕' };
-  if (score >= 0.3) return { text: 'Great Match', color: 'text-stone-600', emoji: '🎬' };
-  if (score >= 0.15) return { text: 'Good Vibes', color: 'text-stone-500', emoji: '✨' };
-  if (score >= 0.05) return { text: 'Some Overlap', color: 'text-slate-500', emoji: '🎞️' };
-  return { text: 'Opposites Attract?', color: 'text-slate-400', emoji: '🌙' };
+  if (score >= 0.5) return { text: 'Soul Mates', color: 'text-blue-700 dark:text-blue-300', emoji: '💕' };
+  if (score >= 0.3) return { text: 'Great Match', color: 'text-blue-600 dark:text-blue-400', emoji: '🎬' };
+  if (score >= 0.15) return { text: 'Good Vibes', color: 'text-slate-600 dark:text-slate-300', emoji: '✨' };
+  if (score >= 0.05) return { text: 'Some Overlap', color: 'text-slate-500 dark:text-slate-400', emoji: '🎞️' };
+  return { text: 'Opposites Attract?', color: 'text-slate-400 dark:text-slate-500', emoji: '🌙' };
 }
 
 function formatDate(dateStr: string): string {
@@ -150,13 +149,13 @@ export default function ExplorePage() {
     : null;
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
-      <header className="border-b border-emerald-100/50 bg-stone-50/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-blue-100 dark:border-slate-700 bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-stone-500" />
-            <span className="text-lg font-bold text-stone-800">Reels</span>
+            <Popcorn className="h-6 w-6 text-blue-500" />
+            <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/login">
@@ -174,13 +173,13 @@ export default function ExplorePage() {
       <main className="mx-auto max-w-5xl px-4 py-8">
         {/* Hero Section */}
         <div className="mb-12 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 border border-slate-200">
-            <Heart className="h-8 w-8 text-stone-500" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-600">
+            <Heart className="h-8 w-8 text-blue-500" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-stone-800 sm:text-5xl">
-            Film Taste <span className="text-slate-500">Match</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
+            Film Taste <span className="text-blue-400 dark:text-blue-300">Match</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-500">
+          <p className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-[var(--text-secondary)]">
             Enter two Letterboxd profiles and discover your film compatibility.
             Find shared favorites and plan a cinema date in the Netherlands.
           </p>
@@ -232,7 +231,7 @@ export default function ExplorePage() {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   disabled={isLoading}
-                  className="flex h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
+                  className="flex h-10 w-full rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                 >
                   {cities.map((c) => (
                     <option key={c.slug} value={c.slug}>
@@ -243,7 +242,7 @@ export default function ExplorePage() {
               </div>
 
               {error && (
-                <div className="rounded-lg border border-red-900/50 bg-red-950/30 px-4 py-3 text-sm text-red-400">
+                <div className="rounded-lg border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 px-4 py-3 text-sm text-red-600 dark:text-red-400">
                   {error}
                 </div>
               )}
@@ -275,31 +274,31 @@ export default function ExplorePage() {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Compatibility Score */}
             <Card className="mx-auto max-w-2xl overflow-hidden">
-              <div className="relative bg-white p-8 text-center">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03),transparent_70%)]" />
+              <div className="relative bg-white dark:bg-slate-800 p-8 text-center">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.05),transparent_70%)]" />
                 <div className="relative">
                   <p className="text-5xl mb-2">{compatibility.emoji}</p>
                   <h2 className={`text-3xl font-bold ${compatibility.color}`}>
                     {compatibility.text}
                   </h2>
-                  <p className="mt-2 text-6xl font-bold text-stone-800">
+                  <p className="mt-2 text-6xl font-bold text-[var(--text-primary)]">
                     {Math.round(result.match.combinedScore * 100)}%
                   </p>
-                  <p className="mt-1 text-sm text-slate-500">compatibility score</p>
+                  <p className="mt-1 text-sm text-[var(--text-muted)]">compatibility score</p>
                 </div>
               </div>
 
               <CardContent className="pt-6">
                 <div className="grid grid-cols-2 gap-4 text-center">
-                  <div className="rounded-lg bg-slate-50 p-4">
-                    <p className="text-sm text-slate-500">{result.user1.displayName}</p>
-                    <p className="text-2xl font-bold text-stone-800">{result.user1.filmCount}</p>
-                    <p className="text-xs text-slate-400">films</p>
+                  <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
+                    <p className="text-sm text-[var(--text-secondary)]">{result.user1.displayName}</p>
+                    <p className="text-2xl font-bold text-[var(--text-primary)]">{result.user1.filmCount}</p>
+                    <p className="text-xs text-[var(--text-muted)]">films</p>
                   </div>
-                  <div className="rounded-lg bg-slate-50 p-4">
-                    <p className="text-sm text-slate-500">{result.user2.displayName}</p>
-                    <p className="text-2xl font-bold text-stone-800">{result.user2.filmCount}</p>
-                    <p className="text-xs text-slate-400">films</p>
+                  <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
+                    <p className="text-sm text-[var(--text-secondary)]">{result.user2.displayName}</p>
+                    <p className="text-2xl font-bold text-[var(--text-primary)]">{result.user2.filmCount}</p>
+                    <p className="text-xs text-[var(--text-muted)]">films</p>
                   </div>
                 </div>
 
@@ -307,22 +306,22 @@ export default function ExplorePage() {
 
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <p className="text-2xl font-bold text-stone-600">
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                       {result.match.sharedFilmsCount}
                     </p>
-                    <p className="text-xs text-slate-400">shared films</p>
+                    <p className="text-xs text-[var(--text-muted)]">shared films</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-stone-500">
+                    <p className="text-2xl font-bold text-blue-500 dark:text-blue-300">
                       {Math.round(result.match.overlapScore * 100)}%
                     </p>
-                    <p className="text-xs text-slate-400">overlap</p>
+                    <p className="text-xs text-[var(--text-muted)]">overlap</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-stone-500">
+                    <p className="text-2xl font-bold text-blue-500 dark:text-blue-300">
                       {Math.round(result.match.genreScore * 100)}%
                     </p>
-                    <p className="text-xs text-slate-400">taste match</p>
+                    <p className="text-xs text-[var(--text-muted)]">taste match</p>
                   </div>
                 </div>
               </CardContent>
@@ -345,8 +344,8 @@ export default function ExplorePage() {
                 {result.match.sharedFilms.length === 0 ? (
                   <Card>
                     <CardContent className="py-12 text-center">
-                      <Film className="mx-auto h-12 w-12 text-slate-300 mb-4" />
-                      <p className="text-slate-500">No shared films found — maybe that&apos;s the charm!</p>
+                      <Film className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600 mb-4" />
+                      <p className="text-[var(--text-secondary)]">No shared films found — maybe that&apos;s the charm!</p>
                     </CardContent>
                   </Card>
                 ) : (
@@ -359,25 +358,34 @@ export default function ExplorePage() {
                         rel="noopener noreferrer"
                         className="group block"
                       >
-                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-emerald-50">
+                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-blue-50 dark:bg-slate-700">
                           {film.posterUrl ? (
-                            <Image
+                            <img
                               src={film.posterUrl}
                               alt={film.title}
-                              width={180}
-                              height={270}
+                              loading="lazy"
                               className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
-                              unoptimized
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                                const parent = target.parentElement;
+                                if (parent) {
+                                  const fallback = document.createElement('div');
+                                  fallback.className = 'flex h-full items-center justify-center p-2 text-center';
+                                  fallback.innerHTML = `<span class="text-xs text-slate-400 dark:text-slate-500">${film.title}</span>`;
+                                  parent.appendChild(fallback);
+                                }
+                              }}
                             />
                           ) : (
                             <div className="flex h-full items-center justify-center p-2 text-center">
-                              <span className="text-xs text-slate-400">{film.title}</span>
+                              <span className="text-xs text-slate-400 dark:text-slate-500">{film.title}</span>
                             </div>
                           )}
                         </div>
-                        <p className="mt-1.5 text-xs text-slate-500 truncate">{film.title}</p>
+                        <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-300 truncate">{film.title}</p>
                         {film.year && (
-                          <p className="text-xs text-slate-300">{film.year}</p>
+                          <p className="text-xs text-slate-400 dark:text-slate-500">{film.year}</p>
                         )}
                       </a>
                     ))}
@@ -389,8 +397,8 @@ export default function ExplorePage() {
                 {result.dateIdeas.length === 0 ? (
                   <Card>
                     <CardContent className="py-12 text-center">
-                      <Calendar className="mx-auto h-12 w-12 text-slate-300 mb-4" />
-                      <p className="text-slate-500">
+                      <Calendar className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600 mb-4" />
+                      <p className="text-[var(--text-secondary)]">
                         {result.match.sharedFilmsCount === 0
                           ? 'No shared films to screen — explore each other\'s taste!'
                           : `No shared films currently in theaters in ${cities.find((c) => c.slug === city)?.name || city}. Try another city!`}
@@ -399,7 +407,7 @@ export default function ExplorePage() {
                   </Card>
                 ) : (
                   <div className="space-y-3">
-                    <p className="text-sm text-slate-500 flex items-center gap-1.5">
+                    <p className="text-sm text-[var(--text-secondary)] flex items-center gap-1.5">
                       <MapPin className="h-3.5 w-3.5" />
                       Screenings in{' '}
                       <Badge variant="secondary">
@@ -409,17 +417,17 @@ export default function ExplorePage() {
                     {result.dateIdeas.map((idea, i) => (
                       <Card key={`${idea.filmTitle}-${idea.date}-${idea.time}-${i}`}>
                         <div className="flex items-center gap-4 p-4">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-50 text-slate-500 shrink-0">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-500 shrink-0">
                             <Ticket className="h-5 w-5" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-stone-800 truncate">
+                            <p className="font-medium text-[var(--text-primary)] truncate">
                               {idea.filmTitle}
                             </p>
-                            <p className="text-sm text-slate-500 truncate">
+                            <p className="text-sm text-[var(--text-secondary)] truncate">
                               {idea.cinemaName}
                             </p>
-                            <div className="mt-1 flex items-center gap-3 text-xs text-slate-400">
+                            <div className="mt-1 flex items-center gap-3 text-xs text-[var(--text-muted)]">
                               <span className="flex items-center gap-1">
                                 <Calendar className="h-3 w-3" />
                                 {formatDate(idea.date)}
@@ -451,13 +459,13 @@ export default function ExplorePage() {
             </Tabs>
 
             {/* CTA */}
-            <Card className="mx-auto max-w-2xl bg-white border-emerald-100">
+            <Card className="mx-auto max-w-2xl bg-white dark:bg-slate-800 border-blue-100 dark:border-slate-700">
               <CardContent className="flex flex-col items-center py-8 text-center">
-                <Sparkles className="h-8 w-8 text-slate-500 mb-3" />
-                <h3 className="text-lg font-semibold text-stone-800 mb-2">
+                <Sparkles className="h-8 w-8 text-blue-500 mb-3" />
+                <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
                   Want to find more film lovers?
                 </h3>
-                <p className="text-sm text-slate-500 mb-4 max-w-sm">
+                <p className="text-sm text-[var(--text-secondary)] mb-4 max-w-sm">
                   Create a free Reels account to discover matches,
                   get personalized recommendations, and connect with people who share your taste.
                 </p>
@@ -475,63 +483,109 @@ export default function ExplorePage() {
         {/* How it works section (shown when no results) */}
         {!result && !isLoading && (
           <div className="mx-auto max-w-3xl">
-            <h2 className="text-center text-xl font-semibold text-stone-800 mb-8">
+            <h2 className="text-center text-xl font-semibold text-[var(--text-primary)] mb-8">
               How it works
             </h2>
             <div className="grid gap-6 sm:grid-cols-3">
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50">
-                    <Users className="h-6 w-6 text-slate-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
+                    <Users className="h-6 w-6 text-blue-500" />
                   </div>
-                  <h3 className="font-medium text-stone-800 mb-1">Enter profiles</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-medium text-[var(--text-primary)] mb-1">Enter profiles</h3>
+                  <p className="text-sm text-[var(--text-secondary)]">
                     Paste two Letterboxd usernames or profile links
                   </p>
                 </CardContent>
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50">
-                    <Heart className="h-6 w-6 text-slate-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
+                    <Heart className="h-6 w-6 text-blue-500" />
                   </div>
-                  <h3 className="font-medium text-stone-800 mb-1">See your match</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-medium text-[var(--text-primary)] mb-1">See your match</h3>
+                  <p className="text-sm text-[var(--text-secondary)]">
                     Discover shared films and your compatibility score
                   </p>
                 </CardContent>
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50">
-                    <Ticket className="h-6 w-6 text-slate-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
+                    <Ticket className="h-6 w-6 text-blue-500" />
                   </div>
-                  <h3 className="font-medium text-stone-800 mb-1">Plan a date</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="font-medium text-[var(--text-primary)] mb-1">Plan a date</h3>
+                  <p className="text-sm text-[var(--text-secondary)]">
                     Find shared films playing at Dutch cinemas right now
                   </p>
                 </CardContent>
               </Card>
             </div>
+
+            {/* Scoring explanation */}
+            <div className="mt-12 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
+              <h3 className="font-semibold text-[var(--text-primary)] mb-3">How scoring works</h3>
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">
+                The Explore match uses two signals from your Letterboxd watchlists:
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2 mb-4">
+                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Film Overlap</span>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">70%</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)]">How many films appear on both watchlists compared to the total.</p>
+                </div>
+                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Genre Similarity</span>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">30%</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)]">How similar your genre preferences are based on the films you want to watch.</p>
+                </div>
+              </div>
+              <p className="text-xs text-[var(--text-muted)]">
+                Sign up for a free account to get the full 5-signal score that also includes liked films, ratings, and watched history.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Scoring breakdown shown with results */}
+        {result && compatibility && (
+          <div className="mx-auto max-w-2xl mt-4 mb-8 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
+            <h3 className="font-semibold text-[var(--text-primary)] mb-2">About this score</h3>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              This score is based on <strong className="text-[var(--text-primary)]">70% film overlap</strong> (how many films appear on both watchlists) and <strong className="text-[var(--text-primary)]">30% genre similarity</strong> (how alike your genre preferences are). Create an account for a more detailed 5-signal score.
+            </p>
           </div>
         )}
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-emerald-100/50 mt-16">
-        <div className="mx-auto max-w-5xl px-4 py-8 flex flex-wrap items-center justify-between gap-4 text-sm text-slate-300">
+      <footer className="border-t border-blue-100 dark:border-slate-700 mt-16">
+        <div className="mx-auto max-w-5xl px-4 py-8 flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--text-muted)]">
           <div className="flex items-center gap-2">
             <Popcorn className="h-4 w-4" />
             <span>Reels — Film-Driven Social Matching</span>
           </div>
-          <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-slate-500 transition-colors">
+          <nav className="flex items-center gap-4">
+            <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">
+              Home
+            </Link>
+            <Link href="/login" className="hover:text-[var(--text-secondary)] transition-colors">
+              Sign in
+            </Link>
+            <Link href="/signup" className="hover:text-[var(--text-secondary)] transition-colors">
+              Sign up
+            </Link>
+            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">
               Privacy
             </Link>
-            <Link href="/terms" className="hover:text-slate-500 transition-colors">
+            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">
               Terms
             </Link>
-          </div>
+          </nav>
         </div>
       </footer>
     </div>

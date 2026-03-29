@@ -44,7 +44,7 @@ async function enrichPostersWithTMDB(
   if (!apiToken) return films;
 
   const enriched = await Promise.all(
-    films.slice(0, 30).map(async (film) => {
+    films.map(async (film) => {
       if (film.posterUrl) return film;
       try {
         const posterUrl = await resolveTMDBPoster(film.title, film.year, apiToken);
@@ -55,7 +55,7 @@ async function enrichPostersWithTMDB(
     }),
   );
 
-  return [...enriched, ...films.slice(30)];
+  return enriched;
 }
 
 // Basic username validation
@@ -185,7 +185,7 @@ export async function POST(request: NextRequest) {
         genreScore: matchResult.genreScore,
         combinedScore: matchResult.combinedScore,
         sharedFilmsCount: matchResult.sharedFilms.length,
-        sharedFilms: enrichedSharedFilms.slice(0, 50), // limit response size
+        sharedFilms: enrichedSharedFilms,
       },
       dateIdeas: dateIdeas.slice(0, 30),
       city: selectedCity,

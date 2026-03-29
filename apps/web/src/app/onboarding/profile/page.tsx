@@ -44,45 +44,45 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-stone-800">Create your profile</h1>
+      <h1 className="text-2xl font-bold text-[var(--text-primary)]">Create your profile</h1>
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-stone-500">Display name</label>
+          <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)]">Display name</label>
           <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={50}
-            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-blue-50 dark:bg-slate-700 px-3 py-2 text-[var(--text-primary)] focus:ring-2 focus:ring-blue-300 focus:outline-none" />
           {errors.name && <p className="mt-1 text-sm text-red-400" role="alert">{errors.name}</p>}
         </div>
 
         <div>
-          <label htmlFor="age" className="block text-sm font-medium text-stone-500">Age</label>
+          <label htmlFor="age" className="block text-sm font-medium text-[var(--text-secondary)]">Age</label>
           <input id="age" type="number" min={17} value={age} onChange={(e) => setAge(e.target.value)}
-            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-blue-50 dark:bg-slate-700 px-3 py-2 text-[var(--text-primary)] focus:ring-2 focus:ring-blue-300 focus:outline-none" />
           {errors.age && <p className="mt-1 text-sm text-red-400" role="alert">{errors.age}</p>}
         </div>
 
         <div>
-          <label htmlFor="location" className="block text-sm font-medium text-stone-500">Location</label>
+          <label htmlFor="location" className="block text-sm font-medium text-[var(--text-secondary)]">Location</label>
           <input id="location" type="text" value={location} onChange={(e) => setLocation(e.target.value)} maxLength={100} placeholder="City, Country"
-            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 placeholder-slate-400 focus:ring-2 focus:ring-teal-300 focus:outline-none" />
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-blue-50 dark:bg-slate-700 px-3 py-2 text-[var(--text-primary)] placeholder-slate-400 focus:ring-2 focus:ring-blue-300 focus:outline-none" />
           {errors.location && <p className="mt-1 text-sm text-red-400" role="alert">{errors.location}</p>}
         </div>
 
         <div>
-          <label htmlFor="bio" className="block text-sm font-medium text-stone-500">Bio</label>
+          <label htmlFor="bio" className="block text-sm font-medium text-[var(--text-secondary)]">Bio</label>
           <textarea id="bio" rows={3} value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500}
-            className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 focus:ring-2 focus:ring-teal-300 focus:outline-none resize-none" />
-          <p className="mt-1 text-xs text-slate-400">{bio.length}/500</p>
+            className="mt-1 block w-full rounded-lg border border-slate-200 bg-blue-50 dark:bg-slate-700 px-3 py-2 text-[var(--text-primary)] focus:ring-2 focus:ring-blue-300 focus:outline-none resize-none" />
+          <p className="mt-1 text-xs text-[var(--text-muted)]">{bio.length}/500</p>
           {errors.bio && <p className="text-sm text-red-400" role="alert">{errors.bio}</p>}
         </div>
 
         <fieldset>
-          <legend className="block text-sm font-medium text-stone-500 mb-2">What are you looking for?</legend>
+          <legend className="block text-sm font-medium text-[var(--text-secondary)] mb-2">What are you looking for?</legend>
           <div className="flex gap-2">
             {(['FRIENDS', 'DATING', 'BOTH'] as const).map((option) => (
               <button key={option} onClick={() => setIntent(option)} type="button"
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  intent === option ? 'bg-teal-600 text-white' : 'bg-emerald-50 text-slate-500 hover:text-stone-800'
+                  intent === option ? 'bg-blue-600 dark:bg-blue-500 text-white' : 'bg-blue-50 dark:bg-slate-700 text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 {option === 'FRIENDS' ? 'Friends' : option === 'DATING' ? 'Dating' : 'Both'}
@@ -92,24 +92,24 @@ export default function ProfilePage() {
         </fieldset>
 
         <div>
-          <label className="block text-sm font-medium text-stone-500 mb-2">Conversation prompt</label>
+          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Conversation prompt</label>
           {prompts.map((prompt, i) => (
             <div key={i} className="space-y-1 mb-3">
-              <p className="text-xs text-slate-400">{prompt.question}</p>
+              <p className="text-xs text-[var(--text-muted)]">{prompt.question}</p>
               <input type="text" value={prompt.answer} maxLength={300}
                 onChange={(e) => {
                   const updated = [...prompts];
                   updated[i] = { ...prompt, answer: e.target.value };
                   setPrompts(updated);
                 }}
-                className="block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 text-sm focus:ring-2 focus:ring-teal-300 focus:outline-none"
+                className="block w-full rounded-lg border border-slate-200 bg-blue-50 dark:bg-slate-700 px-3 py-2 text-[var(--text-primary)] text-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
                 aria-label={`Answer for: ${prompt.question}`}
               />
             </div>
           ))}
           {prompts.length < 3 && (
             <button type="button" onClick={() => setPrompts([...prompts, { question: PROMPTS[prompts.length]!, answer: '' }])}
-              className="text-sm text-slate-500 hover:text-stone-600">
+              className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-secondary)]">
               + Add another prompt
             </button>
           )}
@@ -118,7 +118,7 @@ export default function ProfilePage() {
       </div>
 
       <button onClick={handleContinue}
-        className="w-full rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700">
+        className="w-full rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:hover:bg-blue-400">
         Continue
       </button>
     </div>

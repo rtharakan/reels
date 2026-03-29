@@ -30,29 +30,29 @@ export default function SignupPage() {
 
   if (sent) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
+      <main className="flex min-h-screen items-center justify-center bg-[var(--bg-primary)] px-4">
         <div className="w-full max-w-sm space-y-6 text-center">
-          <h1 className="text-2xl font-bold text-stone-800">Check your email</h1>
-          <p className="text-slate-500">
-            We sent a sign-up link to <strong className="text-stone-800">{email}</strong>.
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Check your email</h1>
+          <p className="text-[var(--text-secondary)]">
+            We sent a sign-up link to <strong className="text-[var(--text-primary)]">{email}</strong>.
           </p>
-          <p className="text-sm text-slate-400">The link expires in 10 minutes.</p>
+          <p className="text-sm text-[var(--text-muted)]">The link expires in 10 minutes.</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-stone-50 px-4">
+    <main className="flex min-h-screen items-center justify-center bg-[var(--bg-primary)] px-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-stone-800">Reels</h1>
-          <p className="mt-2 text-slate-500">Create your account</p>
+          <Link href="/" className="text-3xl font-bold text-[var(--text-primary)] hover:opacity-80 transition-opacity">Reels</Link>
+          <p className="mt-2 text-[var(--text-secondary)]">Create your account</p>
         </div>
 
         <form onSubmit={handleSignUp} className="space-y-4">
           <div>
-            <label htmlFor="signup-email" className="block text-sm font-medium text-stone-500">
+            <label htmlFor="signup-email" className="block text-sm font-medium text-[var(--text-secondary)]">
               Email address
             </label>
             <input
@@ -61,15 +61,15 @@ export default function SignupPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-stone-800 placeholder-slate-400 focus:border-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-300"
+              className="mt-1 block w-full rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-2 text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
               placeholder="you@example.com"
             />
           </div>
-          {error && <p className="text-sm text-red-400" role="alert">{error}</p>}
+          {error && <p className="text-sm text-red-500 dark:text-red-400" role="alert">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50"
+            className="w-full rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:hover:bg-blue-400 disabled:opacity-50"
           >
             {loading ? 'Sending...' : 'Sign up with email'}
           </button>
@@ -77,16 +77,16 @@ export default function SignupPage() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
+            <div className="w-full border-t border-slate-200 dark:border-slate-600" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-stone-50 px-2 text-slate-400">Or continue with</span>
+            <span className="bg-[var(--bg-primary)] px-2 text-[var(--text-muted)]">Or continue with</span>
           </div>
         </div>
 
         <button
           onClick={handleGoogleSignUp}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-stone-800 hover:bg-teal-100"
+          className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-blue-50 dark:bg-slate-800 px-4 py-2.5 text-sm font-medium text-[var(--text-primary)] hover:bg-blue-100 dark:hover:bg-slate-700"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -97,12 +97,31 @@ export default function SignupPage() {
           Sign up with Google
         </button>
 
-        <p className="text-center text-sm text-slate-400">
-          Already have an account?{' '}
-          <Link href="/login" className="text-stone-500 hover:text-stone-800">
-            Sign in
-          </Link>
-        </p>
+        <div className="space-y-2 text-center text-sm text-[var(--text-muted)]">
+          <p>
+            Already have an account?{' '}
+            <Link href="/login" className="text-blue-600 dark:text-blue-400 hover:underline">
+              Sign in
+            </Link>
+          </p>
+          <p>
+            <Link href="/explore" className="text-blue-600 dark:text-blue-400 hover:underline">
+              Try Explore
+            </Link>
+            {' · '}
+            <Link href="/" className="text-blue-600 dark:text-blue-400 hover:underline">
+              Home
+            </Link>
+            {' · '}
+            <Link href="/privacy" className="hover:underline">
+              Privacy
+            </Link>
+            {' · '}
+            <Link href="/terms" className="hover:underline">
+              Terms
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );

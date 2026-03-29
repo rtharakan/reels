@@ -175,7 +175,7 @@ export async function fetchExploreWatchlist(
   let page = 1;
   let hasMore = true;
   let displayName = username;
-  const maxPages = 20;
+  const maxPages = 100;
 
   while (hasMore && page <= maxPages) {
     const html = await fetchWatchlistPage(username, page);

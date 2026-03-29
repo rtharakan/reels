@@ -15,8 +15,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   ];
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-emerald-100 bg-stone-50/95 backdrop-blur-sm" role="navigation" aria-label="Main navigation">
+    <div className="min-h-screen bg-[var(--bg-primary)]">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-blue-100 dark:border-slate-700 bg-[var(--bg-primary)]/95 backdrop-blur-sm" role="navigation" aria-label="Main navigation">
         <div className="mx-auto flex max-w-lg items-center justify-around py-2">
           {navItems.map(({ href, label, icon: Icon }) => {
             const isActive = href === '/explore'
@@ -29,7 +29,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 key={href}
                 href={href}
                 className={`flex flex-col items-center gap-1 px-3 py-2 text-xs transition-colors ${
-                  isActive ? 'text-teal-700' : 'text-slate-400 hover:text-teal-600'
+                  isActive ? 'text-blue-600 dark:text-blue-400' : 'text-[var(--text-muted)] hover:text-blue-600 dark:hover:text-blue-400'
                 }`}
               >
                 <Icon className="h-5 w-5" aria-hidden="true" />
