@@ -54,9 +54,12 @@ model User {
   accounts Account[]
 
   // App relations
-  watchlistEntries WatchlistEntry[]
-  interestsSent    Interest[]       @relation("InterestFrom")
-  interestsReceived Interest[]     @relation("InterestTo")
+  watchlistEntries  WatchlistEntry[]
+  watchedEntries    WatchedEntry[]
+  ratingEntries     RatingEntry[]
+  likedEntries      LikedEntry[]
+  interestsSent     Interest[]       @relation("InterestFrom")
+  interestsReceived Interest[]       @relation("InterestTo")
   matchesAsA       Match[]          @relation("MatchUserA")
   matchesAsB       Match[]          @relation("MatchUserB")
   blocksCreated    Block[]          @relation("Blocker")
@@ -126,11 +129,57 @@ model Film {
   createdAt  DateTime @default(now())
 
   watchlistEntries WatchlistEntry[]
+  watchedEntries   WatchedEntry[]
+  ratingEntries    RatingEntry[]
+  likedEntries     LikedEntry[]
 
   @@index([tmdbId])
 }
 
 model WatchlistEntry {
+  id         String   @id @default(cuid())
+  userId     String
+  filmId     String
+  importedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  film Film @relation(fields: [filmId], references: [id])
+
+  @@unique([userId, filmId])
+  @@index([userId])
+  @@index([filmId])
+}
+
+model WatchedEntry {
+  id         String   @id @default(cuid())
+  userId     String
+  filmId     String
+  importedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  film Film @relation(fields: [filmId], references: [id])
+
+  @@unique([userId, filmId])
+  @@index([userId])
+  @@index([filmId])
+}
+
+model RatingEntry {
+  id         String   @id @default(cuid())
+  userId     String
+  filmId     String
+  rating     Float    // 0.5–5.0 (half-star increments)
+  importedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  film Film @relation(fields: [filmId], references: [id])
+
+  @@unique([userId, filmId])
+  @@index([userId])
+  @@index([filmId])
+}
+
+model LikedEntry {
   id         String   @id @default(cuid())
   userId     String
   filmId     String
@@ -211,6 +260,14 @@ model MatchScore {
   genreSimilarity Float
   totalScore      Float
   sharedFilmIds   String[]
+  // Enhanced scoring fields
+  likedOverlap     Float    @default(0)
+  ratedOverlap     Float    @default(0)
+  watchedOverlap   Float    @default(0)
+  watchlistOverlap Float    @default(0)
+  sharedLikedIds   String[]
+  sharedRatedIds   String[]
+  sharedWatchedIds String[]
   computedAt      DateTime @default(now())
 
   user      User @relation("ScoreUser", fields: [userId], references: [id], onDelete: Cascade)

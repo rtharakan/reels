@@ -7,6 +7,12 @@ export type ImportResult = {
   isEligibleForMatching: boolean;
 };
 
+export type EnhancedImportResult = ImportResult & {
+  watchedCount: number;
+  ratedCount: number;
+  likedCount: number;
+};
+
 export type PaginatedWatchlist = {
   items: WatchlistItem[];
   nextCursor: string | null;
@@ -17,4 +23,8 @@ export type WatchlistItem = {
   id: string;
   film: FilmPreview;
   importedAt: string;
+};
+
+export type RatedFilmItem = WatchlistItem & {
+  rating: number;
 };

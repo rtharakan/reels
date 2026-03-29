@@ -11,8 +11,18 @@ export type ScrapedFilm = {
   letterboxdId: string;
 };
 
+export type ScrapedRatedFilm = ScrapedFilm & {
+  rating: number; // 0.5–5.0 in half-star increments
+};
+
 export type ScrapeResult = {
   films: ScrapedFilm[];
+  isPrivate: boolean;
+  error?: string;
+};
+
+export type RatedScrapeResult = {
+  films: ScrapedRatedFilm[];
   isPrivate: boolean;
   error?: string;
 };
@@ -86,6 +96,172 @@ export async function scrapeWatchlist(username: string): Promise<ScrapeResult> {
   const totalPages = getPageCount(firstPage.html);
 
   // Fetch remaining pages with polite delay
+  for (let page = 2; page <= totalPages; page++) {
+    await delay(POLITE_DELAY_MS);
+    try {
+      const result = await fetchPage(`${baseUrl}/page/${page}/`);
+      if (result.status === 200) {
+        allFilms.push(...extractFilmsFromPage(result.html));
+      }
+    } catch {
+      // Continue with what we have
+    }
+  }
+
+  return { films: allFilms, isPrivate: false };
+}
+
+/**
+ * Scrape a user's watched films (diary/activity).
+ * Letterboxd URL: /{username}/films/
+ */
+export async function scrapeFilms(username: string): Promise<ScrapeResult> {
+  const baseUrl = `${LETTERBOXD_BASE}/${encodeURIComponent(username)}/films`;
+
+  const firstPage = await fetchPage(`${baseUrl}/page/1/`);
+
+  if (firstPage.status === 404 || firstPage.status === 302) {
+    const $ = cheerio.load(firstPage.html);
+    const bodyText = $.text().toLowerCase();
+    if (bodyText.includes('private') || bodyText.includes('not found')) {
+      return {
+        films: [],
+        isPrivate: true,
+        error: firstPage.status === 404 ? 'Username not found' : 'This profile is private',
+      };
+    }
+    return { films: [], isPrivate: true, error: 'Username not found' };
+  }
+
+  if (firstPage.status !== 200) {
+    return { films: [], isPrivate: false, error: `Letterboxd returned status ${firstPage.status}` };
+  }
+
+  const allFilms: ScrapedFilm[] = extractFilmsFromPage(firstPage.html);
+  const totalPages = getPageCount(firstPage.html);
+
+  for (let page = 2; page <= totalPages; page++) {
+    await delay(POLITE_DELAY_MS);
+    try {
+      const result = await fetchPage(`${baseUrl}/page/${page}/`);
+      if (result.status === 200) {
+        allFilms.push(...extractFilmsFromPage(result.html));
+      }
+    } catch {
+      // Continue with what we have
+    }
+  }
+
+  return { films: allFilms, isPrivate: false };
+}
+
+/**
+ * Extract rated films from a Letterboxd ratings page.
+ * Ratings page shows film posters with a star-rating overlay.
+ */
+function extractRatedFilmsFromPage(html: string): ScrapedRatedFilm[] {
+  const $ = cheerio.load(html);
+  const films: ScrapedRatedFilm[] = [];
+
+  $('li.poster-container').each((_, el) => {
+    const poster = $(el).find('div.film-poster');
+    const slug = poster.attr('data-film-slug') ?? '';
+    const letterboxdId = poster.attr('data-film-id') ?? '';
+    const img = poster.find('img');
+    const title = img.attr('alt') ?? slug;
+
+    // Rating is encoded as class "rated-X" on a span, where X is 1-10 (half-stars)
+    const ratingEl = $(el).find('span.rating');
+    let rating = 0;
+    if (ratingEl.length > 0) {
+      const classes = ratingEl.attr('class') ?? '';
+      const ratingMatch = classes.match(/rated-(\d+)/);
+      if (ratingMatch) {
+        rating = parseInt(ratingMatch[1]!, 10) / 2; // Convert 1-10 scale to 0.5-5.0
+      }
+    }
+
+    if (slug && rating > 0) {
+      films.push({ slug, title, letterboxdId, rating });
+    }
+  });
+
+  return films;
+}
+
+/**
+ * Scrape a user's rated films with their ratings.
+ * Letterboxd URL: /{username}/films/ratings/
+ */
+export async function scrapeRatings(username: string): Promise<RatedScrapeResult> {
+  const baseUrl = `${LETTERBOXD_BASE}/${encodeURIComponent(username)}/films/ratings`;
+
+  const firstPage = await fetchPage(`${baseUrl}/page/1/`);
+
+  if (firstPage.status === 404 || firstPage.status === 302) {
+    const $ = cheerio.load(firstPage.html);
+    const bodyText = $.text().toLowerCase();
+    if (bodyText.includes('private') || bodyText.includes('not found')) {
+      return {
+        films: [],
+        isPrivate: true,
+        error: firstPage.status === 404 ? 'Username not found' : 'This profile is private',
+      };
+    }
+    return { films: [], isPrivate: true, error: 'Username not found' };
+  }
+
+  if (firstPage.status !== 200) {
+    return { films: [], isPrivate: false, error: `Letterboxd returned status ${firstPage.status}` };
+  }
+
+  const allFilms: ScrapedRatedFilm[] = extractRatedFilmsFromPage(firstPage.html);
+  const totalPages = getPageCount(firstPage.html);
+
+  for (let page = 2; page <= totalPages; page++) {
+    await delay(POLITE_DELAY_MS);
+    try {
+      const result = await fetchPage(`${baseUrl}/page/${page}/`);
+      if (result.status === 200) {
+        allFilms.push(...extractRatedFilmsFromPage(result.html));
+      }
+    } catch {
+      // Continue with what we have
+    }
+  }
+
+  return { films: allFilms, isPrivate: false };
+}
+
+/**
+ * Scrape a user's liked films.
+ * Letterboxd URL: /{username}/likes/films/
+ */
+export async function scrapeLikes(username: string): Promise<ScrapeResult> {
+  const baseUrl = `${LETTERBOXD_BASE}/${encodeURIComponent(username)}/likes/films`;
+
+  const firstPage = await fetchPage(`${baseUrl}/page/1/`);
+
+  if (firstPage.status === 404 || firstPage.status === 302) {
+    const $ = cheerio.load(firstPage.html);
+    const bodyText = $.text().toLowerCase();
+    if (bodyText.includes('private') || bodyText.includes('not found')) {
+      return {
+        films: [],
+        isPrivate: true,
+        error: firstPage.status === 404 ? 'Username not found' : 'This profile is private',
+      };
+    }
+    return { films: [], isPrivate: true, error: 'Username not found' };
+  }
+
+  if (firstPage.status !== 200) {
+    return { films: [], isPrivate: false, error: `Letterboxd returned status ${firstPage.status}` };
+  }
+
+  const allFilms: ScrapedFilm[] = extractFilmsFromPage(firstPage.html);
+  const totalPages = getPageCount(firstPage.html);
+
   for (let page = 2; page <= totalPages; page++) {
     await delay(POLITE_DELAY_MS);
     try {
