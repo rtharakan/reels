@@ -12,12 +12,7 @@ export function Badge({ children, variant = 'default', className }: BadgeProps) 
     <span
       className={clsx(
         'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
-        {
-          'bg-zinc-700 text-zinc-200': variant === 'default',
-          'bg-zinc-700 text-zinc-200': variant === 'friends',
-          'bg-zinc-700 text-zinc-200': variant === 'dating',
-          'bg-zinc-700 text-zinc-200': variant === 'both',
-        },
+        'bg-zinc-700 text-zinc-200',
         className,
       )}
     >
