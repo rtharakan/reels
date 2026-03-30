@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/status-v1.0-brightgreen" alt="Status: v1.0" />
+  <img src="https://img.shields.io/badge/status-v1.2-brightgreen" alt="Status: v1.2" />
   <img src="https://img.shields.io/github/license/rtharakan/reels" alt="MIT License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome" />
 </p>
@@ -29,6 +29,8 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 | Package | Description |
 |---|---|
 | `apps/web` | Next.js 14 web app with tRPC API |
+| `apps/ios` | SwiftUI native iOS app |
+| `apps/android` | Kotlin + Jetpack Compose Android app |
 | `packages/matching-engine` | Jaccard overlap + cosine genre similarity scoring |
 | `packages/letterboxd-scraper` | Polite Letterboxd profile scraper + TMDB normaliser |
 | `packages/shared-types` | TypeScript types used across the monorepo |
@@ -44,6 +46,27 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 - **Scan agent** — discover similar Letterboxd profiles based on taste analysis
 - **Dutch cinema dates** — find shared films screening near you, grouped by film and date
 - **Warm neutral UI** — terracotta accent, sage secondary, dark mode, skeleton loading states
+- **Multi-language** — full English and Dutch (NL) translations with in-app language toggle
+- **Native mobile apps** — iOS (SwiftUI) and Android (Jetpack Compose) with matching design system
+
+### v1.2 Changelog
+
+- **Showtimes fix** — fuzzy matching for English↔Dutch film titles using TMDB multi-language lookup
+- **Explore fallback** — interest-based date ideas when no shared watchlist films exist
+- **Poster reliability** — multi-strategy TMDB search handles punctuation, apostrophes, and special characters
+- **Button labels** — "Sign in" → "Login", "Try Free" → "Get Lucky"
+- **i18n system** — lightweight React context provider with EN/NL toggle and localStorage persistence
+- **Dead links fixed** — `/#scoring` → `/about#scoring`, consistent footer navigation on all pages
+- **iOS app** — full SwiftUI app with auth, onboarding, discover, matches, profile, safety + Dutch localization
+- **Android app** — full Kotlin/Compose app with Material3, Hilt DI, Retrofit, identical feature set + Dutch strings
+
+## Mobile Apps
+
+### iOS
+On the `ios/v1.2-app` branch. Requires Xcode 15+ and iOS 17+.
+
+### Android
+On the `android/v1.2-app` branch. Requires Android Studio Hedgehog+ and API 26+.
 
 ## Documentation
 
