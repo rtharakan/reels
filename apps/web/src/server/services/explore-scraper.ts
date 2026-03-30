@@ -214,6 +214,79 @@ export async function fetchExploreWatchlist(
   };
 }
 
+/**
+ * Generic Letterboxd list page fetcher (films, likes, ratings).
+ * Uses the same parsing logic as watchlist but for different URL paths.
+ */
+async function fetchExploreListPage(
+  username: string,
+  path: string,
+  maxPages = 20,
+): Promise<ExploreFilm[]> {
+  const allFilms: ExploreFilm[] = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore && page <= maxPages) {
+    const url = page === 1
+      ? `${LETTERBOXD_BASE_URL}/${username}/${path}/`
+      : `${LETTERBOXD_BASE_URL}/${username}/${path}/page/${page}/`;
+
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': USER_AGENT,
+          Accept: 'text/html,application/xhtml+xml',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+      });
+
+      if (!response.ok) break;
+      const html = await response.text();
+      const films = parseWatchlistPage(html);
+      allFilms.push(...films);
+      hasMore = hasNextPage(html) && films.length > 0;
+    } catch {
+      break;
+    }
+
+    page++;
+    if (hasMore) await new Promise((r) => setTimeout(r, 500));
+  }
+
+  return allFilms;
+}
+
+/** Fetch a user's watched films (Letterboxd /username/films/) */
+export async function fetchExploreFilms(username: string): Promise<ExploreFilm[]> {
+  return fetchExploreListPage(username, 'films');
+}
+
+/** Fetch a user's liked films (Letterboxd /username/likes/films/) */
+export async function fetchExploreLikes(username: string): Promise<ExploreFilm[]> {
+  return fetchExploreListPage(username, 'likes/films');
+}
+
+/**
+ * Fetch all Letterboxd data sources for a user in parallel.
+ * Returns watchlist, watched films, and liked films.
+ * (Ratings page doesn't reliably expose rating values via HTML scraping,
+ * so we use liked films as the quality proxy instead.)
+ */
+export async function fetchExploreAllSources(username: string): Promise<{
+  watchlist: ExploreWatchlistResponse;
+  watched: ExploreFilm[];
+  liked: ExploreFilm[];
+}> {
+  const [watchlist, watched, liked] = await Promise.all([
+    fetchExploreWatchlist(username),
+    fetchExploreFilms(username),
+    fetchExploreLikes(username),
+  ]);
+
+  return { watchlist, watched, liked };
+}
+
 export async function validateExploreUsername(
   username: string
 ): Promise<boolean> {

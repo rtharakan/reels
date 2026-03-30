@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { trpc } from '@/lib/trpc';
 import Image from 'next/image';
 
@@ -51,10 +51,18 @@ export default function DiscoverPage() {
     setCurrentIndex((i) => i + 1);
   }, [feed, currentIndex, skip]);
 
-  // Keyboard shortcuts
-  if (typeof window !== 'undefined') {
-    // Using effect-free approach for SSR safety
-  }
+  // Keyboard shortcuts: ArrowLeft to skip, ArrowRight to express interest
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'ArrowLeft') {
+        handleSkip();
+      } else if (e.key === 'ArrowRight') {
+        handleInterest();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleSkip, handleInterest]);
 
   if (isLoading) {
     return (

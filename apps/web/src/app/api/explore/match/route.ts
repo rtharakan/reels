@@ -6,10 +6,11 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchExploreWatchlist } from '@/server/services/explore-scraper';
+import { fetchExploreAllSources } from '@/server/services/explore-scraper';
 import { computeExploreMatch } from '@/server/services/explore-matcher';
 import { fetchCityScreenings, DUTCH_CITIES } from '@/server/services/explore-screenings';
 import { findExploreMatchingScreenings } from '@/server/services/explore-film-matcher';
+import { rateLimit } from '@/lib/rate-limit';
 import type { ExploreFilm } from '@/server/services/explore-scraper';
 
 const TMDB_API_BASE = 'https://api.themoviedb.org/3';
@@ -75,6 +76,19 @@ function extractUsername(input: string): string {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit: 20 requests per minute per IP
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+    const rl = rateLimit(ip, 20, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.', code: 'RATE_LIMITED' },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(Math.ceil((rl.resetAt - Date.now()) / 1000)) },
+        },
+      );
+    }
+
     const body = await request.json();
     const { user1: rawUser1, user2: rawUser2, city } = body as {
       user1?: string;
@@ -106,34 +120,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Fetch both watchlists in parallel
-    const [watchlist1, watchlist2] = await Promise.all([
-      fetchExploreWatchlist(user1),
-      fetchExploreWatchlist(user2),
+    // Fetch all Letterboxd data sources in parallel for both users
+    const [data1, data2] = await Promise.all([
+      fetchExploreAllSources(user1),
+      fetchExploreAllSources(user2),
     ]);
 
-    if (watchlist1.films.length === 0) {
+    if (data1.watchlist.films.length === 0 && data1.watched.length === 0) {
       return NextResponse.json(
         {
-          error: `${user1}'s watchlist is empty or private`,
+          error: `${user1}'s profile is empty or private`,
           code: 'EMPTY_WATCHLIST_1',
         },
         { status: 200 }
       );
     }
 
-    if (watchlist2.films.length === 0) {
+    if (data2.watchlist.films.length === 0 && data2.watched.length === 0) {
       return NextResponse.json(
         {
-          error: `${user2}'s watchlist is empty or private`,
+          error: `${user2}'s profile is empty or private`,
           code: 'EMPTY_WATCHLIST_2',
         },
         { status: 200 }
       );
     }
 
-    // Compute match
-    const matchResult = computeExploreMatch(watchlist1.films, watchlist2.films);
+    // Compute enhanced match using all available signals
+    const matchResult = computeExploreMatch(
+      {
+        watchlist: data1.watchlist.films,
+        watched: data1.watched,
+        liked: data1.liked,
+        highRated: data1.liked, // Liked films serve as quality proxy
+      },
+      {
+        watchlist: data2.watchlist.films,
+        watched: data2.watched,
+        liked: data2.liked,
+        highRated: data2.liked,
+      },
+    );
 
     // Enrich shared films with TMDB posters for missing poster URLs
     const enrichedSharedFilms = await enrichPostersWithTMDB(matchResult.sharedFilms);
@@ -171,21 +198,27 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       user1: {
-        username: watchlist1.username,
-        displayName: watchlist1.displayName,
-        filmCount: watchlist1.totalCount,
+        username: data1.watchlist.username,
+        displayName: data1.watchlist.displayName,
+        filmCount: data1.watchlist.totalCount + data1.watched.length,
       },
       user2: {
-        username: watchlist2.username,
-        displayName: watchlist2.displayName,
-        filmCount: watchlist2.totalCount,
+        username: data2.watchlist.username,
+        displayName: data2.watchlist.displayName,
+        filmCount: data2.watchlist.totalCount + data2.watched.length,
       },
       match: {
         overlapScore: matchResult.overlapScore,
         genreScore: matchResult.genreScore,
         combinedScore: matchResult.combinedScore,
+        likedOverlap: matchResult.likedOverlap,
+        ratedOverlap: matchResult.ratedOverlap,
+        watchedOverlap: matchResult.watchedOverlap,
+        watchlistOverlap: matchResult.watchlistOverlap,
         sharedFilmsCount: matchResult.sharedFilms.length,
         sharedFilms: enrichedSharedFilms,
+        sharedLikedCount: matchResult.sharedLikedFilms.length,
+        sharedWatchedCount: matchResult.sharedWatchedFilms.length,
       },
       dateIdeas: dateIdeas.slice(0, 30),
       city: selectedCity,

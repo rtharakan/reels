@@ -35,3 +35,30 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
     },
   });
 });
+
+/**
+ * Procedure that requires both authentication AND completed onboarding.
+ * Use for routes that should only be accessible to fully-onboarded users.
+ */
+export const onboardedProcedure = t.procedure.use(async ({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not authenticated' });
+  }
+
+  const user = await ctx.prisma.user.findUnique({
+    where: { id: ctx.session.user.id },
+    select: { onboardingCompletedAt: true },
+  });
+
+  if (!user?.onboardingCompletedAt) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Onboarding not completed' });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      session: ctx.session,
+      userId: ctx.session.user.id,
+    },
+  });
+});
