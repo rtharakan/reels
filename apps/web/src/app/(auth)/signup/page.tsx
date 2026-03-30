@@ -104,7 +104,7 @@ export default function SignupPage() {
           <p>
             Already have an account?{' '}
             <Link href="/login" className="text-[var(--accent)] hover:underline">
-              Sign in
+              Login
             </Link>
           </p>
           <p className="text-xs">

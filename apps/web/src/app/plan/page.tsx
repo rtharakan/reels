@@ -165,7 +165,7 @@ export default function PlanPage() {
               <Button variant="ghost" size="sm">Scan</Button>
             </Link>
             <Link href="/login">
-              <Button variant="ghost" size="sm">Sign in</Button>
+              <Button variant="ghost" size="sm">Login</Button>
             </Link>
             <Link href="/signup">
               <Button size="sm">Get Started</Button>

@@ -209,7 +209,7 @@ export default function ExplorePage() {
             </Link>
             <ThemeToggleCompact />
             <Link href="/login">
-              <Button variant="ghost" size="sm">Sign in</Button>
+              <Button variant="ghost" size="sm">Login</Button>
             </Link>
             <Link href="/signup">
               <Button size="sm">Get Started</Button>
@@ -716,7 +716,7 @@ export default function ExplorePage() {
               Home
             </Link>
             <Link href="/login" className="hover:text-[var(--text-secondary)] transition-colors">
-              Sign in
+              Login
             </Link>
             <Link href="/signup" className="hover:text-[var(--text-secondary)] transition-colors">
               Sign up

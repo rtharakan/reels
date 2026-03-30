@@ -16,7 +16,7 @@ export default function TermsOfServicePage() {
               Explore
             </Link>
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Sign in
+              Login
             </Link>
             <Link
               href="/signup"

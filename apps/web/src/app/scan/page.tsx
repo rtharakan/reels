@@ -128,7 +128,7 @@ export default function ScanPage() {
             </Link>
             <ThemeToggleCompact />
             <Link href="/login">
-              <Button variant="ghost" size="sm">Sign in</Button>
+              <Button variant="ghost" size="sm">Login</Button>
             </Link>
             <Link href="/signup">
               <Button size="sm">Get Started</Button>

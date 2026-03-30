@@ -140,7 +140,7 @@ export default function HomePage() {
             </Link>
             <ThemeToggleCompact />
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Sign in
+              Login
             </Link>
             <Link
               href="/signup"
@@ -174,7 +174,7 @@ export default function HomePage() {
             href="/explore"
             className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-7 py-3.5 text-sm font-semibold text-[var(--text-primary)] shadow-sm hover:bg-[var(--bg-accent)] transition-colors active:scale-[0.98]"
           >
-            Try Free
+            Get Lucky
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
