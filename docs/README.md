@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/status-beta-orange" alt="Status: Beta" />
+  <img src="https://img.shields.io/badge/status-v1.0-brightgreen" alt="Status: v1.0" />
   <img src="https://img.shields.io/github/license/rtharakan/reels" alt="MIT License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome" />
 </p>
@@ -23,6 +23,8 @@ No swiping on selfies. No algorithm-optimized engagement traps. Just shared film
 5. **Mutual match** — when both of you say yes, you're connected. See exactly *why* you matched: shared films, genre tendencies, the works.
 
 There's also an **Explore** page (no account needed) where you can compare any two Letterboxd profiles head-to-head using the same 5-signal scoring — complete with cinema showtime suggestions for cities across the Netherlands.
+
+A **Scan** page lets you discover similar Letterboxd profiles based on taste analysis.
 
 ---
 
@@ -65,6 +67,8 @@ reels/
 | `src/app/onboarding/` | Multi-step onboarding flow (privacy → profile → watchlist → top films) |
 | `src/app/(main)/` | Discover feed, Matches list, Profile management |
 | `src/app/explore/` | Public profile comparison tool (no auth required) |
+| `src/app/scan/` | Discover similar Letterboxd profiles |
+| `src/app/about/` | About page with scoring methodology |
 | `src/server/routers/` | tRPC API routers (user, watchlist, discover, match, safety, device) |
 | `src/server/services/` | Business logic (import, scoring, feed generation, matching) |
 | `prisma/schema.prisma` | Database schema |
@@ -128,10 +132,14 @@ All contributions must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 - [x] Web MVP — onboarding, discover, matches, profile, safety
 - [x] Explore tool — public profile comparison + Dutch cinema date planner
-- [x] Visual polish — blue pastel palette with dark mode support
+- [x] Visual polish — warm neutral palette with dark mode support
 - [x] Enhanced matching — 5-signal scoring (likes, ratings, watched, watchlist, genre)
-- [ ] iOS app — native SwiftUI client with push notifications
+- [x] Scan agent — discover similar Letterboxd profiles
+- [x] Simplified landing + About page
+- [x] Performance optimizations (DB queries, lazy loading, caching)
+- [x] Grouped showtimes with expandable accordion
 - [x] Rate limiting and production hardening
+- [ ] iOS app (SwiftUI) — in progress on separate branch
 - [ ] GDPR data export and scheduled cleanup
 - [ ] App Store submission
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/status-beta-orange" alt="Status: Beta" />
+  <img src="https://img.shields.io/badge/status-v1.0-brightgreen" alt="Status: v1.0" />
   <img src="https://img.shields.io/github/license/rtharakan/reels" alt="MIT License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome" />
 </p>
@@ -41,7 +41,9 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 - **Daily discover feed** — 10 curated cards per day, no infinite scroll
 - **Mutual matches** — see exactly *why* you matched (shared films, genre breakdown)
 - **Explore tool** — compare any two profiles publicly using the same 5-signal scoring, no account needed
-- **Dutch cinema dates** — find shared films screening near you
+- **Scan agent** — discover similar Letterboxd profiles based on taste analysis
+- **Dutch cinema dates** — find shared films screening near you, grouped by film and date
+- **Warm neutral UI** — terracotta accent, sage secondary, dark mode, skeleton loading states
 
 ## Documentation
 
