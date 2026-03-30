@@ -24,6 +24,8 @@ import {
   Film,
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { LanguageToggle } from '@/components/language-toggle';
+import { useI18n } from '@/lib/i18n';
 
 interface Screening {
   filmTitle: string;
@@ -92,6 +94,7 @@ const DUTCH_CITIES: CityOption[] = [
 ];
 
 export default function PlanPage() {
+  const { t } = useI18n();
   const [username, setUsername] = useState('');
   const [city, setCity] = useState('amsterdam');
   const [isLoading, setIsLoading] = useState(false);
@@ -159,16 +162,17 @@ export default function PlanPage() {
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/explore">
-              <Button variant="ghost" size="sm">Explore</Button>
+              <Button variant="ghost" size="sm">{t.common.explore}</Button>
             </Link>
             <Link href="/scan">
-              <Button variant="ghost" size="sm">Scan</Button>
+              <Button variant="ghost" size="sm">{t.common.scan}</Button>
             </Link>
+            <LanguageToggle />
             <Link href="/login">
-              <Button variant="ghost" size="sm">Login</Button>
+              <Button variant="ghost" size="sm">{t.common.login}</Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm">Get Started</Button>
+              <Button size="sm">{t.common.getStarted}</Button>
             </Link>
           </div>
         </div>

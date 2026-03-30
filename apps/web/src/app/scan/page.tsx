@@ -29,6 +29,8 @@ import {
   Target,
 } from 'lucide-react';
 import { ThemeToggleCompact } from '@/components/theme-toggle';
+import { LanguageToggle } from '@/components/language-toggle';
+import { useI18n } from '@/lib/i18n';
 
 interface ScanResult {
   username: string;
@@ -65,6 +67,7 @@ function getLabelColor(label: string): string {
 }
 
 export default function ScanPage() {
+  const { t } = useI18n();
   const [username, setUsername] = useState('');
   const [depth, setDepth] = useState<'quick' | 'standard' | 'deep'>('standard');
   const [isScanning, setIsScanning] = useState(false);
@@ -121,17 +124,18 @@ export default function ScanPage() {
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/explore">
-              <Button variant="ghost" size="sm">Explore</Button>
+              <Button variant="ghost" size="sm">{t.common.explore}</Button>
             </Link>
             <Link href="/plan">
-              <Button variant="ghost" size="sm">Plan</Button>
+              <Button variant="ghost" size="sm">{t.common.plan}</Button>
             </Link>
+            <LanguageToggle />
             <ThemeToggleCompact />
             <Link href="/login">
-              <Button variant="ghost" size="sm">Login</Button>
+              <Button variant="ghost" size="sm">{t.common.login}</Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm">Get Started</Button>
+              <Button size="sm">{t.common.getStarted}</Button>
             </Link>
           </div>
         </div>

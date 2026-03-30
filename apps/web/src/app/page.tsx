@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, Users, Film, Sparkles, ArrowRight, Popcorn, Calendar, MapPin, ChevronLeft, ChevronRight, Clock, Ticket } from 'lucide-react';
 import { ThemeToggleCompact } from '@/components/theme-toggle';
+import { LanguageToggle } from '@/components/language-toggle';
+import { useI18n } from '@/lib/i18n';
 
 interface NowPlayingFilm {
   id: number;
@@ -52,6 +54,7 @@ function formatDate(dateStr: string): string {
 }
 
 export default function HomePage() {
+  const { t } = useI18n();
   const [films, setFilms] = useState<NowPlayingFilm[]>([]);
   const [city, setCity] = useState('amsterdam');
   const [selectedFilm, setSelectedFilm] = useState<NowPlayingFilm | null>(null);
@@ -127,26 +130,27 @@ export default function HomePage() {
           </div>
           <nav className="flex items-center gap-2 sm:gap-3">
             <Link href="/explore" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Explore
+              {t.common.explore}
             </Link>
             <Link href="/scan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Scan
+              {t.common.scan}
             </Link>
             <Link href="/plan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Plan
+              {t.common.plan}
             </Link>
             <Link href="/about" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              About
+              {t.common.about}
             </Link>
+            <LanguageToggle />
             <ThemeToggleCompact />
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Login
+              {t.common.login}
             </Link>
             <Link
               href="/signup"
               className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98]"
             >
-              Get Started
+              {t.common.getStarted}
             </Link>
           </nav>
         </div>
@@ -155,12 +159,12 @@ export default function HomePage() {
       {/* Hero */}
       <section className="flex flex-col items-center justify-center px-4 pt-20 pb-12">
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[var(--text-primary)] text-center leading-[1.1]">
-          Find your people
+          {t.home.heroTitle1}
           <br />
-          <span className="text-[var(--accent)]">through film</span>
+          <span className="text-[var(--accent)]">{t.home.heroTitle2}</span>
         </h1>
         <p className="mx-auto mt-6 max-w-md text-center text-lg leading-relaxed text-[var(--text-secondary)]">
-          Connect your Letterboxd. Discover who shares your taste. Meet.
+          {t.home.heroSubtitle}
         </p>
         <div className="mt-8 flex items-center gap-4">
           <Link
@@ -168,13 +172,13 @@ export default function HomePage() {
             className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-7 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98]"
           >
             <Sparkles className="h-4 w-4" />
-            Get Started
+            {t.common.getStarted}
           </Link>
           <Link
             href="/explore"
             className="inline-flex items-center gap-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-7 py-3.5 text-sm font-semibold text-[var(--text-primary)] shadow-sm hover:bg-[var(--bg-accent)] transition-colors active:scale-[0.98]"
           >
-            Get Lucky
+            {t.common.getLucky}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -185,8 +189,8 @@ export default function HomePage() {
         <section className="mx-auto max-w-5xl px-4 pb-12">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-semibold text-[var(--text-primary)]">Now Playing</h2>
-              <p className="text-sm text-[var(--text-muted)]">Click a poster for showtimes</p>
+              <h2 className="text-lg font-semibold text-[var(--text-primary)]">{t.home.nowPlaying}</h2>
+              <p className="text-sm text-[var(--text-muted)]">{t.home.clickPoster}</p>
             </div>
             <div className="flex items-center gap-2">
               {/* City selector */}
@@ -269,11 +273,11 @@ export default function HomePage() {
               {loadingScreenings ? (
                 <div className="flex items-center gap-2 mt-4 text-sm text-[var(--text-muted)]">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
-                  Finding showtimes in {DUTCH_CITIES.find((c) => c.slug === city)?.name}…
+                  {t.home.findingShowtimes} {DUTCH_CITIES.find((c) => c.slug === city)?.name}…
                 </div>
               ) : screenings.length === 0 ? (
                 <p className="mt-4 text-sm text-[var(--text-muted)]">
-                  No showtimes found in {DUTCH_CITIES.find((c) => c.slug === city)?.name} for this film.
+                  {t.home.noShowtimes} {DUTCH_CITIES.find((c) => c.slug === city)?.name} {t.home.forThisFilm}
                 </p>
               ) : (
                 <div className="mt-4 space-y-3">
@@ -317,10 +321,10 @@ export default function HomePage() {
       <section className="mx-auto max-w-3xl px-4 pb-20">
         <div className="grid gap-6 sm:grid-cols-4">
           {[
-            { icon: Film, title: 'Import', desc: 'Your Letterboxd watchlist becomes your taste profile', href: '/explore' },
-            { icon: Users, title: 'Discover', desc: '10 curated matches daily based on real film taste', href: '/scan' },
-            { icon: Heart, title: 'Connect', desc: 'Mutual matches unlock chat and cinema date ideas', href: '/signup' },
-            { icon: Calendar, title: 'Plan', desc: 'See when your watchlist films are playing near you', href: '/plan' },
+            { icon: Film, title: t.home.featureImport, desc: t.home.featureImportDesc, href: '/explore' },
+            { icon: Users, title: t.home.featureDiscover, desc: t.home.featureDiscoverDesc, href: '/scan' },
+            { icon: Heart, title: t.home.featureConnect, desc: t.home.featureConnectDesc, href: '/signup' },
+            { icon: Calendar, title: t.home.featurePlan, desc: t.home.featurePlanDesc, href: '/plan' },
           ].map(({ icon: Icon, title, desc, href }) => (
             <Link key={title} href={href} className="flex flex-col items-center text-center p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] hover:border-[var(--accent)]/30 hover:shadow-sm transition-all group">
               <Icon className="h-6 w-6 text-[var(--accent)] mb-2.5 group-hover:scale-110 transition-transform" />
@@ -339,12 +343,12 @@ export default function HomePage() {
             <span>Reels</span>
           </div>
           <nav className="flex items-center gap-4">
-            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">Explore</Link>
-            <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">Scan</Link>
-            <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">Plan</Link>
-            <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">About</Link>
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">Terms</Link>
+            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
+            <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.scan}</Link>
+            <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.plan}</Link>
+            <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.about}</Link>
+            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.privacy}</Link>
+            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.terms}</Link>
           </nav>
         </div>
       </footer>

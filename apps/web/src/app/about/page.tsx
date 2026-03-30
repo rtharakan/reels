@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
   Popcorn,
@@ -13,8 +15,11 @@ import {
   ArrowRight,
   Sparkles,
 } from 'lucide-react';
+import { LanguageToggle } from '@/components/language-toggle';
+import { useI18n } from '@/lib/i18n';
 
 export default function AboutPage() {
+  const { t } = useI18n();
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
@@ -26,22 +31,23 @@ export default function AboutPage() {
           </Link>
           <nav className="flex items-center gap-2 sm:gap-3">
             <Link href="/explore" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Explore
+              {t.common.explore}
             </Link>
             <Link href="/scan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Scan
+              {t.common.scan}
             </Link>
             <Link href="/plan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Plan
+              {t.common.plan}
             </Link>
+            <LanguageToggle />
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Login
+              {t.common.login}
             </Link>
             <Link
               href="/signup"
               className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98]"
             >
-              Get Started
+              {t.common.getStarted}
             </Link>
           </nav>
         </div>

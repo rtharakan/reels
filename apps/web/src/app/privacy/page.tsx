@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { Popcorn } from 'lucide-react';
+import { LanguageToggle } from '@/components/language-toggle';
+import { useI18n } from '@/lib/i18n';
 
 export default function PrivacyPolicyPage() {
+  const { t } = useI18n();
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
@@ -13,16 +18,17 @@ export default function PrivacyPolicyPage() {
           </Link>
           <nav className="flex items-center gap-3">
             <Link href="/explore" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Explore
+              {t.common.explore}
             </Link>
+            <LanguageToggle />
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              Login
+              {t.common.login}
             </Link>
             <Link
               href="/signup"
               className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-colors"
             >
-              Get Started
+              {t.common.getStarted}
             </Link>
           </nav>
         </div>

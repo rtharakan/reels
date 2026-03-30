@@ -26,6 +26,8 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { ThemeToggleCompact } from '@/components/theme-toggle';
+import { LanguageToggle } from '@/components/language-toggle';
+import { useI18n } from '@/lib/i18n';
 
 /** Group date ideas by film title + date so multiple showtimes collapse. */
 interface GroupedScreening {
@@ -122,6 +124,7 @@ function groupDateIdeas(ideas: DateIdea[]): GroupedScreening[] {
 }
 
 export default function ExplorePage() {
+  const { t } = useI18n();
   const [user1, setUser1] = useState('');
   const [user2, setUser2] = useState('');
   const [city, setCity] = useState('amsterdam');
@@ -202,17 +205,18 @@ export default function ExplorePage() {
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/scan">
-              <Button variant="ghost" size="sm">Scan</Button>
+              <Button variant="ghost" size="sm">{t.common.scan}</Button>
             </Link>
             <Link href="/plan">
-              <Button variant="ghost" size="sm">Plan</Button>
+              <Button variant="ghost" size="sm">{t.common.plan}</Button>
             </Link>
+            <LanguageToggle />
             <ThemeToggleCompact />
             <Link href="/login">
-              <Button variant="ghost" size="sm">Login</Button>
+              <Button variant="ghost" size="sm">{t.common.login}</Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm">Get Started</Button>
+              <Button size="sm">{t.common.getStarted}</Button>
             </Link>
           </div>
         </div>
@@ -225,11 +229,10 @@ export default function ExplorePage() {
             <Heart className="h-8 w-8 text-[var(--accent)]" />
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--text-primary)]">
-            Film Taste <span className="text-[var(--accent)]">Match</span>
+            {t.explore.title} <span className="text-[var(--accent)]">{t.explore.titleAccent}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-[var(--text-secondary)]">
-            Enter two Letterboxd profiles and discover your film compatibility.
-            Find shared favorites and plan a cinema date in the Netherlands.
+            {t.explore.subtitle}
           </p>
         </div>
 
@@ -238,17 +241,17 @@ export default function ExplorePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Users className="h-5 w-5 text-[var(--text-muted)]" />
-              Compare Profiles
+              {t.explore.compareProfiles}
             </CardTitle>
             <CardDescription>
-              Enter Letterboxd usernames or paste full profile links
+              {t.explore.compareDesc}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="user1">Person 1</Label>
+                  <Label htmlFor="user1">{t.explore.person1}</Label>
                   <Input
                     id="user1"
                     placeholder="username or letterboxd.com/username"
@@ -258,7 +261,7 @@ export default function ExplorePage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="user2">Person 2</Label>
+                  <Label htmlFor="user2">{t.explore.person2}</Label>
                   <Input
                     id="user2"
                     placeholder="username or letterboxd.com/username"
@@ -272,7 +275,7 @@ export default function ExplorePage() {
               <div className="space-y-2">
                 <Label htmlFor="city">
                   <MapPin className="mr-1 inline h-3.5 w-3.5" />
-                  City for date ideas (Netherlands)
+                  {t.explore.cityLabel}
                 </Label>
                 <select
                   id="city"
@@ -304,12 +307,12 @@ export default function ExplorePage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Fetching watchlists & matching...
+                    {t.explore.fetching}
                   </>
                 ) : (
                   <>
                     <Sparkles className="h-4 w-4" />
-                    Find Your Match
+                    {t.explore.findMatch}
                   </>
                 )}
               </Button>
@@ -332,7 +335,7 @@ export default function ExplorePage() {
                   <p className="mt-2 text-6xl font-bold text-[var(--text-primary)]">
                     {Math.round(result.match.combinedScore * 100)}%
                   </p>
-                  <p className="mt-1 text-sm text-[var(--text-muted)]">compatibility score</p>
+                  <p className="mt-1 text-sm text-[var(--text-muted)]">{t.explore.compatibilityScore}</p>
                 </div>
               </div>
 
@@ -341,12 +344,12 @@ export default function ExplorePage() {
                   <div className="rounded-xl bg-[var(--bg-accent)] p-4">
                     <p className="text-sm text-[var(--text-secondary)]">{result.user1.displayName}</p>
                     <p className="text-2xl font-bold text-[var(--text-primary)]">{result.user1.filmCount}</p>
-                    <p className="text-xs text-[var(--text-muted)]">films</p>
+                    <p className="text-xs text-[var(--text-muted)]">{t.explore.films}</p>
                   </div>
                   <div className="rounded-xl bg-[var(--bg-accent)] p-4">
                     <p className="text-sm text-[var(--text-secondary)]">{result.user2.displayName}</p>
                     <p className="text-2xl font-bold text-[var(--text-primary)]">{result.user2.filmCount}</p>
-                    <p className="text-xs text-[var(--text-muted)]">films</p>
+                    <p className="text-xs text-[var(--text-muted)]">{t.explore.films}</p>
                   </div>
                 </div>
 
@@ -357,19 +360,19 @@ export default function ExplorePage() {
                     <p className="text-2xl font-bold text-[var(--accent)]">
                       {result.match.sharedFilmsCount}
                     </p>
-                    <p className="text-xs text-[var(--text-muted)]">shared films</p>
+                    <p className="text-xs text-[var(--text-muted)]">{t.explore.sharedFilms}</p>
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-[var(--accent)]">
                       {result.match.sharedLikedCount}
                     </p>
-                    <p className="text-xs text-[var(--text-muted)]">both liked</p>
+                    <p className="text-xs text-[var(--text-muted)]">{t.explore.bothLiked}</p>
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-[var(--accent)]">
                       {result.match.sharedWatchedCount}
                     </p>
-                    <p className="text-xs text-[var(--text-muted)]">both watched</p>
+                    <p className="text-xs text-[var(--text-muted)]">{t.explore.bothWatched}</p>
                   </div>
                 </div>
               </CardContent>
@@ -380,11 +383,11 @@ export default function ExplorePage() {
               <TabsList className="w-full grid grid-cols-2">
                 <TabsTrigger value="shared" className="flex items-center gap-1.5">
                   <Film className="h-4 w-4" />
-                  Shared Films ({result.match.sharedFilmsCount})
+                  {t.explore.sharedFilmsTab} ({result.match.sharedFilmsCount})
                 </TabsTrigger>
                 <TabsTrigger value="dates" className="flex items-center gap-1.5">
                   <Calendar className="h-4 w-4" />
-                  Date Ideas ({result.dateIdeas.length})
+                  {t.explore.dateIdeasTab} ({result.dateIdeas.length})
                 </TabsTrigger>
               </TabsList>
 
@@ -393,7 +396,7 @@ export default function ExplorePage() {
                   <Card>
                     <CardContent className="py-12 text-center">
                       <Film className="mx-auto h-12 w-12 text-[var(--text-muted)] mb-4" />
-                      <p className="text-[var(--text-secondary)]">No shared films found — maybe that&apos;s the charm!</p>
+                      <p className="text-[var(--text-secondary)]">{t.explore.noSharedFilms}</p>
                     </CardContent>
                   </Card>
                 ) : (
@@ -572,15 +575,14 @@ export default function ExplorePage() {
               <CardContent className="flex flex-col items-center py-8 text-center">
                 <Sparkles className="h-8 w-8 text-[var(--accent)] mb-3" />
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
-                  Want to find more film lovers?
+                  {t.explore.wantMore}
                 </h3>
                 <p className="text-sm text-[var(--text-secondary)] mb-4 max-w-sm">
-                  Create a free Reels account to discover matches,
-                  get personalized recommendations, and connect with people who share your taste.
+                  {t.explore.wantMoreDesc}
                 </p>
                 <Link href="/signup">
                   <Button>
-                    Join Reels — It&apos;s Free
+                    {t.explore.joinFree}
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </Link>
@@ -593,7 +595,7 @@ export default function ExplorePage() {
         {!result && !isLoading && (
           <div className="mx-auto max-w-3xl">
             <h2 className="text-center text-xl font-semibold text-[var(--text-primary)] mb-8">
-              How it works
+              {t.explore.howItWorks}
             </h2>
             <div className="grid gap-6 sm:grid-cols-3">
               <Card className="text-center">
@@ -601,9 +603,9 @@ export default function ExplorePage() {
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
                     <Users className="h-6 w-6 text-[var(--accent)]" />
                   </div>
-                  <h3 className="font-medium text-[var(--text-primary)] mb-1">Enter profiles</h3>
+                  <h3 className="font-medium text-[var(--text-primary)] mb-1">{t.explore.stepProfiles}</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
-                    Paste two Letterboxd usernames or profile links
+                    {t.explore.stepProfilesDesc}
                   </p>
                 </CardContent>
               </Card>
@@ -612,9 +614,9 @@ export default function ExplorePage() {
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
                     <Heart className="h-6 w-6 text-[var(--accent)]" />
                   </div>
-                  <h3 className="font-medium text-[var(--text-primary)] mb-1">See your match</h3>
+                  <h3 className="font-medium text-[var(--text-primary)] mb-1">{t.explore.stepMatch}</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
-                    Discover shared films and your compatibility score
+                    {t.explore.stepMatchDesc}
                   </p>
                 </CardContent>
               </Card>
@@ -623,9 +625,9 @@ export default function ExplorePage() {
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
                     <Ticket className="h-6 w-6 text-[var(--accent)]" />
                   </div>
-                  <h3 className="font-medium text-[var(--text-primary)] mb-1">Plan a date</h3>
+                  <h3 className="font-medium text-[var(--text-primary)] mb-1">{t.explore.stepDate}</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
-                    Find shared films playing at Dutch cinemas right now
+                    {t.explore.stepDateDesc}
                   </p>
                 </CardContent>
               </Card>
@@ -633,9 +635,9 @@ export default function ExplorePage() {
 
             {/* Scoring explanation */}
             <div className="mt-12 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 shadow-soft">
-              <h3 className="font-semibold text-[var(--text-primary)] mb-3">How scoring works</h3>
+              <h3 className="font-semibold text-[var(--text-primary)] mb-3">{t.explore.scoringTitle}</h3>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">
-                We analyze five signals from your Letterboxd profile for a comprehensive compatibility score:
+                {t.explore.scoringDesc}
               </p>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 mb-4">
                 <div className="rounded-xl bg-[var(--bg-accent)] p-3">
@@ -684,7 +686,7 @@ export default function ExplorePage() {
         {/* Scoring breakdown shown with results */}
         {result && compatibility && (
           <div className="mx-auto max-w-2xl mt-4 mb-8 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 shadow-soft">
-            <h3 className="font-semibold text-[var(--text-primary)] mb-3">Score breakdown</h3>
+            <h3 className="font-semibold text-[var(--text-primary)] mb-3">{t.explore.scoreBreakdown}</h3>
             <div className="grid gap-2 grid-cols-3 sm:grid-cols-5 text-center">
               {[
                 { label: 'Liked', value: result.match.likedOverlap, weight: '30%' },
@@ -709,23 +711,23 @@ export default function ExplorePage() {
         <div className="mx-auto max-w-5xl px-4 py-8 flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--text-muted)]">
           <div className="flex items-center gap-2">
             <Popcorn className="h-4 w-4" />
-            <span>Reels — Film-Driven Social Matching</span>
+            <span>Reels</span>
           </div>
           <nav className="flex items-center gap-4">
             <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">
-              Home
+              {t.common.home}
             </Link>
             <Link href="/login" className="hover:text-[var(--text-secondary)] transition-colors">
-              Login
+              {t.common.login}
             </Link>
             <Link href="/signup" className="hover:text-[var(--text-secondary)] transition-colors">
-              Sign up
+              {t.common.signup}
             </Link>
             <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">
-              Privacy
+              {t.common.privacy}
             </Link>
             <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">
-              Terms
+              {t.common.terms}
             </Link>
           </nav>
         </div>
