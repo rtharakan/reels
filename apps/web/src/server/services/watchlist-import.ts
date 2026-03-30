@@ -3,42 +3,6 @@ import { scrapeWatchlist, scrapeFilms, scrapeRatings, scrapeLikes, normalizeFilm
 import type { ScrapedFilm, ScrapedRatedFilm } from '@reels/letterboxd-scraper';
 import type { EnhancedImportResult } from '@reels/shared-types';
 
-async function resolveAndUpsertFilms(
-  prisma: PrismaClient,
-  scrapedFilms: ScrapedFilm[],
-  apiToken: string,
-): Promise<string[]> {
-  if (scrapedFilms.length === 0) return [];
-
-  const normalizedResults = await normalizeFilms(scrapedFilms, apiToken);
-  const filmIds: string[] = [];
-
-  for (const result of normalizedResults) {
-    if (!result.resolved) continue;
-
-    const film = await prisma.film.upsert({
-      where: { tmdbId: result.resolved.tmdbId },
-      create: {
-        tmdbId: result.resolved.tmdbId,
-        title: result.resolved.title,
-        year: result.resolved.year,
-        posterPath: result.resolved.posterPath,
-        genreIds: result.resolved.genreIds,
-      },
-      update: {
-        title: result.resolved.title,
-        year: result.resolved.year,
-        posterPath: result.resolved.posterPath,
-        genreIds: result.resolved.genreIds,
-      },
-    });
-
-    filmIds.push(film.id);
-  }
-
-  return filmIds;
-}
-
 async function syncEntries(
   prisma: PrismaClient,
   userId: string,
@@ -96,8 +60,9 @@ async function syncRatingEntries(
     } else {
       await prisma.ratingEntry.create({
         data: { userId, filmId, rating },
-      }).catch(() => {
-        // Skip duplicates
+      }).catch((err: { code?: string }) => {
+        // P2002 = unique constraint violation (duplicate)
+        if (err.code !== 'P2002') throw err;
       });
     }
   }

@@ -13,10 +13,13 @@ export type NormalizationResult = {
 
 const TMDB_API_BASE = 'https://api.themoviedb.org/3';
 
+const MAX_RETRIES = 3;
+
 async function searchTMDB(
   title: string,
   year: number | null,
   apiToken: string,
+  retryCount = 0,
 ): Promise<TMDBSearchResult | null> {
   const params = new URLSearchParams({ query: title });
   if (year) params.set('primary_release_year', String(year));
@@ -30,10 +33,10 @@ async function searchTMDB(
   });
 
   if (res.status === 429) {
-    // Rate limited — wait and retry once
+    if (retryCount >= MAX_RETRIES) return null;
     const retryAfter = parseInt(res.headers.get('Retry-After') ?? '2', 10);
     await new Promise((r) => setTimeout(r, retryAfter * 1000));
-    return searchTMDB(title, year, apiToken);
+    return searchTMDB(title, year, apiToken, retryCount + 1);
   }
 
   if (!res.ok) return null;
@@ -42,7 +45,7 @@ async function searchTMDB(
   const results = data.results;
   if (!results || results.length === 0) {
     // Retry without year
-    if (year) return searchTMDB(title, null, apiToken);
+    if (year) return searchTMDB(title, null, apiToken, retryCount);
     return null;
   }
 

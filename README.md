@@ -37,7 +37,7 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 ## Features
 
 - **Letterboxd import** — paste your username, we do the rest
-- **Smart matching** — 70% film overlap, 30% genre similarity
+- **Enhanced matching** — 5 scoring signals: liked overlap (30%), high-rated overlap (25%), genre similarity (20%), watched overlap (15%), and watchlist overlap (10%)
 - **Daily discover feed** — 10 curated cards per day, no infinite scroll
 - **Mutual matches** — see exactly *why* you matched (shared films, genre breakdown)
 - **Explore tool** — compare any two profiles publicly, no account needed

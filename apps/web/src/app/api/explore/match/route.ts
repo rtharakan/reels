@@ -40,7 +40,7 @@ async function resolveTMDBPoster(
 async function enrichPostersWithTMDB(
   films: ExploreFilm[],
 ): Promise<ExploreFilm[]> {
-  const apiToken = process.env.TMDB_API_TOKEN;
+  const apiToken = process.env.TMDB_API_READ_ACCESS_TOKEN ?? process.env.TMDB_API_TOKEN;
   if (!apiToken) return films;
 
   const enriched = await Promise.all(

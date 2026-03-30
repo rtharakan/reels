@@ -208,10 +208,24 @@ export const userRouter = router({
       data: { deletedAt: new Date() },
     });
 
-    // Clean up match scores and allocations
-    await ctx.prisma.matchScore.deleteMany({
-      where: { OR: [{ userId: ctx.userId }, { candidateId: ctx.userId }] },
-    });
+    // Clean up all user data
+    await Promise.all([
+      ctx.prisma.matchScore.deleteMany({
+        where: { OR: [{ userId: ctx.userId }, { candidateId: ctx.userId }] },
+      }),
+      ctx.prisma.interest.deleteMany({
+        where: { OR: [{ fromUserId: ctx.userId }, { toUserId: ctx.userId }] },
+      }),
+      ctx.prisma.seenUser.deleteMany({
+        where: { OR: [{ userId: ctx.userId }, { seenUserId: ctx.userId }] },
+      }),
+      ctx.prisma.dailyAllocation.deleteMany({
+        where: { userId: ctx.userId },
+      }),
+      ctx.prisma.deviceToken.deleteMany({
+        where: { userId: ctx.userId },
+      }),
+    ]);
 
     return { success: true };
   }),
@@ -219,11 +233,26 @@ export const userRouter = router({
   exportData: protectedProcedure.query(async ({ ctx }) => {
     const user = await ctx.prisma.user.findUnique({
       where: { id: ctx.userId },
-      include: {
-        watchlistEntries: { include: { film: true } },
-        matchesAsA: true,
-        matchesAsB: true,
-        interestsSent: true,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        age: true,
+        location: true,
+        bio: true,
+        intent: true,
+        letterboxdUsername: true,
+        profilePhotos: true,
+        prompts: true,
+        topFilmIds: true,
+        timezone: true,
+        createdAt: true,
+        onboardingCompletedAt: true,
+        privacyPolicyConsentedAt: true,
+        watchlistEntries: { include: { film: { select: { id: true, title: true, year: true, tmdbId: true } } } },
+        matchesAsA: { select: { id: true, userBId: true, score: true, sharedFilmIds: true, createdAt: true } },
+        matchesAsB: { select: { id: true, userAId: true, score: true, sharedFilmIds: true, createdAt: true } },
+        interestsSent: { select: { id: true, toUserId: true, createdAt: true } },
       },
     });
 

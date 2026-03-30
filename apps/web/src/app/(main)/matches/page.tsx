@@ -9,7 +9,7 @@ export default function MatchesPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-teal-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-400 border-t-transparent" />
       </div>
     );
   }
@@ -35,7 +35,7 @@ export default function MatchesPage() {
           <Link
             key={match.matchId}
             href={`/matches/${match.matchId}`}
-            className="flex items-center gap-4 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition-colors hover:bg-blue-50 dark:bg-slate-700"
+            className="flex items-center gap-4 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 transition-colors hover:bg-blue-50 dark:hover:bg-slate-700"
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 text-lg font-bold text-[var(--text-primary)]">
               {match.otherUser.name.charAt(0)}

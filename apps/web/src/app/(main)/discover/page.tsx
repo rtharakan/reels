@@ -59,7 +59,7 @@ export default function DiscoverPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-teal-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-400 border-t-transparent" />
       </div>
     );
   }
@@ -101,7 +101,7 @@ export default function DiscoverPage() {
               {card.name.charAt(0)}
             </div>
           )}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white p-4">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white dark:from-slate-800 p-4">
             <h2 className="text-xl font-bold text-[var(--text-primary)]">{card.name}, {card.age}</h2>
             <p className="text-sm text-[var(--text-secondary)]">{card.location}</p>
           </div>

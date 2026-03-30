@@ -24,27 +24,21 @@ export async function createMatchIfMutual(
   const userAId = sorted[0]!;
   const userBId = sorted[1]!;
 
-  // Check if match already exists
-  const existingMatch = await prisma.match.findUnique({
-    where: { userAId_userBId: { userAId, userBId } },
-  });
-
-  if (existingMatch) {
-    return { isMatch: true, matchId: existingMatch.id };
-  }
-
   // Get match score
   const matchScore = await prisma.matchScore.findUnique({
     where: { userId_candidateId: { userId: fromUserId, candidateId: toUserId } },
   });
 
-  const match = await prisma.match.create({
-    data: {
+  // Use upsert to handle concurrent match creation race condition
+  const match = await prisma.match.upsert({
+    where: { userAId_userBId: { userAId, userBId } },
+    create: {
       userAId,
       userBId,
       score: matchScore?.totalScore ?? 0,
       sharedFilmIds: matchScore?.sharedFilmIds ?? [],
     },
+    update: {},
   });
 
   return { isMatch: true, matchId: match.id };

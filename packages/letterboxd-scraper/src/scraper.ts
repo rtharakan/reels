@@ -3,7 +3,6 @@ import * as cheerio from 'cheerio';
 const USER_AGENT = 'Reels/1.0 (film-matching-app)';
 const LETTERBOXD_BASE = 'https://letterboxd.com';
 const POLITE_DELAY_MS = 500;
-const MAX_CONCURRENT = 2;
 
 export type ScrapedFilm = {
   slug: string;

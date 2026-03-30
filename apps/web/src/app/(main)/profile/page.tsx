@@ -27,7 +27,7 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-teal-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-400 border-t-transparent" />
       </div>
     );
   }
@@ -94,7 +94,7 @@ export default function ProfilePage() {
 
         {/* Actions */}
         <div className="space-y-2">
-          <Link href="/profile/edit" className="block w-full rounded-lg border border-slate-200 px-4 py-2.5 text-center text-sm font-medium text-[var(--text-secondary)] hover:bg-blue-50 dark:bg-slate-700">
+          <Link href="/profile/edit" className="block w-full rounded-lg border border-slate-200 dark:border-slate-600 px-4 py-2.5 text-center text-sm font-medium text-[var(--text-secondary)] hover:bg-blue-50 dark:hover:bg-slate-700">
             Edit Profile
           </Link>
 
@@ -102,13 +102,13 @@ export default function ProfilePage() {
             <button
               onClick={() => reimportMutation.mutate({ letterboxdUsername: user.letterboxdUsername! })}
               disabled={reimportMutation.isPending}
-              className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:bg-blue-50 dark:bg-slate-700 disabled:opacity-50"
+              className="w-full rounded-lg border border-slate-200 dark:border-slate-600 px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:bg-blue-50 dark:hover:bg-slate-700 disabled:opacity-50"
             >
               {reimportMutation.isPending ? 'Re-importing...' : 'Re-import Watchlist'}
             </button>
           )}
 
-          <Link href="/profile/blocked" className="block w-full rounded-lg border border-slate-200 px-4 py-2.5 text-center text-sm font-medium text-[var(--text-secondary)] hover:bg-blue-50 dark:bg-slate-700">
+          <Link href="/profile/blocked" className="block w-full rounded-lg border border-slate-200 dark:border-slate-600 px-4 py-2.5 text-center text-sm font-medium text-[var(--text-secondary)] hover:bg-blue-50 dark:hover:bg-slate-700">
             Blocked Users
           </Link>
 
@@ -139,7 +139,7 @@ export default function ProfilePage() {
               This action cannot be undone.
             </p>
             <div className="mt-6 flex gap-3">
-              <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 rounded-lg border border-slate-200 px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-blue-50 dark:bg-slate-700">
+              <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 rounded-lg border border-slate-200 dark:border-slate-600 px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-blue-50 dark:hover:bg-slate-700">
                 Cancel
               </button>
               <button

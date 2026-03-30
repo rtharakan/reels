@@ -87,12 +87,19 @@ reels/
 
 ## The Matching Engine
 
-The matching engine lives in `packages/matching-engine/` and computes a compatibility score between two users:
+The matching engine lives in `packages/matching-engine/` and computes a compatibility score between two users using five weighted signals:
 
-- **Film overlap (70% weight)** — Jaccard similarity over each user's watchlist film set.
-- **Genre similarity (30% weight)** — Cosine similarity over normalised genre frequency vectors.
+| Signal | Weight | What it measures |
+|---|---|---|
+| **Liked overlap** | 30% | Films both users explicitly liked — strongest signal of taste |
+| **High-rated overlap** | 25% | Films both rated 4+ stars — conscious appreciation |
+| **Genre similarity** | 20% | Cosine similarity across normalised genre frequency vectors |
+| **Watched overlap** | 15% | Films both users have seen — shared viewing experience |
+| **Watchlist overlap** | 10% | Films both want to see — shared intent |
 
 A minimum of 5 films per user is required before matching kicks in. Scores range from 0 to 1. The Discover feed ranks candidates by this score and filters out already-seen users, blocked users, and intent-incompatible profiles.
+
+The legacy scoring mode (70% film overlap + 30% genre similarity) is preserved for backward compatibility but the enhanced scorer is used for all new computations.
 
 ---
 
@@ -115,7 +122,8 @@ All contributions must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 - [x] Web MVP — onboarding, discover, matches, profile, safety
 - [x] Explore tool — public profile comparison + Dutch cinema date planner
-- [x] Visual polish — pastel green/blue/creme palette, DM Sans typography
+- [x] Visual polish — blue pastel palette with dark mode support
+- [x] Enhanced matching — 5-signal scoring (likes, ratings, watched, watchlist, genre)
 - [ ] iOS app — native SwiftUI client with push notifications
 - [ ] Rate limiting and production hardening
 - [ ] GDPR data export and scheduled cleanup
