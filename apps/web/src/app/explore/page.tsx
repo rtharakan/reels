@@ -465,7 +465,7 @@ export default function ExplorePage() {
                         <Card key={groupKey} className="overflow-hidden">
                           <button
                             type="button"
-                            className="flex w-full items-center gap-4 p-4 text-left hover:bg-blue-50/50 dark:hover:bg-slate-700/50 transition-colors"
+                            className="flex w-full items-center gap-4 p-4 text-left hover:bg-[var(--bg-accent)] transition-colors"
                             onClick={() => {
                               if (!hasMultiple) return;
                               setExpandedGroups((prev) => {

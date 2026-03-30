@@ -51,15 +51,15 @@ interface ScanResponse {
 function getLabelColor(label: string): string {
   switch (label) {
     case 'Soul Mates':
-      return 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300';
+      return 'bg-[var(--accent-soft)] text-[var(--accent)]';
     case 'Great Match':
-      return 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+      return 'bg-[var(--accent-soft)] text-[var(--accent)]';
     case 'Good Vibes':
-      return 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
+      return 'bg-[var(--bg-accent)] text-[var(--text-secondary)]';
     case 'Film Friends':
-      return 'bg-slate-50 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
+      return 'bg-[var(--bg-accent)] text-[var(--text-muted)]';
     default:
-      return 'bg-slate-50 text-slate-500 dark:bg-slate-800 dark:text-slate-500';
+      return 'bg-[var(--bg-muted)] text-[var(--text-muted)]';
   }
 }
 
@@ -112,10 +112,10 @@ export default function ScanPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
-      <header className="border-b border-blue-100 dark:border-slate-700 bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-blue-500" />
+            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
             <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
           </Link>
           <div className="flex items-center gap-3">
@@ -139,16 +139,16 @@ export default function ScanPage() {
       <main className="mx-auto max-w-3xl px-4 py-8">
         {/* Hero */}
         <div className="mb-12 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-600">
-            <Radar className="h-8 w-8 text-blue-500" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent-soft)] border border-[var(--border-default)]">
+            <Radar className="h-8 w-8 text-[var(--accent)]" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-            Scan for <span className="text-blue-400 dark:text-blue-300">Film Twins</span>
+            Scan for <span className="text-[var(--accent)]">Film Twins</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-[var(--text-secondary)]">
             Enter your Letterboxd profile and our agent will explore the platform
             to find people with similar film taste — scored using{' '}
-            <Link href="/#scoring" className="text-blue-500 hover:underline">
+            <Link href="/#scoring" className="text-[var(--accent)] hover:underline">
               5-signal matching
             </Link>.
           </p>
@@ -190,11 +190,11 @@ export default function ScanPage() {
                       disabled={isScanning}
                       className={`rounded-xl border p-3 text-center transition-all ${
                         depth === opt.value
-                          ? 'border-blue-400 bg-blue-50 dark:bg-slate-700 ring-1 ring-blue-300'
+                          ? 'border-[var(--accent)] bg-[var(--accent-soft)] ring-1 ring-[var(--ring)]'
                           : 'border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500'
                       }`}
                     >
-                      <opt.icon className={`mx-auto h-5 w-5 mb-1 ${depth === opt.value ? 'text-blue-500' : 'text-slate-400'}`} />
+                      <opt.icon className={`mx-auto h-5 w-5 mb-1 ${depth === opt.value ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'}`} />
                       <p className={`text-sm font-medium ${depth === opt.value ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}>
                         {opt.label}
                       </p>
@@ -234,9 +234,9 @@ export default function ScanPage() {
         {isScanning && (
           <Card className="mb-8 overflow-hidden">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-400/5 to-transparent animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent)]/10 via-[var(--accent)]/5 to-transparent animate-pulse" />
               <CardContent className="relative py-8 text-center">
-                <Radar className="mx-auto h-10 w-10 text-blue-500 animate-pulse mb-3" />
+                <Radar className="mx-auto h-10 w-10 text-[var(--accent)] animate-pulse mb-3" />
                 <p className="text-lg font-medium text-[var(--text-primary)]">
                   Scanning Letterboxd...
                 </p>
@@ -265,7 +265,7 @@ export default function ScanPage() {
                         href={`https://letterboxd.com/${result.username}/`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-medium text-blue-500 hover:underline"
+                        className="font-medium text-[var(--accent)] hover:underline"
                       >
                         {result.username}
                       </a>
@@ -298,7 +298,7 @@ export default function ScanPage() {
                   <Card key={match.username} className="overflow-hidden hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-4 p-4">
                       {/* Rank */}
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400 font-bold text-sm shrink-0">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] font-bold text-sm shrink-0">
                         #{index + 1}
                       </div>
 
@@ -359,9 +359,9 @@ export default function ScanPage() {
             )}
 
             {/* CTA */}
-            <Card className="bg-white dark:bg-slate-800">
+            <Card className="bg-[var(--bg-card)]">
               <CardContent className="flex flex-col items-center py-8 text-center">
-                <Sparkles className="h-8 w-8 text-blue-500 mb-3" />
+                <Sparkles className="h-8 w-8 text-[var(--accent)] mb-3" />
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
                   Found someone interesting?
                 </h3>
@@ -389,8 +389,8 @@ export default function ScanPage() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
-                    <Film className="h-6 w-6 text-blue-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
+                    <Film className="h-6 w-6 text-[var(--accent)]" />
                   </div>
                   <h3 className="font-medium text-[var(--text-primary)] mb-1">Import your taste</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
@@ -400,8 +400,8 @@ export default function ScanPage() {
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
-                    <Radar className="h-6 w-6 text-blue-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
+                    <Radar className="h-6 w-6 text-[var(--accent)]" />
                   </div>
                   <h3 className="font-medium text-[var(--text-primary)] mb-1">Discover fans</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
@@ -411,8 +411,8 @@ export default function ScanPage() {
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
-                    <Users className="h-6 w-6 text-blue-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
+                    <Users className="h-6 w-6 text-[var(--accent)]" />
                   </div>
                   <h3 className="font-medium text-[var(--text-primary)] mb-1">Score & rank</h3>
                   <p className="text-sm text-[var(--text-secondary)]">

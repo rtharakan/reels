@@ -18,10 +18,10 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
-      <header className="border-b border-blue-100 dark:border-slate-700 bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-blue-500" />
+            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
             <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
           </Link>
           <nav className="flex items-center gap-2 sm:gap-3">
@@ -36,7 +36,7 @@ export default function AboutPage() {
             </Link>
             <Link
               href="/signup"
-              className="rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors"
+              className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98]"
             >
               Get Started
             </Link>
@@ -54,8 +54,8 @@ export default function AboutPage() {
         {/* 5-Signal Scoring */}
         <section id="scoring" className="mb-16">
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
-              <BarChart3 className="h-5 w-5 text-blue-500" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
+              <BarChart3 className="h-5 w-5 text-[var(--accent)]" />
             </div>
             <h2 className="text-2xl font-bold text-[var(--text-primary)]">5-Signal Scoring</h2>
           </div>
@@ -73,14 +73,14 @@ export default function AboutPage() {
               { icon: Eye, label: 'Watched Films', weight: '15%', desc: 'Films you have both seen. Shared viewing experience.' },
               { icon: List, label: 'Watchlist Overlap', weight: '10%', desc: 'Films you both want to watch. Shared curiosity and intent.' },
             ].map(({ icon: Icon, label, weight, desc }) => (
-              <div key={label} className="flex items-start gap-4 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 shrink-0">
-                  <Icon className="h-5 w-5 text-blue-500" />
+              <div key={label} className="flex items-start gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-soft)] shrink-0">
+                  <Icon className="h-5 w-5 text-[var(--accent)]" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-medium text-[var(--text-primary)]">{label}</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">{weight}</span>
+                    <span className="text-xs font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-2 py-0.5 rounded-full">{weight}</span>
                   </div>
                   <p className="text-sm text-[var(--text-secondary)]">{desc}</p>
                 </div>
@@ -88,8 +88,8 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <div className="flex items-start gap-2 rounded-lg bg-blue-50/50 dark:bg-slate-700/50 border border-blue-100 dark:border-slate-600 p-4">
-            <Info className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
+          <div className="flex items-start gap-2 rounded-lg bg-[var(--bg-accent)] border border-[var(--border-default)] p-4">
+            <Info className="h-4 w-4 text-[var(--accent)] mt-0.5 shrink-0" />
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
               Missing signals (e.g., no liked films) contribute 0 and do not penalize your score.
               The more data you have on Letterboxd, the more accurate your matches.
@@ -107,7 +107,7 @@ export default function AboutPage() {
               { label: 'Good Vibes', range: '15-29%', emoji: '✨' },
               { label: 'Film Friends', range: '5-14%', emoji: '🎞️' },
             ].map((m) => (
-              <div key={m.label} className="flex items-center gap-3 rounded-lg border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-3">
+              <div key={m.label} className="flex items-center gap-3 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] p-3">
                 <span className="text-xl">{m.emoji}</span>
                 <div>
                   <p className="font-medium text-[var(--text-primary)]">{m.label}</p>
@@ -129,7 +129,7 @@ export default function AboutPage() {
               { step: '4', title: 'Connect', desc: 'Mutual matches see shared films, genre overlap, and a "why you matched" breakdown. Plan a cinema date.' },
             ].map(({ step, title, desc }) => (
               <div key={step} className="flex gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white text-sm font-bold shrink-0">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent)] text-white text-sm font-bold shrink-0">
                   {step}
                 </div>
                 <div>
@@ -153,11 +153,11 @@ export default function AboutPage() {
               { title: 'Dual Intent', desc: 'Looking for friends, dates, or both. You control the mode.' },
               { title: 'Safety First', desc: 'Block and report within 2 taps from any profile view' },
             ].map((f) => (
-              <div key={f.title} className="rounded-lg border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
+              <div key={f.title} className="rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] p-4">
                 <div className="flex items-center justify-between mb-1">
                   <h3 className="font-medium text-[var(--text-primary)]">{f.title}</h3>
                   {'href' in f && f.href && (
-                    <Link href={f.href} className="text-blue-500 hover:text-blue-600">
+                    <Link href={f.href} className="text-[var(--accent)] hover:text-[var(--accent-hover)] transition-colors">
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   )}
@@ -176,9 +176,9 @@ export default function AboutPage() {
               { icon: Shield, title: 'Privacy by Design', desc: 'We only access your public Letterboxd data. No demographic matching, no dark patterns, GDPR-compliant with full data export and deletion.' },
               { icon: Code2, title: 'Open Source', desc: 'Reels is open-source on GitHub. The matching algorithm, scraping logic, and UI are all transparent and auditable.' },
             ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="flex items-start gap-4 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 shrink-0">
-                  <Icon className="h-5 w-5 text-blue-500" />
+              <div key={title} className="flex items-start gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--accent-soft)] shrink-0">
+                  <Icon className="h-5 w-5 text-[var(--accent)]" />
                 </div>
                 <div>
                   <h3 className="font-medium text-[var(--text-primary)] mb-1">{title}</h3>
@@ -190,8 +190,8 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <section className="rounded-2xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 text-center">
-          <Sparkles className="mx-auto h-8 w-8 text-blue-500 mb-3" />
+        <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-8 text-center">
+          <Sparkles className="mx-auto h-8 w-8 text-[var(--accent)] mb-3" />
           <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">Ready to find your film twins?</h2>
           <p className="text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
             No account needed to try Explore or Scan. Create an account for daily matching.
@@ -199,19 +199,19 @@ export default function AboutPage() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/explore"
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-5 py-2.5 text-sm font-semibold text-[var(--text-primary)] hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] px-5 py-2.5 text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors active:scale-[0.98]"
             >
               Try Explore
             </Link>
             <Link
               href="/scan"
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-5 py-2.5 text-sm font-semibold text-[var(--text-primary)] hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] px-5 py-2.5 text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors active:scale-[0.98]"
             >
               Try Scan
             </Link>
             <Link
               href="/signup"
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 dark:bg-blue-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98]"
             >
               Create Account
             </Link>
@@ -220,7 +220,7 @@ export default function AboutPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-blue-100/50 dark:border-slate-700/50 mt-12">
+      <footer className="border-t border-[var(--border-default)] mt-12">
         <div className="mx-auto max-w-5xl px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
           <div className="flex items-center gap-1.5">
             <Popcorn className="h-3.5 w-3.5" />
