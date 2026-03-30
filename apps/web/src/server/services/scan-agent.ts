@@ -53,8 +53,9 @@ function getLabel(score: number): string {
 }
 
 /**
- * Scrape a Letterboxd film's "fans" / "likes" page to find usernames
- * of people who liked a particular film. Also tries /members/ if /fans/ yields nothing.
+ * Scrape a Letterboxd film page to find usernames from popular reviews and activity.
+ * Uses the film's main page which is accessible (not behind Cloudflare challenge).
+ * Falls back to fans/members pages if they're accessible.
  */
 async function discoverFansOfFilm(
   filmSlug: string,
@@ -72,58 +73,75 @@ async function discoverFansOfFilm(
     'fans', 'likes', 'reviews', 'ratings', 'stats', 'genres',
     'year', 'popular', 'recent', 'this', 'calendar',
     'cookie-consent', 'sign-in', 'create-account', 'legal',
+    'contact', 'welcome', 'apps', 'api-beta', 'gift-guide',
+    'year-in-review',
   ]);
 
-  // Try multiple page types for fan discovery
-  const pageTypes = [
-    `${LETTERBOXD_BASE}/film/${filmSlug}/fans/`,
-    `${LETTERBOXD_BASE}/film/${filmSlug}/members/`,
-    `${LETTERBOXD_BASE}/film/${filmSlug}/likes/`,
-  ];
+  function extractUsernamesFromHtml(html: string) {
+    // Cloudflare challenge detection
+    if (html.includes('Just a moment...') || html.includes('cf_chl_opt')) return;
 
-  for (const baseUrl of pageTypes) {
-    for (let page = 1; page <= maxPages; page++) {
-      const url = page === 1 ? baseUrl : baseUrl + `page/${page}/`;
-
-      try {
-        const res = await fetch(url, {
-          headers: {
-            'User-Agent': USER_AGENT,
-            Accept: 'text/html,application/xhtml+xml',
-            'Accept-Language': 'en-US,en;q=0.9',
-          },
-        });
-
-        if (!res.ok) break;
-        const html = await res.text();
-
-        // Strategy 1: Avatar/person card links — href="/username/"
-        const avatarPattern = /href="\/([a-zA-Z0-9_-]{2,30})\/"/g;
-        let match;
-        while ((match = avatarPattern.exec(html)) !== null) {
-          const name = match[1]!;
-          if (!EXCLUDED_PATHS.has(name.toLowerCase())) {
-            usernames.add(name);
-          }
-        }
-
-        // Strategy 2: data-person attribute (newer Letterboxd markup)
-        const dataPersonPattern = /data-person="([a-zA-Z0-9_-]+)"/g;
-        while ((match = dataPersonPattern.exec(html)) !== null) {
-          if (match[1]) usernames.add(match[1]);
-        }
-
-        if (!html.includes('class="next"') && !html.includes('rel="next"')) break;
-      } catch {
-        break;
+    // Strategy 1: Avatar/person card links — href="/username/"
+    const avatarPattern = /href="\/([a-zA-Z0-9_-]{2,30})\/"/g;
+    let match;
+    while ((match = avatarPattern.exec(html)) !== null) {
+      const name = match[1]!;
+      if (!EXCLUDED_PATHS.has(name.toLowerCase())) {
+        usernames.add(name);
       }
-
-      await new Promise((r) => setTimeout(r, CRAWL_DELAY));
     }
 
-    // If we found usernames from this page type, skip the others
-    if (usernames.size > 5) break;
-    await new Promise((r) => setTimeout(r, CRAWL_DELAY));
+    // Strategy 2: data-person attribute (newer Letterboxd markup)
+    const dataPersonPattern = /data-person="([a-zA-Z0-9_-]+)"/g;
+    while ((match = dataPersonPattern.exec(html)) !== null) {
+      if (match[1]) usernames.add(match[1]);
+    }
+  }
+
+  // Primary: film main page (always accessible, has popular reviews)
+  try {
+    const res = await fetch(`${LETTERBOXD_BASE}/film/${filmSlug}/`, {
+      headers: {
+        'User-Agent': USER_AGENT,
+        Accept: 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+    });
+    if (res.ok) {
+      const html = await res.text();
+      extractUsernamesFromHtml(html);
+    }
+  } catch { /* non-fatal */ }
+
+  // Fallback: try fans/members/likes pages (may be behind Cloudflare)
+  if (usernames.size < 3) {
+    const fallbackUrls = [
+      `${LETTERBOXD_BASE}/film/${filmSlug}/fans/`,
+      `${LETTERBOXD_BASE}/film/${filmSlug}/members/`,
+      `${LETTERBOXD_BASE}/film/${filmSlug}/likes/`,
+    ];
+
+    for (const baseUrl of fallbackUrls) {
+      for (let page = 1; page <= maxPages; page++) {
+        const url = page === 1 ? baseUrl : baseUrl + `page/${page}/`;
+        try {
+          const res = await fetch(url, {
+            headers: {
+              'User-Agent': USER_AGENT,
+              Accept: 'text/html,application/xhtml+xml',
+              'Accept-Language': 'en-US,en;q=0.9',
+            },
+          });
+          if (!res.ok) break;
+          const html = await res.text();
+          extractUsernamesFromHtml(html);
+          if (!html.includes('class="next"') && !html.includes('rel="next"')) break;
+        } catch { break; }
+        await new Promise((r) => setTimeout(r, CRAWL_DELAY));
+      }
+      if (usernames.size > 5) break;
+      await new Promise((r) => setTimeout(r, CRAWL_DELAY));
+    }
   }
 
   return Array.from(usernames);
@@ -139,7 +157,7 @@ async function discoverCandidateUsernames(
   maxFilmsToScan: number = 10,
   onProgress?: (p: Partial<ScanProgress>) => void,
 ): Promise<string[]> {
-  // Prioritize liked films (strongest signal), then watched
+  // Prioritize liked films (strongest signal), then watched, then watchlist as fallback
   const seedFilms: ExploreFilm[] = [];
   const seen = new Set<string>();
 
@@ -153,6 +171,15 @@ async function discoverCandidateUsernames(
     if (!seen.has(film.letterboxdSlug)) {
       seedFilms.push(film);
       seen.add(film.letterboxdSlug);
+    }
+  }
+  // Fallback: use watchlist films when liked/watched are empty (Cloudflare blocks)
+  if (seedFilms.length === 0) {
+    for (const film of sourceData.watchlist.films) {
+      if (!seen.has(film.letterboxdSlug)) {
+        seedFilms.push(film);
+        seen.add(film.letterboxdSlug);
+      }
     }
   }
 
@@ -218,7 +245,7 @@ export async function runScanAgent(
     sourceData.watched.length === 0 &&
     sourceData.liked.length === 0
   ) {
-    throw new Error(`${username}'s profile appears empty or private`);
+    throw new Error(`${username}'s profile appears empty or private. Ensure your Letterboxd profile and watchlist are public.`);
   }
 
   // Phase 2: Discover candidate usernames by crawling film fan pages
@@ -269,9 +296,10 @@ export async function runScanAgent(
 
       if (
         candidateData.watchlist.films.length === 0 &&
-        candidateData.watched.length === 0
+        candidateData.watched.length === 0 &&
+        candidateData.liked.length === 0
       ) {
-        continue; // Skip empty profiles
+        continue; // Skip empty/private profiles
       }
 
       const candidateUserData: ExploreUserData = {
