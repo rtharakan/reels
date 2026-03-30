@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '../trpc';
+import { router, onboardedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { getDiscoverFeed } from '../services/discover-feed';
 import { createMatchIfMutual } from '../services/match-creation';
 
 export const discoverRouter = router({
-  getFeed: protectedProcedure.query(async ({ ctx }) => {
+  getFeed: onboardedProcedure.query(async ({ ctx }) => {
     return getDiscoverFeed(ctx.prisma, ctx.userId);
   }),
 
-  expressInterest: protectedProcedure
+  expressInterest: onboardedProcedure
     .input(z.object({ targetUserId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       if (input.targetUserId === ctx.userId) {
@@ -77,7 +77,7 @@ export const discoverRouter = router({
       };
     }),
 
-  skip: protectedProcedure
+  skip: onboardedProcedure
     .input(z.object({ targetUserId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       // Mark as seen
@@ -110,7 +110,10 @@ async function incrementDailyAllocation(
   const now = new Date();
   const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: tz }); // YYYY-MM-DD
   const todayStr = formatter.format(now);
-  const todayDate = new Date(todayStr + 'T00:00:00.000Z');
+  const localMidnight = new Date(`${todayStr}T00:00:00`);
+  const utcMidnight = new Date(`${todayStr}T00:00:00Z`);
+  const tzOffsetMs = utcMidnight.getTime() - localMidnight.getTime();
+  const todayDate = new Date(utcMidnight.getTime() + tzOffsetMs);
 
   await prisma.dailyAllocation.upsert({
     where: {

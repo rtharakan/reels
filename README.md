@@ -40,7 +40,7 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 - **Enhanced matching** — 5 scoring signals: liked overlap (30%), high-rated overlap (25%), genre similarity (20%), watched overlap (15%), and watchlist overlap (10%)
 - **Daily discover feed** — 10 curated cards per day, no infinite scroll
 - **Mutual matches** — see exactly *why* you matched (shared films, genre breakdown)
-- **Explore tool** — compare any two profiles publicly, no account needed
+- **Explore tool** — compare any two profiles publicly using the same 5-signal scoring, no account needed
 - **Dutch cinema dates** — find shared films screening near you
 
 ## Documentation

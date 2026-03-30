@@ -18,11 +18,11 @@ No swiping on selfies. No algorithm-optimized engagement traps. Just shared film
 
 1. **Sign up** with email (magic link) or Google/Apple OAuth.
 2. **Import your Letterboxd watchlist** — we scrape your public profile and resolve every film against TMDB for rich metadata.
-3. **Get matched** — our engine scores candidates on direct film overlap (70%) and genre similarity (30%).
+3. **Get matched** — our engine scores candidates on five signals: liked overlap (30%), high-rated overlap (25%), genre similarity (20%), watched overlap (15%), and watchlist overlap (10%).
 4. **Browse Discover** — see 10 cards a day, each showing shared films and a compatibility percentage. Express interest or skip.
 5. **Mutual match** — when both of you say yes, you're connected. See exactly *why* you matched: shared films, genre tendencies, the works.
 
-There's also an **Explore** page (no account needed) where you can compare any two Letterboxd profiles head-to-head — complete with cinema showtime suggestions for cities across the Netherlands.
+There's also an **Explore** page (no account needed) where you can compare any two Letterboxd profiles head-to-head using the same 5-signal scoring — complete with cinema showtime suggestions for cities across the Netherlands.
 
 ---
 
@@ -99,7 +99,13 @@ The matching engine lives in `packages/matching-engine/` and computes a compatib
 
 A minimum of 5 films per user is required before matching kicks in. Scores range from 0 to 1. The Discover feed ranks candidates by this score and filters out already-seen users, blocked users, and intent-incompatible profiles.
 
-The legacy scoring mode (70% film overlap + 30% genre similarity) is preserved for backward compatibility but the enhanced scorer is used for all new computations.
+The legacy scoring mode (70% film overlap + 30% genre similarity) is preserved for backward compatibility but the enhanced scorer is used everywhere — both Explore and authenticated matching.
+
+---
+
+## API Rate Limiting
+
+Public API endpoints (e.g. `/api/explore/match`) are rate-limited to 20 requests per minute per IP address. Responses include `Retry-After` headers when the limit is exceeded.
 
 ---
 
@@ -125,7 +131,7 @@ All contributions must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 - [x] Visual polish — blue pastel palette with dark mode support
 - [x] Enhanced matching — 5-signal scoring (likes, ratings, watched, watchlist, genre)
 - [ ] iOS app — native SwiftUI client with push notifications
-- [ ] Rate limiting and production hardening
+- [x] Rate limiting and production hardening
 - [ ] GDPR data export and scheduled cleanup
 - [ ] App Store submission
 

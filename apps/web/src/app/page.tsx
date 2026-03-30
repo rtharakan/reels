@@ -11,8 +11,8 @@ export default function HomePage() {
             <Popcorn className="h-6 w-6 text-blue-500" />
             <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
           </div>
-          <nav className="flex items-center gap-3">
-            <Link href="/explore" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+          <nav className="flex items-center gap-2 sm:gap-3">
+            <Link href="/explore" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Explore
             </Link>
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
@@ -94,73 +94,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How Scoring Works */}
+      {/* How Scoring Works — Compact */}
       <section className="mx-auto max-w-4xl px-4 py-16">
         <div className="rounded-2xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-8">
           <div className="flex items-center gap-3 mb-6">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
               <BarChart3 className="h-5 w-5 text-blue-500" />
             </div>
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">How We Score Compatibility</h2>
+            <h2 className="text-2xl font-bold text-[var(--text-primary)]">5-Signal Scoring</h2>
           </div>
-          <p className="text-[var(--text-secondary)] mb-6 leading-relaxed">
-            Your compatibility score is calculated by looking at five different signals from your Letterboxd profile. Each signal tells us something different about your film taste.
-          </p>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-6">
-            <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-[var(--text-primary)]">Liked Films</span>
-                <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">30%</span>
+          <div className="grid gap-3 grid-cols-3 sm:grid-cols-5 mb-6">
+            {[
+              { label: 'Liked Films', weight: '30%' },
+              { label: 'High Ratings', weight: '25%' },
+              { label: 'Genre Taste', weight: '20%' },
+              { label: 'Watched Films', weight: '15%' },
+              { label: 'Watchlist', weight: '10%' },
+            ].map((s) => (
+              <div key={s.label} className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3 text-center">
+                <span className="text-lg font-bold text-blue-600 dark:text-blue-400">{s.weight}</span>
+                <p className="text-xs text-[var(--text-secondary)] mt-1">{s.label}</p>
               </div>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                Films you both hearted on Letterboxd. This is the strongest signal — it means you both loved the same movies.
-              </p>
-            </div>
-            <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-[var(--text-primary)]">High Ratings</span>
-                <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">25%</span>
-              </div>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                Films you both rated 4 stars or higher. Shows you both consciously appreciate the same cinema.
-              </p>
-            </div>
-            <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-[var(--text-primary)]">Genre Taste</span>
-                <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">20%</span>
-              </div>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                How similar your genre preferences are across all your films. Even without overlap, similar taste counts.
-              </p>
-            </div>
-            <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-[var(--text-primary)]">Watched Films</span>
-                <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">15%</span>
-              </div>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                Films you have both seen. Shared viewing history shows you pick the same movies even if you rate them differently.
-              </p>
-            </div>
-            <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-[var(--text-primary)]">Watchlist Overlap</span>
-                <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">10%</span>
-              </div>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                Films on both your watchlists. Shared curiosity about the same upcoming films is a nice bonus.
-              </p>
-            </div>
+            ))}
           </div>
 
           <div className="flex items-start gap-2 rounded-lg bg-blue-50/50 dark:bg-slate-700/50 border border-blue-100 dark:border-slate-600 p-4">
             <Info className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
             <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-              The Explore feature uses a simpler version based on watchlist overlap and genre similarity.
-              When you create an account, we use the full 5-signal score for more accurate
-              matching. Missing signals (e.g. no liked films) contribute 0 and do not penalize your score.
+              Both the Explore feature and logged-in matching use the same 5-signal algorithm.
+              Missing signals (e.g. no liked films) contribute 0 and do not penalize your score.
             </p>
           </div>
         </div>

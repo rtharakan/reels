@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '../trpc';
+import { router, onboardedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import type { FilmPreview } from '@reels/shared-types';
 
@@ -11,7 +11,7 @@ const TMDB_GENRE_MAP: Record<number, string> = {
 };
 
 export const matchRouter = router({
-  list: protectedProcedure.query(async ({ ctx }) => {
+  list: onboardedProcedure.query(async ({ ctx }) => {
     const matches = await ctx.prisma.match.findMany({
       where: {
         OR: [
@@ -49,7 +49,7 @@ export const matchRouter = router({
     });
   }),
 
-  getById: protectedProcedure
+  getById: onboardedProcedure
     .input(z.object({ matchId: z.string() }))
     .query(async ({ ctx, input }) => {
       const match = await ctx.prisma.match.findUnique({

@@ -15,11 +15,15 @@ export async function getDiscoverFeed(
   const tz = user?.timezone ?? 'UTC';
   const userIntent = user?.intent;
 
-  // Get today's allocation
+  // Get today's date in the user's timezone, then compute the correct UTC offset
   const now = new Date();
   const formatter = new Intl.DateTimeFormat('en-CA', { timeZone: tz });
-  const todayStr = formatter.format(now);
-  const todayDate = new Date(todayStr + 'T00:00:00.000Z');
+  const todayStr = formatter.format(now); // YYYY-MM-DD in user's local tz
+  // Build midnight in the user's timezone by computing the UTC offset
+  const localMidnight = new Date(`${todayStr}T00:00:00`);
+  const utcMidnight = new Date(`${todayStr}T00:00:00Z`);
+  const tzOffsetMs = utcMidnight.getTime() - localMidnight.getTime();
+  const todayDate = new Date(utcMidnight.getTime() + tzOffsetMs);
 
   const allocation = await prisma.dailyAllocation.findUnique({
     where: { userId_allocatedDate: { userId, allocatedDate: todayDate } },
@@ -70,58 +74,57 @@ export async function getDiscoverFeed(
     },
   });
 
-  const cards = await Promise.all(
-    candidates.map(async (c) => {
-      const candidate = c.candidate;
+  // Pre-fetch all needed film IDs in one batch to avoid N+1 queries
+  const allSharedFilmIds = new Set<string>();
+  const allTopFilmIds = new Set<string>();
+  for (const c of candidates) {
+    for (const id of c.sharedFilmIds.slice(0, 4)) allSharedFilmIds.add(id);
+    for (const id of c.candidate.topFilmIds) allTopFilmIds.add(id);
+  }
 
-      // Get shared films
-      let sharedFilms: FilmPreview[] = [];
-      if (c.sharedFilmIds.length > 0) {
-        const films = await prisma.film.findMany({
-          where: { id: { in: c.sharedFilmIds.slice(0, 4) } },
-        });
-        sharedFilms = films.map((f) => ({
-          id: f.id,
-          tmdbId: f.tmdbId,
-          title: f.title,
-          year: f.year,
-          posterUrl: f.posterPath ? `https://image.tmdb.org/t/p/w500${f.posterPath}` : null,
-          genreIds: f.genreIds,
-        }));
-      }
+  const allFilmIds = [...new Set([...allSharedFilmIds, ...allTopFilmIds])];
+  const allFilms = allFilmIds.length > 0
+    ? await prisma.film.findMany({ where: { id: { in: allFilmIds } } })
+    : [];
+  const filmMap = new Map(allFilms.map((f) => [f.id, f]));
 
-      // Get top films
-      let topFilms: FilmPreview[] = [];
-      if (candidate.topFilmIds.length > 0) {
-        const films = await prisma.film.findMany({
-          where: { id: { in: candidate.topFilmIds } },
-        });
-        topFilms = films.map((f) => ({
-          id: f.id,
-          tmdbId: f.tmdbId,
-          title: f.title,
-          year: f.year,
-          posterUrl: f.posterPath ? `https://image.tmdb.org/t/p/w500${f.posterPath}` : null,
-          genreIds: f.genreIds,
-        }));
-      }
+  const toPreview = (f: typeof allFilms[0]): FilmPreview => ({
+    id: f.id,
+    tmdbId: f.tmdbId,
+    title: f.title,
+    year: f.year,
+    posterUrl: f.posterPath ? `https://image.tmdb.org/t/p/w500${f.posterPath}` : null,
+    genreIds: f.genreIds,
+  });
 
-      return {
-        userId: candidate.id,
-        name: candidate.name,
-        age: candidate.age ?? 0,
-        location: candidate.location ?? '',
-        bio: candidate.bio,
-        intent: candidate.intent ?? 'BOTH',
-        profilePhotos: candidate.profilePhotos,
-        prompts: (candidate.prompts as { question: string; answer: string }[]) ?? [],
-        topFilms,
-        matchScore: c.totalScore,
-        sharedFilmCount: c.sharedFilmIds.length,
-        sharedFilms,
-      };
-    }),
-  );
+  const cards = candidates.map((c) => {
+    const candidate = c.candidate;
+    const sharedFilms = c.sharedFilmIds
+      .slice(0, 4)
+      .map((id) => filmMap.get(id))
+      .filter(Boolean)
+      .map((f) => toPreview(f!));
+
+    const topFilms = candidate.topFilmIds
+      .map((id) => filmMap.get(id))
+      .filter(Boolean)
+      .map((f) => toPreview(f!));
+
+    return {
+      userId: candidate.id,
+      name: candidate.name,
+      age: candidate.age ?? 0,
+      location: candidate.location ?? '',
+      bio: candidate.bio,
+      intent: candidate.intent ?? 'BOTH',
+      profilePhotos: candidate.profilePhotos,
+      prompts: (candidate.prompts as { question: string; answer: string }[]) ?? [],
+      topFilms,
+      matchScore: c.totalScore,
+      sharedFilmCount: c.sharedFilmIds.length,
+      sharedFilms,
+    };
+  });
 
   return {
     cards,

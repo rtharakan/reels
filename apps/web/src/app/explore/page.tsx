@@ -52,8 +52,14 @@ interface MatchResponse {
     overlapScore: number;
     genreScore: number;
     combinedScore: number;
+    likedOverlap: number;
+    ratedOverlap: number;
+    watchedOverlap: number;
+    watchlistOverlap: number;
     sharedFilmsCount: number;
     sharedFilms: SharedFilm[];
+    sharedLikedCount: number;
+    sharedWatchedCount: number;
   };
   dateIdeas: DateIdea[];
   city: string | null;
@@ -313,15 +319,15 @@ export default function ExplorePage() {
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-blue-500 dark:text-blue-300">
-                      {Math.round(result.match.overlapScore * 100)}%
+                      {result.match.sharedLikedCount}
                     </p>
-                    <p className="text-xs text-[var(--text-muted)]">overlap</p>
+                    <p className="text-xs text-[var(--text-muted)]">both liked</p>
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-blue-500 dark:text-blue-300">
-                      {Math.round(result.match.genreScore * 100)}%
+                      {result.match.sharedWatchedCount}
                     </p>
-                    <p className="text-xs text-[var(--text-muted)]">taste match</p>
+                    <p className="text-xs text-[var(--text-muted)]">both watched</p>
                   </div>
                 </div>
               </CardContent>
@@ -526,26 +532,47 @@ export default function ExplorePage() {
             <div className="mt-12 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
               <h3 className="font-semibold text-[var(--text-primary)] mb-3">How scoring works</h3>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">
-                The Explore match uses two signals from your Letterboxd watchlists:
+                We analyze five signals from your Letterboxd profile for a comprehensive compatibility score:
               </p>
-              <div className="grid gap-3 sm:grid-cols-2 mb-4">
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 mb-4">
                 <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-[var(--text-primary)]">Film Overlap</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">70%</span>
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Liked Films</span>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">30%</span>
                   </div>
-                  <p className="text-xs text-[var(--text-secondary)]">How many films appear on both watchlists compared to the total.</p>
+                  <p className="text-xs text-[var(--text-secondary)]">Films you both hearted — the strongest signal.</p>
                 </div>
                 <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-[var(--text-primary)]">Genre Similarity</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">30%</span>
+                    <span className="text-sm font-medium text-[var(--text-primary)]">High Ratings</span>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">25%</span>
                   </div>
-                  <p className="text-xs text-[var(--text-secondary)]">How similar your genre preferences are based on the films you want to watch.</p>
+                  <p className="text-xs text-[var(--text-secondary)]">Films you both rated highly.</p>
+                </div>
+                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Genre Taste</span>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">20%</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)]">How similar your genre preferences are.</p>
+                </div>
+                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Watched Films</span>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">15%</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)]">Films you&apos;ve both seen.</p>
+                </div>
+                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Watchlist</span>
+                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">10%</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)]">Films on both your watchlists.</p>
                 </div>
               </div>
               <p className="text-xs text-[var(--text-muted)]">
-                Sign up for a free account to get the full 5-signal score that also includes liked films, ratings, and watched history.
+                Missing signals (e.g. no liked films) contribute 0 and don&apos;t penalize your score.
               </p>
             </div>
           </div>
@@ -554,10 +581,22 @@ export default function ExplorePage() {
         {/* Scoring breakdown shown with results */}
         {result && compatibility && (
           <div className="mx-auto max-w-2xl mt-4 mb-8 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
-            <h3 className="font-semibold text-[var(--text-primary)] mb-2">About this score</h3>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              This score is based on <strong className="text-[var(--text-primary)]">70% film overlap</strong> (how many films appear on both watchlists) and <strong className="text-[var(--text-primary)]">30% genre similarity</strong> (how alike your genre preferences are). Create an account for a more detailed 5-signal score.
-            </p>
+            <h3 className="font-semibold text-[var(--text-primary)] mb-3">Score breakdown</h3>
+            <div className="grid gap-2 grid-cols-3 sm:grid-cols-5 text-center">
+              {[
+                { label: 'Liked', value: result.match.likedOverlap, weight: '30%' },
+                { label: 'Rated', value: result.match.ratedOverlap, weight: '25%' },
+                { label: 'Genre', value: result.match.genreScore, weight: '20%' },
+                { label: 'Watched', value: result.match.watchedOverlap, weight: '15%' },
+                { label: 'Watchlist', value: result.match.watchlistOverlap, weight: '10%' },
+              ].map((s) => (
+                <div key={s.label} className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                  <p className="text-lg font-bold text-[var(--text-primary)]">{Math.round(s.value * 100)}%</p>
+                  <p className="text-xs text-[var(--text-muted)]">{s.label}</p>
+                  <p className="text-xs font-medium text-blue-500 dark:text-blue-400">{s.weight}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </main>
