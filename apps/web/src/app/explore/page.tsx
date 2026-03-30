@@ -69,11 +69,11 @@ interface MatchResponse {
 }
 
 function getCompatibilityLabel(score: number): { text: string; color: string; emoji: string } {
-  if (score >= 0.5) return { text: 'Soul Mates', color: 'text-blue-700 dark:text-blue-300', emoji: '💕' };
-  if (score >= 0.3) return { text: 'Great Match', color: 'text-blue-600 dark:text-blue-400', emoji: '🎬' };
-  if (score >= 0.15) return { text: 'Good Vibes', color: 'text-slate-600 dark:text-slate-300', emoji: '✨' };
-  if (score >= 0.05) return { text: 'Some Overlap', color: 'text-slate-500 dark:text-slate-400', emoji: '🎞️' };
-  return { text: 'Opposites Attract?', color: 'text-slate-400 dark:text-slate-500', emoji: '🌙' };
+  if (score >= 0.5) return { text: 'Soul Mates', color: 'text-[var(--accent)]', emoji: '💕' };
+  if (score >= 0.3) return { text: 'Great Match', color: 'text-[var(--accent)]', emoji: '🎬' };
+  if (score >= 0.15) return { text: 'Good Vibes', color: 'text-[var(--text-secondary)]', emoji: '✨' };
+  if (score >= 0.05) return { text: 'Some Overlap', color: 'text-[var(--text-muted)]', emoji: '🎞️' };
+  return { text: 'Opposites Attract?', color: 'text-[var(--text-muted)]', emoji: '🌙' };
 }
 
 function formatDate(dateStr: string): string {
@@ -157,11 +157,11 @@ export default function ExplorePage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
-      <header className="border-b border-blue-100 dark:border-slate-700 bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-blue-500" />
-            <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
+            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
+            <span className="text-lg font-semibold text-[var(--text-primary)]">Reels</span>
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/login">
@@ -179,11 +179,11 @@ export default function ExplorePage() {
       <main className="mx-auto max-w-5xl px-4 py-8">
         {/* Hero Section */}
         <div className="mb-12 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-600">
-            <Heart className="h-8 w-8 text-blue-500" />
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent-soft)] border border-[var(--border-default)]">
+            <Heart className="h-8 w-8 text-[var(--accent)]" />
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
-            Film Taste <span className="text-blue-400 dark:text-blue-300">Match</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--text-primary)]">
+            Film Taste <span className="text-[var(--accent)]">Match</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-[var(--text-secondary)]">
             Enter two Letterboxd profiles and discover your film compatibility.
@@ -195,7 +195,7 @@ export default function ExplorePage() {
         <Card className="mx-auto max-w-2xl mb-12">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-slate-500" />
+              <Users className="h-5 w-5 text-[var(--text-muted)]" />
               Compare Profiles
             </CardTitle>
             <CardDescription>
@@ -237,7 +237,7 @@ export default function ExplorePage() {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   disabled={isLoading}
-                  className="flex h-10 w-full rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                  className="flex h-10 w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-ring)] transition-colors"
                 >
                   {cities.map((c) => (
                     <option key={c.slug} value={c.slug}>
@@ -248,7 +248,7 @@ export default function ExplorePage() {
               </div>
 
               {error && (
-                <div className="rounded-lg border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 px-4 py-3 text-sm text-red-600 dark:text-red-400">
+                <div className="rounded-xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/30 px-4 py-3 text-sm text-red-600 dark:text-red-400">
                   {error}
                 </div>
               )}
@@ -280,8 +280,8 @@ export default function ExplorePage() {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Compatibility Score */}
             <Card className="mx-auto max-w-2xl overflow-hidden">
-              <div className="relative bg-white dark:bg-slate-800 p-8 text-center">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.05),transparent_70%)]" />
+              <div className="relative bg-[var(--bg-card)] p-8 text-center">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,var(--accent-soft),transparent_70%)]" />
                 <div className="relative">
                   <p className="text-5xl mb-2">{compatibility.emoji}</p>
                   <h2 className={`text-3xl font-bold ${compatibility.color}`}>
@@ -296,12 +296,12 @@ export default function ExplorePage() {
 
               <CardContent className="pt-6">
                 <div className="grid grid-cols-2 gap-4 text-center">
-                  <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
+                  <div className="rounded-xl bg-[var(--bg-accent)] p-4">
                     <p className="text-sm text-[var(--text-secondary)]">{result.user1.displayName}</p>
                     <p className="text-2xl font-bold text-[var(--text-primary)]">{result.user1.filmCount}</p>
                     <p className="text-xs text-[var(--text-muted)]">films</p>
                   </div>
-                  <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-4">
+                  <div className="rounded-xl bg-[var(--bg-accent)] p-4">
                     <p className="text-sm text-[var(--text-secondary)]">{result.user2.displayName}</p>
                     <p className="text-2xl font-bold text-[var(--text-primary)]">{result.user2.filmCount}</p>
                     <p className="text-xs text-[var(--text-muted)]">films</p>
@@ -312,19 +312,19 @@ export default function ExplorePage() {
 
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    <p className="text-2xl font-bold text-[var(--accent)]">
                       {result.match.sharedFilmsCount}
                     </p>
                     <p className="text-xs text-[var(--text-muted)]">shared films</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-blue-500 dark:text-blue-300">
+                    <p className="text-2xl font-bold text-[var(--accent)]">
                       {result.match.sharedLikedCount}
                     </p>
                     <p className="text-xs text-[var(--text-muted)]">both liked</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-blue-500 dark:text-blue-300">
+                    <p className="text-2xl font-bold text-[var(--accent)]">
                       {result.match.sharedWatchedCount}
                     </p>
                     <p className="text-xs text-[var(--text-muted)]">both watched</p>
@@ -350,7 +350,7 @@ export default function ExplorePage() {
                 {result.match.sharedFilms.length === 0 ? (
                   <Card>
                     <CardContent className="py-12 text-center">
-                      <Film className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600 mb-4" />
+                      <Film className="mx-auto h-12 w-12 text-[var(--text-muted)] mb-4" />
                       <p className="text-[var(--text-secondary)]">No shared films found — maybe that&apos;s the charm!</p>
                     </CardContent>
                   </Card>
@@ -364,7 +364,7 @@ export default function ExplorePage() {
                         rel="noopener noreferrer"
                         className="group block"
                       >
-                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-blue-50 dark:bg-slate-700">
+                        <div className="aspect-[2/3] overflow-hidden rounded-xl bg-[var(--bg-accent)]">
                           {film.posterUrl ? (
                             <img
                               src={film.posterUrl}
@@ -378,20 +378,20 @@ export default function ExplorePage() {
                                 if (parent) {
                                   const fallback = document.createElement('div');
                                   fallback.className = 'flex h-full items-center justify-center p-2 text-center';
-                                  fallback.innerHTML = `<span class="text-xs text-slate-400 dark:text-slate-500">${film.title}</span>`;
+                                  fallback.innerHTML = `<span class="text-xs text-[var(--text-muted)]">${film.title}</span>`;
                                   parent.appendChild(fallback);
                                 }
                               }}
                             />
                           ) : (
                             <div className="flex h-full items-center justify-center p-2 text-center">
-                              <span className="text-xs text-slate-400 dark:text-slate-500">{film.title}</span>
+                              <span className="text-xs text-[var(--text-muted)]">{film.title}</span>
                             </div>
                           )}
                         </div>
-                        <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-300 truncate">{film.title}</p>
+                        <p className="mt-1.5 text-xs text-[var(--text-secondary)] truncate">{film.title}</p>
                         {film.year && (
-                          <p className="text-xs text-slate-400 dark:text-slate-500">{film.year}</p>
+                          <p className="text-xs text-[var(--text-muted)]">{film.year}</p>
                         )}
                       </a>
                     ))}
@@ -403,7 +403,7 @@ export default function ExplorePage() {
                 {result.dateIdeas.length === 0 ? (
                   <Card>
                     <CardContent className="py-12 text-center">
-                      <Calendar className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600 mb-4" />
+                      <Calendar className="mx-auto h-12 w-12 text-[var(--text-muted)] mb-4" />
                       <p className="text-[var(--text-secondary)]">
                         {result.match.sharedFilmsCount === 0
                           ? 'No shared films to screen — explore each other\'s taste!'
@@ -423,7 +423,7 @@ export default function ExplorePage() {
                     {result.dateIdeas.map((idea, i) => (
                       <Card key={`${idea.filmTitle}-${idea.date}-${idea.time}-${i}`}>
                         <div className="flex items-center gap-4 p-4">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-500 shrink-0">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)] text-[var(--accent)] shrink-0">
                             <Ticket className="h-5 w-5" />
                           </div>
                           <div className="flex-1 min-w-0">
@@ -465,9 +465,9 @@ export default function ExplorePage() {
             </Tabs>
 
             {/* CTA */}
-            <Card className="mx-auto max-w-2xl bg-white dark:bg-slate-800 border-blue-100 dark:border-slate-700">
+            <Card className="mx-auto max-w-2xl bg-[var(--bg-card)] border-[var(--border-default)]">
               <CardContent className="flex flex-col items-center py-8 text-center">
-                <Sparkles className="h-8 w-8 text-blue-500 mb-3" />
+                <Sparkles className="h-8 w-8 text-[var(--accent)] mb-3" />
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
                   Want to find more film lovers?
                 </h3>
@@ -495,8 +495,8 @@ export default function ExplorePage() {
             <div className="grid gap-6 sm:grid-cols-3">
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
-                    <Users className="h-6 w-6 text-blue-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
+                    <Users className="h-6 w-6 text-[var(--accent)]" />
                   </div>
                   <h3 className="font-medium text-[var(--text-primary)] mb-1">Enter profiles</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
@@ -506,8 +506,8 @@ export default function ExplorePage() {
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
-                    <Heart className="h-6 w-6 text-blue-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
+                    <Heart className="h-6 w-6 text-[var(--accent)]" />
                   </div>
                   <h3 className="font-medium text-[var(--text-primary)] mb-1">See your match</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
@@ -517,8 +517,8 @@ export default function ExplorePage() {
               </Card>
               <Card className="text-center">
                 <CardContent className="pt-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-700">
-                    <Ticket className="h-6 w-6 text-blue-500" />
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
+                    <Ticket className="h-6 w-6 text-[var(--accent)]" />
                   </div>
                   <h3 className="font-medium text-[var(--text-primary)] mb-1">Plan a date</h3>
                   <p className="text-sm text-[var(--text-secondary)]">
@@ -529,44 +529,44 @@ export default function ExplorePage() {
             </div>
 
             {/* Scoring explanation */}
-            <div className="mt-12 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
+            <div className="mt-12 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 shadow-soft">
               <h3 className="font-semibold text-[var(--text-primary)] mb-3">How scoring works</h3>
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">
                 We analyze five signals from your Letterboxd profile for a comprehensive compatibility score:
               </p>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 mb-4">
-                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                <div className="rounded-xl bg-[var(--bg-accent)] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-[var(--text-primary)]">Liked Films</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">30%</span>
+                    <span className="text-xs font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-2 py-0.5 rounded-full">30%</span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)]">Films you both hearted — the strongest signal.</p>
                 </div>
-                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                <div className="rounded-xl bg-[var(--bg-accent)] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-[var(--text-primary)]">High Ratings</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">25%</span>
+                    <span className="text-xs font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-2 py-0.5 rounded-full">25%</span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)]">Films you both rated highly.</p>
                 </div>
-                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                <div className="rounded-xl bg-[var(--bg-accent)] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-[var(--text-primary)]">Genre Taste</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">20%</span>
+                    <span className="text-xs font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-2 py-0.5 rounded-full">20%</span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)]">How similar your genre preferences are.</p>
                 </div>
-                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                <div className="rounded-xl bg-[var(--bg-accent)] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-[var(--text-primary)]">Watched Films</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">15%</span>
+                    <span className="text-xs font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-2 py-0.5 rounded-full">15%</span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)]">Films you&apos;ve both seen.</p>
                 </div>
-                <div className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                <div className="rounded-xl bg-[var(--bg-accent)] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-[var(--text-primary)]">Watchlist</span>
-                    <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-slate-600 px-2 py-0.5 rounded-full">10%</span>
+                    <span className="text-xs font-bold text-[var(--accent)] bg-[var(--accent-soft)] px-2 py-0.5 rounded-full">10%</span>
                   </div>
                   <p className="text-xs text-[var(--text-secondary)]">Films on both your watchlists.</p>
                 </div>
@@ -580,7 +580,7 @@ export default function ExplorePage() {
 
         {/* Scoring breakdown shown with results */}
         {result && compatibility && (
-          <div className="mx-auto max-w-2xl mt-4 mb-8 rounded-xl border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
+          <div className="mx-auto max-w-2xl mt-4 mb-8 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 shadow-soft">
             <h3 className="font-semibold text-[var(--text-primary)] mb-3">Score breakdown</h3>
             <div className="grid gap-2 grid-cols-3 sm:grid-cols-5 text-center">
               {[
@@ -590,10 +590,10 @@ export default function ExplorePage() {
                 { label: 'Watched', value: result.match.watchedOverlap, weight: '15%' },
                 { label: 'Watchlist', value: result.match.watchlistOverlap, weight: '10%' },
               ].map((s) => (
-                <div key={s.label} className="rounded-lg bg-blue-50 dark:bg-slate-700 p-3">
+                <div key={s.label} className="rounded-xl bg-[var(--bg-accent)] p-3">
                   <p className="text-lg font-bold text-[var(--text-primary)]">{Math.round(s.value * 100)}%</p>
                   <p className="text-xs text-[var(--text-muted)]">{s.label}</p>
-                  <p className="text-xs font-medium text-blue-500 dark:text-blue-400">{s.weight}</p>
+                  <p className="text-xs font-medium text-[var(--accent)]">{s.weight}</p>
                 </div>
               ))}
             </div>
@@ -602,7 +602,7 @@ export default function ExplorePage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-blue-100 dark:border-slate-700 mt-16">
+      <footer className="border-t border-[var(--border-default)] mt-16">
         <div className="mx-auto max-w-5xl px-4 py-8 flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--text-muted)]">
           <div className="flex items-center gap-2">
             <Popcorn className="h-4 w-4" />

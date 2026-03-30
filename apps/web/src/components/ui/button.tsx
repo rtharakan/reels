@@ -4,16 +4,16 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        default: 'bg-blue-600 text-white shadow hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400',
+        default: 'bg-[var(--accent)] text-white shadow-soft hover:bg-[var(--accent-hover)] active:scale-[0.98]',
         destructive: 'bg-red-600 text-white shadow-sm hover:bg-red-500',
-        outline: 'border border-slate-200 dark:border-slate-600 bg-transparent text-slate-700 dark:text-slate-200 shadow-sm hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-white',
-        secondary: 'bg-blue-50 dark:bg-slate-700 text-slate-700 dark:text-slate-200 shadow-sm hover:bg-blue-100 dark:hover:bg-slate-600',
-        ghost: 'text-slate-500 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-slate-700 hover:text-slate-700 dark:hover:text-white',
-        link: 'text-slate-500 dark:text-slate-400 underline-offset-4 hover:underline hover:text-slate-800 dark:hover:text-white',
+        outline: 'border border-[var(--border-default)] bg-transparent text-[var(--text-secondary)] shadow-soft hover:bg-[var(--bg-accent)] hover:text-[var(--text-primary)]',
+        secondary: 'bg-[var(--bg-accent)] text-[var(--text-secondary)] shadow-soft hover:bg-[var(--border-default)] hover:text-[var(--text-primary)]',
+        ghost: 'text-[var(--text-muted)] hover:bg-[var(--bg-accent)] hover:text-[var(--text-primary)]',
+        link: 'text-[var(--text-muted)] underline-offset-4 hover:underline hover:text-[var(--text-primary)]',
       },
       size: {
         default: 'h-10 px-4 py-2',

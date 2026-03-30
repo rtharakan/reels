@@ -41,14 +41,13 @@ export default function WatchlistImportPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-[var(--text-primary)]">Import your watchlist</h1>
-      <p className="text-[var(--text-secondary)] text-sm">
-        Connect your Letterboxd account to import your watchlist. This is how we find your film
-        matches.
+      <h1 className="text-2xl font-semibold text-[var(--text-primary)]">Import your watchlist</h1>
+      <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
+        Connect your Letterboxd to find your film matches.
       </p>
 
       <div>
-        <label htmlFor="letterboxd-username" className="block text-sm font-medium text-[var(--text-secondary)]">
+        <label htmlFor="letterboxd-username" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">
           Letterboxd username
         </label>
         <input
@@ -57,14 +56,14 @@ export default function WatchlistImportPage() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="your-username"
-          className="mt-1 block w-full rounded-lg border border-slate-200 bg-blue-50 dark:bg-slate-700 px-3 py-2 text-[var(--text-primary)] placeholder-slate-400 focus:ring-2 focus:ring-blue-300 focus:outline-none"
+          className="block w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:ring-2 focus:ring-[var(--ring)] focus:outline-none transition-colors"
         />
-        {error && <p className="mt-2 text-sm text-red-400" role="alert">{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-500" role="alert">{error}</p>}
       </div>
 
       {importMutation.isPending && (
-        <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-400 border-t-transparent" />
+        <div className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
           Importing your watchlist...
         </div>
       )}
@@ -73,21 +72,20 @@ export default function WatchlistImportPage() {
         <button
           onClick={handleImport}
           disabled={importMutation.isPending}
-          className="w-full rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:hover:bg-blue-400 disabled:opacity-50"
+          className="w-full rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-all active:scale-[0.98]"
         >
           Import watchlist
         </button>
         <button
           onClick={handleSkip}
-          className="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:bg-blue-50 dark:bg-slate-700"
+          className="w-full rounded-xl border border-[var(--border-default)] px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-accent)] transition-colors"
         >
           Skip for now
         </button>
       </div>
 
-      <p className="text-xs text-[var(--text-muted)]">
-        We only access your public watchlist. Your Letterboxd profile must be public for the import
-        to work.
+      <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+        We only access your public watchlist. Your Letterboxd profile must be public.
       </p>
     </div>
   );

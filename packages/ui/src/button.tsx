@@ -16,15 +16,15 @@ export function Button({
   return (
     <button
       className={clsx(
-        'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+        'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]',
         {
-          'bg-teal-600 text-white hover:bg-teal-700 focus-visible:ring-teal-300':
+          'bg-[var(--accent,#D4856A)] text-white hover:bg-[var(--accent-hover,#C2714E)] focus-visible:ring-[var(--ring,#E8927C)]':
             variant === 'primary',
-          'bg-emerald-50 text-stone-700 hover:bg-teal-100 focus-visible:ring-teal-300':
+          'bg-[var(--bg-accent,#F5F5F4)] text-[var(--text-secondary,#57534E)] hover:bg-[var(--border-default,#E7E5E4)] focus-visible:ring-[var(--ring,#E8927C)]':
             variant === 'secondary',
           'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500':
             variant === 'danger',
-          'text-stone-500 hover:bg-emerald-50 hover:text-stone-800 focus-visible:ring-teal-300':
+          'text-[var(--text-muted,#78716C)] hover:bg-[var(--bg-accent,#F5F5F4)] hover:text-[var(--text-primary,#1C1917)] focus-visible:ring-[var(--ring,#E8927C)]':
             variant === 'ghost',
         },
         {

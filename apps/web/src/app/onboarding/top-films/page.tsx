@@ -34,13 +34,13 @@ export default function TopFilmsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-[var(--text-primary)]">Almost done!</h1>
-      <p className="text-[var(--text-secondary)] text-sm">
-        Your profile is ready. You can select your top films later from your profile page.
+      <h1 className="text-2xl font-semibold text-[var(--text-primary)]">Almost done!</h1>
+      <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
+        Your profile is ready. You can select your top films later from your profile.
       </p>
 
-      <div className="rounded-lg border border-blue-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 text-center">
-        <p className="text-lg font-semibold text-[var(--text-primary)]">Welcome to Reels! 🎬</p>
+      <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 text-center">
+        <p className="text-lg font-semibold text-[var(--text-primary)]">Welcome to Reels 🎬</p>
         <p className="mt-2 text-sm text-[var(--text-secondary)]">
           Start discovering people who share your film taste.
         </p>
@@ -49,7 +49,7 @@ export default function TopFilmsPage() {
       <button
         onClick={handleComplete}
         disabled={completeMutation.isPending}
-        className="w-full rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 dark:hover:bg-blue-400 disabled:opacity-50"
+        className="w-full rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-all active:scale-[0.98]"
       >
         {completeMutation.isPending ? 'Setting up...' : 'Start discovering'}
       </button>
