@@ -36,18 +36,19 @@ export async function getDiscoverFeed(
     return { cards: [], remainingToday: 0, isAllCaughtUp: true };
   }
 
-  // Get seen users
-  const seenUserIds = (
-    await prisma.seenUser.findMany({
+  // Parallelize seen users and blocks queries
+  const [seenUsers, blocks] = await Promise.all([
+    prisma.seenUser.findMany({
       where: { userId },
       select: { seenUserId: true },
-    })
-  ).map((s) => s.seenUserId);
+    }),
+    prisma.block.findMany({
+      where: { OR: [{ blockerId: userId }, { blockedUserId: userId }] },
+      select: { blockerId: true, blockedUserId: true },
+    }),
+  ]);
 
-  // Get blocked users (bidirectional)
-  const blocks = await prisma.block.findMany({
-    where: { OR: [{ blockerId: userId }, { blockedUserId: userId }] },
-  });
+  const seenUserIds = seenUsers.map((s) => s.seenUserId);
   const blockedIds = new Set(blocks.map((b) => (b.blockerId === userId ? b.blockedUserId : b.blockerId)));
 
   // Exclude self, seen, blocked, soft-deleted
@@ -70,7 +71,19 @@ export async function getDiscoverFeed(
     orderBy: { totalScore: 'desc' },
     take: remaining,
     include: {
-      candidate: true,
+      candidate: {
+        select: {
+          id: true,
+          name: true,
+          age: true,
+          location: true,
+          bio: true,
+          intent: true,
+          profilePhotos: true,
+          prompts: true,
+          topFilmIds: true,
+        },
+      },
     },
   });
 

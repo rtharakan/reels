@@ -95,11 +95,11 @@ export default function MatchDetailPage() {
             <div>
               <p className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider mb-2">Films you both love</p>
               <div className="grid grid-cols-4 gap-2">
-                {match.sharedFilms.slice(0, 8).map((film: { id: string; title: string; posterUrl?: string | null }) => (
+                {match.sharedFilms.slice(0, 8).map((film: { id: string; title: string; posterUrl?: string | null }, idx: number) => (
                   <div key={film.id}>
                     {film.posterUrl ? (
                       <div className="aspect-[2/3] overflow-hidden rounded-xl">
-                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" />
+                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" loading={idx < 2 ? undefined : "lazy"} />
                       </div>
                     ) : (
                       <div className="flex aspect-[2/3] items-center justify-center rounded-xl bg-[var(--bg-accent)] p-1 text-[10px] text-[var(--text-muted)] text-center">

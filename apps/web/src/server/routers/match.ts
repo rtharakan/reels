@@ -20,27 +20,20 @@ export const matchRouter = router({
         ],
       },
       orderBy: { createdAt: 'desc' },
+      include: {
+        userA: { select: { id: true, name: true, profilePhotos: true } },
+        userB: { select: { id: true, name: true, profilePhotos: true } },
+      },
     });
-
-    const otherUserIds = matches.map((m) =>
-      m.userAId === ctx.userId ? m.userBId : m.userAId,
-    );
-
-    const otherUsers = await ctx.prisma.user.findMany({
-      where: { id: { in: otherUserIds } },
-      select: { id: true, name: true, profilePhotos: true },
-    });
-    const userMap = new Map(otherUsers.map((u) => [u.id, u]));
 
     return matches.map((m) => {
-      const otherId = m.userAId === ctx.userId ? m.userBId : m.userAId;
-      const otherUser = userMap.get(otherId);
+      const otherUser = m.userAId === ctx.userId ? m.userB : m.userA;
       return {
         matchId: m.id,
         otherUser: {
-          id: otherId,
-          name: otherUser?.name ?? 'Unknown',
-          profilePhotos: otherUser?.profilePhotos ?? [],
+          id: otherUser.id,
+          name: otherUser.name,
+          profilePhotos: otherUser.profilePhotos,
         },
         sharedFilmCount: m.sharedFilmIds.length,
         score: m.score,

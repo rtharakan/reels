@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -364,11 +365,13 @@ export default function ExplorePage() {
                         rel="noopener noreferrer"
                         className="group block"
                       >
-                        <div className="aspect-[2/3] overflow-hidden rounded-xl bg-[var(--bg-accent)]">
+                        <div className="aspect-[2/3] overflow-hidden rounded-xl bg-[var(--bg-accent)] relative">
                           {film.posterUrl ? (
-                            <img
+                            <Image
                               src={film.posterUrl}
                               alt={film.title}
+                              width={180}
+                              height={270}
                               loading="lazy"
                               className="h-full w-full object-cover transition-all group-hover:scale-105 group-hover:opacity-90"
                               onError={(e) => {

@@ -39,11 +39,12 @@ async function syncRatingEntries(
 ) {
   const existing = await prisma.ratingEntry.findMany({
     where: { userId },
-    select: { id: true, filmId: true },
+    select: { id: true, filmId: true, rating: true },
   });
-  const existingFilmIds = new Set(existing.map((e) => e.filmId));
+  const existingMap = new Map(existing.map((e) => [e.filmId, e]));
   const newSet = new Set(ratedFilms.map((r) => r.filmId));
 
+  // Remove entries no longer present
   const toRemove = existing.filter((e) => !newSet.has(e.filmId));
   if (toRemove.length > 0) {
     await prisma.ratingEntry.deleteMany({
@@ -51,20 +52,37 @@ async function syncRatingEntries(
     });
   }
 
+  // Split into creates and updates
+  const toCreate: { userId: string; filmId: string; rating: number }[] = [];
+  const toUpdate: { filmId: string; rating: number }[] = [];
+
   for (const { filmId, rating } of ratedFilms) {
-    if (existingFilmIds.has(filmId)) {
-      await prisma.ratingEntry.updateMany({
-        where: { userId, filmId },
-        data: { rating },
-      });
-    } else {
-      await prisma.ratingEntry.create({
-        data: { userId, filmId, rating },
-      }).catch((err: { code?: string }) => {
-        // P2002 = unique constraint violation (duplicate)
-        if (err.code !== 'P2002') throw err;
-      });
+    const existingEntry = existingMap.get(filmId);
+    if (!existingEntry) {
+      toCreate.push({ userId, filmId, rating });
+    } else if (existingEntry.rating !== rating) {
+      toUpdate.push({ filmId, rating });
     }
+  }
+
+  // Batch create new entries
+  if (toCreate.length > 0) {
+    await prisma.ratingEntry.createMany({
+      data: toCreate,
+      skipDuplicates: true,
+    });
+  }
+
+  // Batch update changed ratings in a transaction
+  if (toUpdate.length > 0) {
+    await prisma.$transaction(
+      toUpdate.map(({ filmId, rating }) =>
+        prisma.ratingEntry.updateMany({
+          where: { userId, filmId },
+          data: { rating },
+        })
+      )
+    );
   }
 }
 
