@@ -175,7 +175,7 @@ export default function DiscoverPage() {
                   <div key={film.id} className="flex-shrink-0">
                     <div className="relative aspect-[2/3] w-[72px] overflow-hidden rounded-xl bg-[var(--bg-accent)]">
                       {film.posterUrl ? (
-                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={72} height={108} className="h-full w-full object-cover" unoptimized onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; const p = (e.target as HTMLImageElement).parentElement; if (p) { const fb = document.createElement('div'); fb.className = 'flex h-full flex-col items-center justify-center p-1 text-center'; fb.innerHTML = `<span class="text-[10px] text-[var(--text-muted)] line-clamp-3">${film.title}</span>`; p.appendChild(fb); } }} />
+                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={72} height={108} className="h-full w-full object-cover" unoptimized onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; const p = (e.target as HTMLImageElement).parentElement; if (p) { const fb = document.createElement('div'); fb.className = 'flex h-full flex-col items-center justify-center p-1 text-center'; const span = document.createElement('span'); span.className = 'text-[10px] text-[var(--text-muted)] line-clamp-3'; span.textContent = film.title; fb.appendChild(span); p.appendChild(fb); } }} />
                       ) : (
                         <div className="flex h-full flex-col items-center justify-center p-1 text-center">
                           <Film className="h-4 w-4 text-[var(--text-muted)] mb-1" />

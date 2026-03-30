@@ -426,7 +426,10 @@ export default function ExplorePage() {
                                 if (parent) {
                                   const fallback = document.createElement('div');
                                   fallback.className = 'flex h-full items-center justify-center p-2 text-center';
-                                  fallback.innerHTML = `<span class="text-xs text-[var(--text-muted)]">${film.title}</span>`;
+                                  const span = document.createElement('span');
+                                  span.className = 'text-xs text-[var(--text-muted)]';
+                                  span.textContent = film.title;
+                                  fallback.appendChild(span);
                                   parent.appendChild(fallback);
                                 }
                               }}

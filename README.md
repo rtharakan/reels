@@ -51,14 +51,16 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 
 ### v1.2 Changelog
 
-- **Showtimes fix** — fuzzy matching for English↔Dutch film titles using TMDB multi-language lookup
+- **Homepage showtimes** — pre-fetches all city screenings once, instant client-side fuzzy matching (no more per-click API calls)
+- **Poster reliability** — `unoptimized` on all external Image components, TMDB-first poster strategy, XSS-safe error fallbacks
+- **Scan agent** — handles Cloudflare challenges on Letterboxd; uses film pages + watchlist fallback for user discovery
+- **Security hardening** — HSTS header, XSS fixes (innerHTML → textContent), production auth guard, rate-limited now-playing, photo URL validation, region param validation
+- **Showtimes UX** — proper ticket links (no more `href="#"`), loading states for city screening data
 - **Explore fallback** — interest-based date ideas when no shared watchlist films exist
-- **Poster reliability** — multi-strategy TMDB search handles punctuation, apostrophes, and special characters
-- **Button labels** — "Sign in" → "Login", "Try Free" → "Get Lucky"
 - **i18n system** — lightweight React context provider with EN/NL toggle and localStorage persistence
-- **Dead links fixed** — `/#scoring` → `/about#scoring`, consistent footer navigation on all pages
 - **iOS app** — full SwiftUI app with auth, onboarding, discover, matches, profile, safety + Dutch localization
 - **Android app** — full Kotlin/Compose app with Material3, Hilt DI, Retrofit, identical feature set + Dutch strings
+- **Branch cleanup** — three clean branches: `main` (web), `ios/v1.2-app`, `android/v1.2-app`
 
 ## Mobile Apps
 

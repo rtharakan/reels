@@ -5,7 +5,10 @@ import { auth } from '@/lib/auth';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Public routes
+  // Public routes — API routes are excluded because:
+  // - Public APIs (explore, scan, plan, screenings, now-playing) have their own rate limiting
+  // - tRPC routes (/api/trpc/*) enforce auth via protectedProcedure/onboardedProcedure
+  // - Auth routes (/api/auth/*) must be public for login/signup flow
   if (
     pathname.startsWith('/api/') ||
     pathname.startsWith('/login') ||

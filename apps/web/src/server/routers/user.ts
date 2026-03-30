@@ -41,7 +41,15 @@ const updateProfileSchema = z.object({
     answer: z.string().min(1).max(300),
   })).min(1).max(3).optional(),
   topFilmIds: z.array(z.string()).max(4).optional(),
-  profilePhotos: z.array(z.string()).max(6).optional(),
+  profilePhotos: z.array(z.string().url().refine(
+    (url) => {
+      try {
+        const u = new URL(url);
+        return u.protocol === 'https:';
+      } catch { return false; }
+    },
+    'Profile photos must be valid HTTPS URLs'
+  )).max(6).optional(),
   timezone: z.string().optional(),
 });
 

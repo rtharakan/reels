@@ -5,9 +5,22 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchNowPlaying } from '@/server/services/tmdb';
+import { rateLimit } from '@/lib/rate-limit';
+
+const VALID_REGION = /^[A-Z]{2}$/;
 
 export async function GET(request: NextRequest) {
-  const region = request.nextUrl.searchParams.get('region') || 'NL';
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+  const rl = rateLimit(ip, 30, 60_000);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil((rl.resetAt - Date.now()) / 1000)) } },
+    );
+  }
+
+  const regionParam = request.nextUrl.searchParams.get('region') || 'NL';
+  const region = VALID_REGION.test(regionParam) ? regionParam : 'NL';
 
   try {
     const films = await fetchNowPlaying(region, 1);

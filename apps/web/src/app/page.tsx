@@ -289,7 +289,10 @@ export default function HomePage() {
                     if (parent && !parent.querySelector('.poster-fallback')) {
                       const fb = document.createElement('div');
                       fb.className = 'poster-fallback flex h-[210px] w-[140px] items-center justify-center rounded-xl bg-[var(--bg-accent)] p-2 text-center';
-                      fb.innerHTML = `<span class="text-xs text-[var(--text-muted)]">${film.title}</span>`;
+                      const span = document.createElement('span');
+                      span.className = 'text-xs text-[var(--text-muted)]';
+                      span.textContent = film.title;
+                      fb.appendChild(span);
                       parent.insertBefore(fb, img);
                     }
                   }}

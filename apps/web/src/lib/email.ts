@@ -1,7 +1,10 @@
 export async function sendMagicLinkEmail(email: string, url: string): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.warn('[Email] RESEND_API_KEY not set, logging to console');
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('RESEND_API_KEY is required in production — cannot send magic link');
+    }
+    console.warn('[Email] RESEND_API_KEY not set, logging to console (dev only)');
     console.log(`[Magic Link] ${email}: ${url}`);
     return;
   }

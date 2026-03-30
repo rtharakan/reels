@@ -4,6 +4,14 @@ import { magicLink } from 'better-auth/plugins';
 import { nextCookies } from 'better-auth/next-js';
 import { prisma } from './prisma';
 
+// Guard against weak auth secrets in production
+if (
+  process.env.NODE_ENV === 'production' &&
+  (!process.env.BETTER_AUTH_SECRET || process.env.BETTER_AUTH_SECRET.includes('dev-secret'))
+) {
+  throw new Error('BETTER_AUTH_SECRET must be a strong random value in production');
+}
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
