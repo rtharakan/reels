@@ -28,6 +28,7 @@ import {
   Clock,
   Target,
 } from 'lucide-react';
+import { ThemeToggleCompact } from '@/components/theme-toggle';
 
 interface ScanResult {
   username: string;
@@ -120,14 +121,14 @@ export default function ScanPage() {
           </Link>
           <div className="flex items-center gap-3">
             <Link href="/explore">
-              <Button variant="ghost" size="sm">
-                Explore
-              </Button>
+              <Button variant="ghost" size="sm">Explore</Button>
             </Link>
+            <Link href="/plan">
+              <Button variant="ghost" size="sm">Plan</Button>
+            </Link>
+            <ThemeToggleCompact />
             <Link href="/login">
-              <Button variant="ghost" size="sm">
-                Sign in
-              </Button>
+              <Button variant="ghost" size="sm">Sign in</Button>
             </Link>
             <Link href="/signup">
               <Button size="sm">Get Started</Button>

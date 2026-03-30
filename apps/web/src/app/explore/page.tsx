@@ -25,6 +25,7 @@ import {
   Popcorn,
   ExternalLink,
 } from 'lucide-react';
+import { ThemeToggleCompact } from '@/components/theme-toggle';
 
 /** Group date ideas by film title + date so multiple showtimes collapse. */
 interface GroupedScreening {
@@ -199,10 +200,15 @@ export default function ExplorePage() {
             <span className="text-lg font-semibold text-[var(--text-primary)]">Reels</span>
           </Link>
           <div className="flex items-center gap-3">
+            <Link href="/scan">
+              <Button variant="ghost" size="sm">Scan</Button>
+            </Link>
+            <Link href="/plan">
+              <Button variant="ghost" size="sm">Plan</Button>
+            </Link>
+            <ThemeToggleCompact />
             <Link href="/login">
-              <Button variant="ghost" size="sm">
-                Sign in
-              </Button>
+              <Button variant="ghost" size="sm">Sign in</Button>
             </Link>
             <Link href="/signup">
               <Button size="sm">Get Started</Button>

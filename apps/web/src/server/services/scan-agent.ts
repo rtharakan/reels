@@ -54,7 +54,7 @@ function getLabel(score: number): string {
 
 /**
  * Scrape a Letterboxd film's "fans" / "likes" page to find usernames
- * of people who liked a particular film.
+ * of people who liked a particular film. Also tries /members/ if /fans/ yields nothing.
  */
 async function discoverFansOfFilm(
   filmSlug: string,
@@ -62,57 +62,67 @@ async function discoverFansOfFilm(
 ): Promise<string[]> {
   const usernames: Set<string> = new Set();
 
-  for (let page = 1; page <= maxPages; page++) {
-    const url =
-      page === 1
-        ? `${LETTERBOXD_BASE}/film/${filmSlug}/fans/`
-        : `${LETTERBOXD_BASE}/film/${filmSlug}/fans/page/${page}/`;
+  // Non-user path segments to filter out
+  const EXCLUDED_PATHS = new Set([
+    'film', 'films', 'list', 'lists', 'members', 'activity',
+    'journal', 'search', 'settings', 'about', 'pro', 'patron',
+    'tag', 'tags', 'crew', 'actor', 'director', 'producer',
+    'cinematography', 'writing', 'editing', 'soundtrack',
+    'visual-effects', 'art-direction', 'costume-design',
+    'fans', 'likes', 'reviews', 'ratings', 'stats', 'genres',
+    'year', 'popular', 'recent', 'this', 'calendar',
+    'cookie-consent', 'sign-in', 'create-account', 'legal',
+  ]);
 
-    try {
-      const res = await fetch(url, {
-        headers: {
-          'User-Agent': USER_AGENT,
-          Accept: 'text/html',
-        },
-      });
+  // Try multiple page types for fan discovery
+  const pageTypes = [
+    `${LETTERBOXD_BASE}/film/${filmSlug}/fans/`,
+    `${LETTERBOXD_BASE}/film/${filmSlug}/members/`,
+    `${LETTERBOXD_BASE}/film/${filmSlug}/likes/`,
+  ];
 
-      if (!res.ok) break;
-      const html = await res.text();
+  for (const baseUrl of pageTypes) {
+    for (let page = 1; page <= maxPages; page++) {
+      const url = page === 1 ? baseUrl : baseUrl + `page/${page}/`;
 
-      // Extract usernames from avatar links: href="/username/"
-      const profilePattern = /class="avatar[^"]*"[^>]*href="\/([a-zA-Z0-9_-]+)\/"/g;
-      let match;
-      while ((match = profilePattern.exec(html)) !== null) {
-        if (match[1]) usernames.add(match[1]);
-      }
+      try {
+        const res = await fetch(url, {
+          headers: {
+            'User-Agent': USER_AGENT,
+            Accept: 'text/html,application/xhtml+xml',
+            'Accept-Language': 'en-US,en;q=0.9',
+          },
+        });
 
-      // Also try the table-person pattern
-      const personPattern = /href="\/([a-zA-Z0-9_-]+)\/"[^>]*class="[^"]*name/g;
-      while ((match = personPattern.exec(html)) !== null) {
-        if (match[1]) usernames.add(match[1]);
-      }
+        if (!res.ok) break;
+        const html = await res.text();
 
-      // Broader: extract from member links
-      const memberPattern = /<a[^>]*href="\/([a-zA-Z0-9_-]{2,30})\/"[^>]*>/g;
-      while ((match = memberPattern.exec(html)) !== null) {
-        const name = match[1]!;
-        // Filter out non-user paths
-        if (
-          !['film', 'films', 'list', 'lists', 'members', 'activity',
-           'journal', 'search', 'settings', 'about', 'pro', 'patron',
-           'tag', 'tags', 'crew', 'actor', 'director', 'producer',
-           'cinematography', 'writing', 'editing', 'soundtrack',
-           'visual-effects', 'art-direction', 'costume-design'].includes(name)
-        ) {
-          usernames.add(name);
+        // Strategy 1: Avatar/person card links — href="/username/"
+        const avatarPattern = /href="\/([a-zA-Z0-9_-]{2,30})\/"/g;
+        let match;
+        while ((match = avatarPattern.exec(html)) !== null) {
+          const name = match[1]!;
+          if (!EXCLUDED_PATHS.has(name.toLowerCase())) {
+            usernames.add(name);
+          }
         }
+
+        // Strategy 2: data-person attribute (newer Letterboxd markup)
+        const dataPersonPattern = /data-person="([a-zA-Z0-9_-]+)"/g;
+        while ((match = dataPersonPattern.exec(html)) !== null) {
+          if (match[1]) usernames.add(match[1]);
+        }
+
+        if (!html.includes('class="next"') && !html.includes('rel="next"')) break;
+      } catch {
+        break;
       }
 
-      if (!html.includes('class="next"') && !html.includes('rel="next"')) break;
-    } catch {
-      break;
+      await new Promise((r) => setTimeout(r, CRAWL_DELAY));
     }
 
+    // If we found usernames from this page type, skip the others
+    if (usernames.size > 5) break;
     await new Promise((r) => setTimeout(r, CRAWL_DELAY));
   }
 
