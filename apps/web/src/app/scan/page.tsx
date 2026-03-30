@@ -153,7 +153,7 @@ export default function ScanPage() {
           <p className="mx-auto mt-4 max-w-xl text-base text-[var(--text-secondary)]">
             Enter your Letterboxd profile and our agent will explore the platform
             to find people with similar film taste — scored using{' '}
-            <Link href="/#scoring" className="text-[var(--accent)] hover:underline">
+            <Link href="/about#scoring" className="text-[var(--accent)] hover:underline">
               5-signal matching
             </Link>.
           </p>
@@ -429,6 +429,24 @@ export default function ScanPage() {
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-[var(--border-default)] mt-16">
+        <div className="mx-auto max-w-5xl px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
+          <div className="flex items-center gap-1.5">
+            <Popcorn className="h-3.5 w-3.5 text-[var(--accent)]" />
+            <span>Reels</span>
+          </div>
+          <nav className="flex items-center gap-4">
+            <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.home}</Link>
+            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
+            <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.plan}</Link>
+            <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.about}</Link>
+            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.privacy}</Link>
+            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.terms}</Link>
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 }

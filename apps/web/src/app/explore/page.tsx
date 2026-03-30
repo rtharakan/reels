@@ -717,11 +717,14 @@ export default function ExplorePage() {
             <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">
               {t.common.home}
             </Link>
-            <Link href="/login" className="hover:text-[var(--text-secondary)] transition-colors">
-              {t.common.login}
+            <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">
+              {t.common.scan}
             </Link>
-            <Link href="/signup" className="hover:text-[var(--text-secondary)] transition-colors">
-              {t.common.signup}
+            <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">
+              {t.common.plan}
+            </Link>
+            <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">
+              {t.common.about}
             </Link>
             <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">
               {t.common.privacy}
