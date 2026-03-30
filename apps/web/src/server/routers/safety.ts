@@ -10,33 +10,31 @@ export const safetyRouter = router({
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cannot block yourself' });
       }
 
-      // Create block
-      await ctx.prisma.block.upsert({
-        where: {
-          blockerId_blockedUserId: {
-            blockerId: ctx.userId,
-            blockedUserId: input.userId,
-          },
-        },
-        create: { blockerId: ctx.userId, blockedUserId: input.userId },
-        update: {},
-      });
-
-      // Delete existing matches between users
+      // Execute block + cleanup in a single transaction
       const [idA, idB] = [ctx.userId, input.userId].sort();
-      await ctx.prisma.match.deleteMany({
-        where: { userAId: idA, userBId: idB },
-      });
-
-      // Delete interest records
-      await ctx.prisma.interest.deleteMany({
-        where: {
-          OR: [
-            { fromUserId: ctx.userId, toUserId: input.userId },
-            { fromUserId: input.userId, toUserId: ctx.userId },
-          ],
-        },
-      });
+      await ctx.prisma.$transaction([
+        ctx.prisma.block.upsert({
+          where: {
+            blockerId_blockedUserId: {
+              blockerId: ctx.userId,
+              blockedUserId: input.userId,
+            },
+          },
+          create: { blockerId: ctx.userId, blockedUserId: input.userId },
+          update: {},
+        }),
+        ctx.prisma.match.deleteMany({
+          where: { userAId: idA, userBId: idB },
+        }),
+        ctx.prisma.interest.deleteMany({
+          where: {
+            OR: [
+              { fromUserId: ctx.userId, toUserId: input.userId },
+              { fromUserId: input.userId, toUserId: ctx.userId },
+            ],
+          },
+        }),
+      ]);
 
       return { success: true };
     }),

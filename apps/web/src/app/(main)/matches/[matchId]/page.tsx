@@ -70,11 +70,11 @@ export default function MatchDetailPage() {
             <div>
               <p className="text-xs text-[var(--text-muted)] mb-2">Films you both love</p>
               <div className="grid grid-cols-4 gap-2">
-                {match.sharedFilms.slice(0, 8).map((film) => (
+                {match.sharedFilms.slice(0, 8).map((film, idx) => (
                   <div key={film.id}>
                     {film.posterUrl ? (
                       <div className="aspect-[2/3] overflow-hidden rounded-lg">
-                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" />
+                        <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" loading={idx < 2 ? undefined : "lazy"} />
                       </div>
                     ) : (
                       <div className="flex aspect-[2/3] items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 p-1 text-xs text-[var(--text-muted)] text-center">

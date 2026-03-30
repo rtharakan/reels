@@ -48,6 +48,59 @@ async function getUserFilmSignals(prisma: PrismaClient, userId: string) {
   };
 }
 
+async function batchGetUserFilmSignals(prisma: PrismaClient, userIds: string[]) {
+  if (userIds.length === 0) return new Map<string, Awaited<ReturnType<typeof getUserFilmSignals>>>();
+
+  // Batch-fetch all entries for all users at once (4 queries total instead of 4*N)
+  const [allWatchlist, allWatched, allRatings, allLiked] = await Promise.all([
+    prisma.watchlistEntry.findMany({
+      where: { userId: { in: userIds } },
+      include: { film: true },
+    }),
+    prisma.watchedEntry.findMany({
+      where: { userId: { in: userIds } },
+      include: { film: true },
+    }),
+    prisma.ratingEntry.findMany({
+      where: { userId: { in: userIds } },
+      include: { film: true },
+    }),
+    prisma.likedEntry.findMany({
+      where: { userId: { in: userIds } },
+      include: { film: true },
+    }),
+  ]);
+
+  // Group by userId
+  const watchlistByUser = new Map<string, FilmEntryWithFilm[]>();
+  const watchedByUser = new Map<string, FilmEntryWithFilm[]>();
+  const ratingsByUser = new Map<string, RatingEntryWithFilm[]>();
+  const likedByUser = new Map<string, FilmEntryWithFilm[]>();
+
+  for (const e of allWatchlist) (watchlistByUser.get(e.userId) ?? watchlistByUser.set(e.userId, []).get(e.userId)!).push(e);
+  for (const e of allWatched) (watchedByUser.get(e.userId) ?? watchedByUser.set(e.userId, []).get(e.userId)!).push(e);
+  for (const e of allRatings) (ratingsByUser.get(e.userId) ?? ratingsByUser.set(e.userId, []).get(e.userId)!).push(e as RatingEntryWithFilm);
+  for (const e of allLiked) (likedByUser.get(e.userId) ?? likedByUser.set(e.userId, []).get(e.userId)!).push(e);
+
+  const result = new Map<string, Awaited<ReturnType<typeof getUserFilmSignals>>>();
+  for (const uid of userIds) {
+    const watchlist = watchlistByUser.get(uid) ?? [];
+    const watched = watchedByUser.get(uid) ?? [];
+    const ratings = ratingsByUser.get(uid) ?? [];
+    const liked = likedByUser.get(uid) ?? [];
+    const highRated = ratings.filter((e) => e.rating >= 4.0);
+
+    result.set(uid, {
+      watchlist: extractFilmData(watchlist),
+      watched: extractFilmData(watched),
+      highRated: extractFilmData(highRated),
+      liked: extractFilmData(liked),
+      totalFilmCount: watchlist.length + watched.length,
+    });
+  }
+  return result;
+}
+
 export async function recomputeMatchScores(
   prisma: PrismaClient,
   userId: string,
@@ -66,10 +119,16 @@ export async function recomputeMatchScores(
     select: { id: true },
   });
 
-  for (const other of otherUsers) {
-    const otherSignals = await getUserFilmSignals(prisma, other.id);
+  // Batch-fetch all other users' signals in 4 queries instead of 4*N
+  const otherIds = otherUsers.map((u) => u.id);
+  const allSignals = await batchGetUserFilmSignals(prisma, otherIds);
 
-    if (otherSignals.totalFilmCount < 5) continue;
+  // Collect all upsert operations for batching
+  const upsertOps: Parameters<typeof prisma.matchScore.upsert>[0][] = [];
+
+  for (const other of otherUsers) {
+    const otherSignals = allSignals.get(other.id);
+    if (!otherSignals || otherSignals.totalFilmCount < 5) continue;
 
     const score = computeEnhancedMatchScore({
       userAWatchlistIds: userSignals.watchlist.ids,
@@ -105,16 +164,23 @@ export async function recomputeMatchScores(
       computedAt: new Date(),
     };
 
-    await prisma.matchScore.upsert({
+    upsertOps.push({
       where: { userId_candidateId: { userId, candidateId: other.id } },
       create: { userId, candidateId: other.id, ...scoreData },
       update: scoreData,
     });
 
-    await prisma.matchScore.upsert({
+    upsertOps.push({
       where: { userId_candidateId: { userId: other.id, candidateId: userId } },
       create: { userId: other.id, candidateId: userId, ...scoreData },
       update: scoreData,
     });
+  }
+
+  // Execute upserts in a transaction for atomicity and performance
+  if (upsertOps.length > 0) {
+    await prisma.$transaction(
+      upsertOps.map((op) => prisma.matchScore.upsert(op))
+    );
   }
 }

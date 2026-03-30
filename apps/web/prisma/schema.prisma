@@ -76,6 +76,8 @@ model User {
   @@index([deletedAt])
   @@index([intent])
   @@index([onboardingCompletedAt])
+  @@index([onboardingCompletedAt, deletedAt])
+  @@index([intent, onboardingCompletedAt])
 }
 
 // BetterAuth Session model
@@ -204,6 +206,7 @@ model Interest {
 
   @@unique([fromUserId, toUserId])
   @@index([toUserId])
+  @@index([toUserId, createdAt])
 }
 
 model Match {
@@ -220,6 +223,7 @@ model Match {
   @@unique([userAId, userBId])
   @@index([userAId])
   @@index([userBId])
+  @@index([userAId, userBId])
 }
 
 model Block {
@@ -275,6 +279,7 @@ model MatchScore {
 
   @@unique([userId, candidateId])
   @@index([userId, totalScore(sort: Desc)])
+  @@index([userId, candidateId])
 }
 
 model SeenUser {

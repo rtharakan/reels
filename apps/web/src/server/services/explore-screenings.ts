@@ -181,16 +181,22 @@ export async function fetchCityScreenings(
   // Limit to first 30 films to avoid excessive requests
   const filmsToFetch = films.slice(0, 30);
 
-  for (const film of filmsToFetch) {
-    const filmScreenings = await fetchFilmScreeningsFromFilmladder(
-      film.slug,
-      film.title,
-      film.year,
-      city
+  // Parallel batching: 5 concurrent requests with 500ms delay between batches
+  const BATCH_SIZE = 5;
+  for (let i = 0; i < filmsToFetch.length; i += BATCH_SIZE) {
+    const batch = filmsToFetch.slice(i, i + BATCH_SIZE);
+    const batchResults = await Promise.all(
+      batch.map((film) =>
+        fetchFilmScreeningsFromFilmladder(film.slug, film.title, film.year, city)
+      )
     );
-    allScreenings.push(...filmScreenings);
-    // Rate limiting
-    await new Promise((r) => setTimeout(r, 500));
+    for (const results of batchResults) {
+      allScreenings.push(...results);
+    }
+    // Rate limiting between batches (skip after last batch)
+    if (i + BATCH_SIZE < filmsToFetch.length) {
+      await new Promise((r) => setTimeout(r, 500));
+    }
   }
 
   // Filter to next 14 days

@@ -55,17 +55,19 @@ export const userRouter = router({
       throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
     }
 
-    const watchlistCount = await ctx.prisma.watchlistEntry.count({
-      where: { userId: ctx.userId },
-    });
+    // Parallelize watchlist count and top films fetch
+    const [watchlistCount, topFilmRecords] = await Promise.all([
+      ctx.prisma.watchlistEntry.count({
+        where: { userId: ctx.userId },
+      }),
+      user.topFilmIds.length > 0
+        ? ctx.prisma.film.findMany({
+            where: { id: { in: user.topFilmIds } },
+          })
+        : Promise.resolve([]),
+    ]);
 
-    let topFilms: FilmPreview[] = [];
-    if (user.topFilmIds.length > 0) {
-      const films = await ctx.prisma.film.findMany({
-        where: { id: { in: user.topFilmIds } },
-      });
-      topFilms = films.map(filmToPreview);
-    }
+    const topFilms = topFilmRecords.map(filmToPreview);
 
     return {
       id: user.id,

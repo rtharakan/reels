@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -364,24 +365,15 @@ export default function ExplorePage() {
                         rel="noopener noreferrer"
                         className="group block"
                       >
-                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-blue-50 dark:bg-slate-700">
+                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-blue-50 dark:bg-slate-700 relative">
                           {film.posterUrl ? (
-                            <img
+                            <Image
                               src={film.posterUrl}
                               alt={film.title}
+                              width={180}
+                              height={270}
                               loading="lazy"
                               className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                                const parent = target.parentElement;
-                                if (parent) {
-                                  const fallback = document.createElement('div');
-                                  fallback.className = 'flex h-full items-center justify-center p-2 text-center';
-                                  fallback.innerHTML = `<span class="text-xs text-slate-400 dark:text-slate-500">${film.title}</span>`;
-                                  parent.appendChild(fallback);
-                                }
-                              }}
                             />
                           ) : (
                             <div className="flex h-full items-center justify-center p-2 text-center">
