@@ -5,11 +5,11 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
       {/* Header */}
-      <header className="border-b border-blue-100 dark:border-slate-700 bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-blue-500" />
-            <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
+            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
+            <span className="text-lg font-semibold text-[var(--text-primary)]">Reels</span>
           </Link>
           <nav className="flex items-center gap-3">
             <Link href="/explore" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
             </Link>
             <Link
               href="/signup"
-              className="rounded-lg bg-blue-600 dark:bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-400 transition-colors"
+              className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-colors"
             >
               Get Started
             </Link>
@@ -269,7 +269,7 @@ export default function PrivacyPolicyPage() {
         </section>
       </div>
 
-      <footer className="mt-12 border-t border-blue-100 dark:border-slate-700 pt-6 text-xs text-[var(--text-muted)]">
+      <footer className="mt-12 border-t border-[var(--border-default)] pt-6 text-xs text-[var(--text-muted)]">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <nav className="flex items-center gap-3">
             <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">
