@@ -13,6 +13,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/privacy') ||
     pathname.startsWith('/terms') ||
     pathname.startsWith('/explore') ||
+    pathname.startsWith('/about') ||
+    pathname.startsWith('/scan') ||
     pathname === '/' ||
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/favicon')
