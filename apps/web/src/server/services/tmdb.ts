@@ -27,15 +27,16 @@ function cleanTitleForSearch(title: string): string[] {
   const noParens = title.replace(/\s*\([^)]*\)\s*/g, ' ').trim();
   if (noParens && noParens !== title.trim()) variants.push(noParens);
 
-  // Replace common punctuation with spaces
+  // Replace common punctuation with spaces — covers ALL quote/apostrophe variants
+  // ASCII apostrophe ('), curly quotes (' ' " " „), backtick (`)
   const noPunct = title
-    .replace(/[''`]/g, '')          // Remove apostrophes/backticks entirely
-    .replace(/[:\-–—,;.!?&@#]/g, ' ')  // Replace punctuation with spaces
+    .replace(/['''`""\u201C\u201D\u201E]/g, '') // Remove all apostrophes/quotes/backticks
+    .replace(/[:\-–—,;.!?&@#\/]/g, ' ')    // Replace punctuation with spaces
     .replace(/\s+/g, ' ')
     .trim();
   if (noPunct && !variants.includes(noPunct)) variants.push(noPunct);
 
-  // Just alphanumeric + spaces
+  // Just alphanumeric + spaces (catches everything else)
   const alphaOnly = title
     .replace(/[^a-zA-Z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
@@ -88,7 +89,9 @@ export async function resolveTMDBPoster(
   if (!token) return null;
 
   const key = cacheKey(title, year);
-  if (posterCache.has(key)) return posterCache.get(key) ?? null;
+  const cached = posterCache.get(key);
+  // Return cached poster URL, but retry if null was cached (title might resolve with new logic)
+  if (cached) return cached;
 
   try {
     // Strategy 1: Try exact title with year

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Heart, Users, User, Compass } from 'lucide-react';
+import { Heart, Users, User, Compass, Popcorn } from 'lucide-react';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -10,6 +10,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const navItems = [
     { href: '/discover', label: 'Discover', icon: Heart },
     { href: '/explore', label: 'Explore', icon: Compass },
+    { href: '/buddy', label: 'Buddy', icon: Popcorn },
     { href: '/matches', label: 'Matches', icon: Users },
     { href: '/profile', label: 'Profile', icon: User },
   ];

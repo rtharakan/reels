@@ -4,9 +4,11 @@ import { magicLink } from 'better-auth/plugins';
 import { nextCookies } from 'better-auth/next-js';
 import { prisma } from './prisma';
 
-// Guard against weak auth secrets in production
+// Guard against weak auth secrets in production runtime (skip during build)
+const isBuilding = process.env.NEXT_PHASE === 'phase-production-build';
 if (
   process.env.NODE_ENV === 'production' &&
+  !isBuilding &&
   (!process.env.BETTER_AUTH_SECRET || process.env.BETTER_AUTH_SECRET.includes('dev-secret'))
 ) {
   throw new Error('BETTER_AUTH_SECRET must be a strong random value in production');

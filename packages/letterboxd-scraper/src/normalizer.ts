@@ -46,6 +46,13 @@ async function searchTMDB(
   if (!results || results.length === 0) {
     // Retry without year
     if (year) return searchTMDB(title, null, apiToken, retryCount);
+    // Retry with cleaned title (remove punctuation that TMDB can't handle)
+    const cleaned = title
+      .replace(/['''`\u201C\u201D\u201E]/g, '')
+      .replace(/[:\-–—,;.!?&@#\/]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (cleaned !== title) return searchTMDB(cleaned, null, apiToken, retryCount);
     return null;
   }
 

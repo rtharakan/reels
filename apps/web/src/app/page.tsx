@@ -8,14 +8,12 @@ import { ThemeToggleCompact } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
 import { useI18n } from '@/lib/i18n';
 
-interface NowPlayingFilm {
-  id: number;
+interface NowShowingFilm {
+  id: string;
   title: string;
-  originalTitle?: string;
-  dutchTitle?: string;
+  year?: number;
   posterUrl: string;
-  releaseDate: string;
-  overview: string;
+  screeningCount: number;
 }
 
 interface CityOption {
@@ -55,36 +53,27 @@ function formatDate(dateStr: string): string {
 
 export default function HomePage() {
   const { t } = useI18n();
-  const [films, setFilms] = useState<NowPlayingFilm[]>([]);
+  const [films, setFilms] = useState<NowShowingFilm[]>([]);
   const [city, setCity] = useState('amsterdam');
-  const [selectedFilm, setSelectedFilm] = useState<NowPlayingFilm | null>(null);
+  const [selectedFilm, setSelectedFilm] = useState<NowShowingFilm | null>(null);
   const [screenings, setScreenings] = useState<Screening[]>([]);
-  const [loadingScreenings, setLoadingScreenings] = useState(false);
   const [allCityScreenings, setAllCityScreenings] = useState<Screening[]>([]);
-  const [cityScreeningsLoaded, setCityScreeningsLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Fetch now playing films
+  // Fetch films + screenings from Filmladder (actual cinema data) when city changes
   useEffect(() => {
-    fetch('/api/now-playing?region=NL')
-      .then((r) => r.json())
-      .then((data) => setFilms(data.films ?? []))
-      .catch(() => {});
-  }, []);
-
-  // Pre-fetch all city screenings when city changes
-  useEffect(() => {
-    setCityScreeningsLoaded(false);
-    setAllCityScreenings([]);
+    setLoading(true);
     setSelectedFilm(null);
     setScreenings([]);
-    fetch(`/api/screenings?city=${encodeURIComponent(city)}`)
+    fetch(`/api/now-showing?city=${encodeURIComponent(city)}`)
       .then((r) => r.json())
       .then((data) => {
+        setFilms(data.films ?? []);
         setAllCityScreenings(data.screenings ?? []);
-        setCityScreeningsLoaded(true);
+        setLoading(false);
       })
-      .catch(() => setCityScreeningsLoaded(true));
+      .catch(() => setLoading(false));
   }, [city]);
 
   const scroll = useCallback((direction: 'left' | 'right') => {
@@ -96,64 +85,20 @@ export default function HomePage() {
     });
   }, []);
 
-  // Client-side fuzzy title matching (same logic as server-side screenings route)
+  // Client-side title matching for filtering screenings by selected film
   const normalizeTitle = useCallback((title: string): string => {
     if (!title) return '';
-    const articles = ['the', 'a', 'an', 'de', 'het', 'een'];
-    let n = title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    for (const article of articles) {
-      n = n.replace(new RegExp(`^${article}\\s+`, 'i'), '');
-    }
-    return n.replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    return title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
   }, []);
 
-  const fuzzyMatchTitle = useCallback((queryTitle: string, screeningTitle: string): boolean => {
-    const normQuery = normalizeTitle(queryTitle);
-    const normScreening = normalizeTitle(screeningTitle);
-    if (normQuery === normScreening) return true;
-    if (normQuery.includes(normScreening) || normScreening.includes(normQuery)) return true;
-    const tokensA = new Set(normQuery.split(/\s+/).filter(Boolean));
-    const tokensB = new Set(normScreening.split(/\s+/).filter(Boolean));
-    let intersection = 0;
-    for (const t of tokensA) { if (tokensB.has(t)) intersection++; }
-    const union = tokensA.size + tokensB.size - intersection;
-    if (union > 0 && intersection / union >= 0.5) return true;
-    const shorter = normQuery.length <= normScreening.length ? normQuery : normScreening;
-    const longer = normQuery.length > normScreening.length ? normQuery : normScreening;
-    const shorterTokens = shorter.split(/\s+/).filter(Boolean);
-    if (shorterTokens.length >= 2 && shorterTokens.every((t) => longer.includes(t))) return true;
-    return false;
-  }, [normalizeTitle]);
-
-  // When a poster is clicked, match against pre-fetched city screenings instantly
-  const handlePosterClick = useCallback((film: NowPlayingFilm) => {
+  // When a poster is clicked, filter screenings by that film title
+  const handlePosterClick = useCallback((film: NowShowingFilm) => {
     setSelectedFilm(film);
-    if (!cityScreeningsLoaded) {
-      setLoadingScreenings(true);
-      setScreenings([]);
-      return;
-    }
-
-    const titlesToTry = [
-      film.dutchTitle,
-      film.originalTitle,
-      film.title,
-    ].filter((t): t is string => !!t && t.length > 0);
-    const uniqueTitles = [...new Set(titlesToTry)];
-
-    const matched = allCityScreenings.filter((s) =>
-      uniqueTitles.some((title) => fuzzyMatchTitle(title, s.filmTitle))
-    );
+    const normFilm = normalizeTitle(film.title);
+    const matched = allCityScreenings.filter((s) => normalizeTitle(s.filmTitle) === normFilm);
     setScreenings(matched);
-    setLoadingScreenings(false);
-  }, [allCityScreenings, cityScreeningsLoaded, fuzzyMatchTitle]);
-
-  // Update screenings when city data loads while a film is selected
-  useEffect(() => {
-    if (selectedFilm && cityScreeningsLoaded && loadingScreenings) {
-      handlePosterClick(selectedFilm);
-    }
-  }, [cityScreeningsLoaded, selectedFilm, loadingScreenings, handlePosterClick]);
+  }, [allCityScreenings, normalizeTitle]);
 
   // Group screenings by date
   const screeningsByDate = screenings.reduce<Record<string, Screening[]>>((acc, s) => {
@@ -180,6 +125,9 @@ export default function HomePage() {
             </Link>
             <Link href="/plan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               {t.common.plan}
+            </Link>
+            <Link href="/buddy" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+              {t.common.buddy}
             </Link>
             <Link href="/about" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               {t.common.about}
@@ -227,8 +175,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Now Playing Carousel */}
-      {films.length > 0 && (
+      {/* Now Showing Carousel */}
+      {loading ? (
+        <section className="mx-auto max-w-5xl px-4 pb-12">
+          <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
+            {t.common.loading}
+          </div>
+        </section>
+      ) : films.length > 0 && (
         <section className="mx-auto max-w-5xl px-4 pb-12">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -275,28 +230,34 @@ export default function HomePage() {
                     : 'hover:scale-[1.03] hover:shadow-lg'
                 }`}
               >
-                <Image
-                  src={film.posterUrl}
-                  alt={film.title}
-                  width={140}
-                  height={210}
-                  className="rounded-xl object-cover"
-                  unoptimized
-                  onError={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    img.style.display = 'none';
-                    const parent = img.parentElement;
-                    if (parent && !parent.querySelector('.poster-fallback')) {
-                      const fb = document.createElement('div');
-                      fb.className = 'poster-fallback flex h-[210px] w-[140px] items-center justify-center rounded-xl bg-[var(--bg-accent)] p-2 text-center';
-                      const span = document.createElement('span');
-                      span.className = 'text-xs text-[var(--text-muted)]';
-                      span.textContent = film.title;
-                      fb.appendChild(span);
-                      parent.insertBefore(fb, img);
-                    }
-                  }}
-                />
+                {film.posterUrl ? (
+                  <Image
+                    src={film.posterUrl}
+                    alt={film.title}
+                    width={140}
+                    height={210}
+                    className="rounded-xl object-cover"
+                    unoptimized
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      img.style.display = 'none';
+                      const parent = img.parentElement;
+                      if (parent && !parent.querySelector('.poster-fallback')) {
+                        const fb = document.createElement('div');
+                        fb.className = 'poster-fallback flex h-[210px] w-[140px] items-center justify-center rounded-xl bg-[var(--bg-accent)] p-2 text-center';
+                        const span = document.createElement('span');
+                        span.className = 'text-xs text-[var(--text-muted)]';
+                        span.textContent = film.title;
+                        fb.appendChild(span);
+                        parent.insertBefore(fb, img);
+                      }
+                    }}
+                  />
+                ) : (
+                  <div className="flex h-[210px] w-[140px] items-center justify-center rounded-xl bg-[var(--bg-accent)] p-2 text-center">
+                    <span className="text-xs text-[var(--text-muted)]">{film.title}</span>
+                  </div>
+                )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <p className="text-xs text-white font-medium truncate">{film.title}</p>
                 </div>
@@ -308,27 +269,30 @@ export default function HomePage() {
           {selectedFilm && (
             <div className="mt-4 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
               <div className="flex items-start gap-4">
-                <Image
-                  src={selectedFilm.posterUrl}
-                  alt={selectedFilm.title}
-                  width={80}
-                  height={120}
-                  className="rounded-lg object-cover shrink-0"
-                  unoptimized
-                />
+                {selectedFilm.posterUrl ? (
+                  <Image
+                    src={selectedFilm.posterUrl}
+                    alt={selectedFilm.title}
+                    width={80}
+                    height={120}
+                    className="rounded-lg object-cover shrink-0"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex h-[120px] w-[80px] items-center justify-center rounded-lg bg-[var(--bg-accent)] shrink-0 p-1 text-center">
+                    <span className="text-xs text-[var(--text-muted)]">{selectedFilm.title}</span>
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-[var(--text-primary)]">{selectedFilm.title}</h3>
-                  <p className="text-xs text-[var(--text-muted)] mt-0.5">{selectedFilm.releaseDate}</p>
-                  <p className="text-sm text-[var(--text-secondary)] mt-2 line-clamp-2">{selectedFilm.overview}</p>
+                  {selectedFilm.year && <p className="text-xs text-[var(--text-muted)] mt-0.5">{selectedFilm.year}</p>}
+                  <p className="text-sm text-[var(--text-secondary)] mt-2">
+                    {selectedFilm.screeningCount} {t.explore.showtimes}
+                  </p>
                 </div>
               </div>
 
-              {(loadingScreenings || !cityScreeningsLoaded) ? (
-                <div className="flex items-center gap-2 mt-4 text-sm text-[var(--text-muted)]">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
-                  {t.home.findingShowtimes} {DUTCH_CITIES.find((c) => c.slug === city)?.name}…
-                </div>
-              ) : screenings.length === 0 ? (
+              {screenings.length === 0 ? (
                 <p className="mt-4 text-sm text-[var(--text-muted)]">
                   {t.home.noShowtimes} {DUTCH_CITIES.find((c) => c.slug === city)?.name} {t.home.forThisFilm}
                 </p>
@@ -384,12 +348,13 @@ export default function HomePage() {
 
       {/* Features */}
       <section className="mx-auto max-w-3xl px-4 pb-20">
-        <div className="grid gap-6 sm:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-5">
           {[
             { icon: Film, title: t.home.featureImport, desc: t.home.featureImportDesc, href: '/explore' },
             { icon: Users, title: t.home.featureDiscover, desc: t.home.featureDiscoverDesc, href: '/scan' },
             { icon: Heart, title: t.home.featureConnect, desc: t.home.featureConnectDesc, href: '/signup' },
             { icon: Calendar, title: t.home.featurePlan, desc: t.home.featurePlanDesc, href: '/plan' },
+            { icon: Popcorn, title: t.home.featureBuddy, desc: t.home.featureBuddyDesc, href: '/buddy' },
           ].map(({ icon: Icon, title, desc, href }) => (
             <Link key={title} href={href} className="flex flex-col items-center text-center p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] hover:border-[var(--accent)]/30 hover:shadow-sm transition-all group">
               <Icon className="h-6 w-6 text-[var(--accent)] mb-2.5 group-hover:scale-110 transition-transform" />
@@ -411,6 +376,7 @@ export default function HomePage() {
             <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
             <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.scan}</Link>
             <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.plan}</Link>
+            <Link href="/buddy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.buddy}</Link>
             <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.about}</Link>
             <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.privacy}</Link>
             <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.terms}</Link>

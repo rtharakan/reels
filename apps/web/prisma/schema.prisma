@@ -72,6 +72,9 @@ model User {
   seenByUsers      SeenUser[]       @relation("Seen")
   dailyAllocations DailyAllocation[]
   deviceTokens     DeviceToken[]
+  buddyRequests    BuddyRequest[]   @relation("BuddyRequestCreator")
+  buddyInterests   BuddyInterest[]  @relation("BuddyInterestUser")
+  buddyMessages    BuddyMessage[]   @relation("BuddyMessageSender")
 
   @@index([deletedAt])
   @@index([intent])
@@ -315,4 +318,65 @@ model DeviceToken {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─── Buddy Feature ─────────────────────────────────────────
+
+enum BuddyRequestStatus {
+  OPEN
+  FULL
+  CLOSED
+  EXPIRED
+}
+
+model BuddyRequest {
+  id           String              @id @default(cuid())
+  creatorId    String
+  filmTitle    String
+  filmYear     Int?
+  posterUrl    String?
+  cinemaName   String
+  city         String
+  date         String              // YYYY-MM-DD
+  time         String              // HH:MM
+  ticketUrl    String?
+  maxBuddies   Int                 @default(1)
+  status       BuddyRequestStatus  @default(OPEN)
+  createdAt    DateTime            @default(now())
+  expiresAt    DateTime
+
+  creator   User            @relation("BuddyRequestCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  interests BuddyInterest[]
+  messages  BuddyMessage[]
+
+  @@index([status, city, date])
+  @@index([creatorId])
+  @@index([expiresAt])
+}
+
+model BuddyInterest {
+  id        String   @id @default(cuid())
+  requestId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  request BuddyRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  user    User         @relation("BuddyInterestUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([requestId, userId])
+  @@index([userId])
+}
+
+model BuddyMessage {
+  id        String   @id @default(cuid())
+  requestId String
+  senderId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  request BuddyRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  sender  User         @relation("BuddyMessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([requestId, createdAt])
+  @@index([senderId])
 }
