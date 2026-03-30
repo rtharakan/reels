@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
@@ -14,6 +14,27 @@ export default function LoginPage() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [devLink, setDevLink] = useState<string | null>(null);
+  const isDev = process.env.NODE_ENV === 'development';
+
+  // In dev mode, poll for the magic link so it can be shown in the browser
+  useEffect(() => {
+    if (!sent || !isDev) return;
+    let tries = 0;
+    const interval = setInterval(async () => {
+      tries++;
+      try {
+        const res = await fetch('/api/dev/magic-link');
+        const data = await res.json() as { link?: { email: string; url: string } | null };
+        if (data.link?.url) {
+          setDevLink(data.link.url);
+          clearInterval(interval);
+        }
+      } catch { /* ignore */ }
+      if (tries > 15) clearInterval(interval);
+    }, 800);
+    return () => clearInterval(interval);
+  }, [sent, isDev]);
 
   const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +65,22 @@ export default function LoginPage() {
           <p className="text-[var(--text-secondary)] leading-relaxed">
             We sent a sign-in link to <strong className="text-[var(--text-primary)]">{email}</strong>
           </p>
-          <p className="text-sm text-[var(--text-muted)]">Expires in 10 minutes</p>
+          {isDev && (
+            <div className="rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:border-amber-700 p-4 text-left space-y-2">
+              <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wide">⚡ Dev mode — no email sent</p>
+              {devLink ? (
+                <a
+                  href={devLink}
+                  className="block text-xs break-all text-[var(--accent)] hover:underline font-mono"
+                >
+                  Click here to sign in →
+                </a>
+              ) : (
+                <p className="text-xs text-amber-600 dark:text-amber-400 animate-pulse">Fetching link…</p>
+              )}
+            </div>
+          )}
+          {!isDev && <p className="text-sm text-[var(--text-muted)]">Expires in 10 minutes</p>}
         </div>
       </main>
     );

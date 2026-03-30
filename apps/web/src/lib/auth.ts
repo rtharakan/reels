@@ -41,12 +41,14 @@ export const auth = betterAuth({
   plugins: [
     magicLink({
       sendMagicLink: async ({ email, url }) => {
-        // In dev, log to console
         if (process.env.NODE_ENV === 'development') {
+          // Store the latest link so the browser can display it without checking logs
+          const g = globalThis as unknown as Record<string, unknown>;
+          g.__devMagicLink = { email, url, ts: Date.now() };
           console.log(`[Magic Link] ${email}: ${url}`);
           return;
         }
-        // In production, use Resend
+        // In production, send via Resend
         const { sendMagicLinkEmail } = await import('./email');
         await sendMagicLinkEmail(email, url);
       },
