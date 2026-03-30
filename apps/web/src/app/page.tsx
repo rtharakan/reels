@@ -15,6 +15,9 @@ export default function HomePage() {
             <Link href="/explore" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Explore
             </Link>
+            <Link href="/scan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
+              Scan
+            </Link>
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               Sign in
             </Link>
@@ -157,6 +160,9 @@ export default function HomePage() {
           <nav className="flex items-center gap-4">
             <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">
               Explore
+            </Link>
+            <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">
+              Scan
             </Link>
             <Link href="/login" className="hover:text-[var(--text-secondary)] transition-colors">
               Sign in
