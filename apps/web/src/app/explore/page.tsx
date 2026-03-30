@@ -417,6 +417,7 @@ export default function ExplorePage() {
                               width={180}
                               height={270}
                               loading="lazy"
+                              unoptimized
                               className="h-full w-full object-cover transition-all group-hover:scale-105 group-hover:opacity-90"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;

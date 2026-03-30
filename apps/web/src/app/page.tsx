@@ -60,6 +60,8 @@ export default function HomePage() {
   const [selectedFilm, setSelectedFilm] = useState<NowPlayingFilm | null>(null);
   const [screenings, setScreenings] = useState<Screening[]>([]);
   const [loadingScreenings, setLoadingScreenings] = useState(false);
+  const [allCityScreenings, setAllCityScreenings] = useState<Screening[]>([]);
+  const [cityScreeningsLoaded, setCityScreeningsLoaded] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   // Fetch now playing films
@@ -70,6 +72,21 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+  // Pre-fetch all city screenings when city changes
+  useEffect(() => {
+    setCityScreeningsLoaded(false);
+    setAllCityScreenings([]);
+    setSelectedFilm(null);
+    setScreenings([]);
+    fetch(`/api/screenings?city=${encodeURIComponent(city)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setAllCityScreenings(data.screenings ?? []);
+        setCityScreeningsLoaded(true);
+      })
+      .catch(() => setCityScreeningsLoaded(true));
+  }, [city]);
+
   const scroll = useCallback((direction: 'left' | 'right') => {
     if (!carouselRef.current) return;
     const scrollAmount = 300;
@@ -79,38 +96,64 @@ export default function HomePage() {
     });
   }, []);
 
-  // When a poster is clicked, fetch screenings for that film in the selected city
-  // Try Dutch title first (for Filmladder matching), then original title, then English
-  const handlePosterClick = async (film: NowPlayingFilm) => {
-    setSelectedFilm(film);
-    setLoadingScreenings(true);
-    setScreenings([]);
-    try {
-      const titlesToTry = [
-        film.dutchTitle,
-        film.originalTitle,
-        film.title,
-      ].filter((t): t is string => !!t && t.length > 0);
-
-      // Deduplicate
-      const uniqueTitles = [...new Set(titlesToTry)];
-
-      let found: Screening[] = [];
-      for (const title of uniqueTitles) {
-        const res = await fetch(`/api/screenings?city=${city}&film=${encodeURIComponent(title)}`);
-        const data = await res.json();
-        if (data.screenings?.length > 0) {
-          found = data.screenings;
-          break;
-        }
-      }
-      setScreenings(found);
-    } catch {
-      setScreenings([]);
-    } finally {
-      setLoadingScreenings(false);
+  // Client-side fuzzy title matching (same logic as server-side screenings route)
+  const normalizeTitle = useCallback((title: string): string => {
+    if (!title) return '';
+    const articles = ['the', 'a', 'an', 'de', 'het', 'een'];
+    let n = title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    for (const article of articles) {
+      n = n.replace(new RegExp(`^${article}\\s+`, 'i'), '');
     }
-  };
+    return n.replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+  }, []);
+
+  const fuzzyMatchTitle = useCallback((queryTitle: string, screeningTitle: string): boolean => {
+    const normQuery = normalizeTitle(queryTitle);
+    const normScreening = normalizeTitle(screeningTitle);
+    if (normQuery === normScreening) return true;
+    if (normQuery.includes(normScreening) || normScreening.includes(normQuery)) return true;
+    const tokensA = new Set(normQuery.split(/\s+/).filter(Boolean));
+    const tokensB = new Set(normScreening.split(/\s+/).filter(Boolean));
+    let intersection = 0;
+    for (const t of tokensA) { if (tokensB.has(t)) intersection++; }
+    const union = tokensA.size + tokensB.size - intersection;
+    if (union > 0 && intersection / union >= 0.5) return true;
+    const shorter = normQuery.length <= normScreening.length ? normQuery : normScreening;
+    const longer = normQuery.length > normScreening.length ? normQuery : normScreening;
+    const shorterTokens = shorter.split(/\s+/).filter(Boolean);
+    if (shorterTokens.length >= 2 && shorterTokens.every((t) => longer.includes(t))) return true;
+    return false;
+  }, [normalizeTitle]);
+
+  // When a poster is clicked, match against pre-fetched city screenings instantly
+  const handlePosterClick = useCallback((film: NowPlayingFilm) => {
+    setSelectedFilm(film);
+    if (!cityScreeningsLoaded) {
+      setLoadingScreenings(true);
+      setScreenings([]);
+      return;
+    }
+
+    const titlesToTry = [
+      film.dutchTitle,
+      film.originalTitle,
+      film.title,
+    ].filter((t): t is string => !!t && t.length > 0);
+    const uniqueTitles = [...new Set(titlesToTry)];
+
+    const matched = allCityScreenings.filter((s) =>
+      uniqueTitles.some((title) => fuzzyMatchTitle(title, s.filmTitle))
+    );
+    setScreenings(matched);
+    setLoadingScreenings(false);
+  }, [allCityScreenings, cityScreeningsLoaded, fuzzyMatchTitle]);
+
+  // Update screenings when city data loads while a film is selected
+  useEffect(() => {
+    if (selectedFilm && cityScreeningsLoaded && loadingScreenings) {
+      handlePosterClick(selectedFilm);
+    }
+  }, [cityScreeningsLoaded, selectedFilm, loadingScreenings, handlePosterClick]);
 
   // Group screenings by date
   const screeningsByDate = screenings.reduce<Record<string, Screening[]>>((acc, s) => {
@@ -198,11 +241,7 @@ export default function HomePage() {
                 <MapPin className="h-3.5 w-3.5 text-[var(--text-muted)]" />
                 <select
                   value={city}
-                  onChange={(e) => {
-                    setCity(e.target.value);
-                    setSelectedFilm(null);
-                    setScreenings([]);
-                  }}
+                  onChange={(e) => setCity(e.target.value)}
                   className="bg-transparent text-sm font-medium text-[var(--text-secondary)] border-none focus:outline-none cursor-pointer"
                 >
                   {DUTCH_CITIES.map((c) => (
@@ -243,6 +282,17 @@ export default function HomePage() {
                   height={210}
                   className="rounded-xl object-cover"
                   unoptimized
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    img.style.display = 'none';
+                    const parent = img.parentElement;
+                    if (parent && !parent.querySelector('.poster-fallback')) {
+                      const fb = document.createElement('div');
+                      fb.className = 'poster-fallback flex h-[210px] w-[140px] items-center justify-center rounded-xl bg-[var(--bg-accent)] p-2 text-center';
+                      fb.innerHTML = `<span class="text-xs text-[var(--text-muted)]">${film.title}</span>`;
+                      parent.insertBefore(fb, img);
+                    }
+                  }}
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <p className="text-xs text-white font-medium truncate">{film.title}</p>
@@ -270,7 +320,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {loadingScreenings ? (
+              {(loadingScreenings || !cityScreeningsLoaded) ? (
                 <div className="flex items-center gap-2 mt-4 text-sm text-[var(--text-muted)]">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
                   {t.home.findingShowtimes} {DUTCH_CITIES.find((c) => c.slug === city)?.name}…
@@ -293,10 +343,11 @@ export default function HomePage() {
                           {dayScreenings
                             .sort((a, b) => a.time.localeCompare(b.time))
                             .map((s, i) => (
+                              s.ticketUrl ? (
                               <a
                                 key={i}
-                                href={s.ticketUrl ?? '#'}
-                                target={s.ticketUrl ? '_blank' : undefined}
+                                href={s.ticketUrl}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-accent)] px-2.5 py-1.5 text-xs text-[var(--text-secondary)] hover:border-[var(--accent)]/40 hover:bg-[var(--accent-soft)] transition-colors"
                               >
@@ -304,8 +355,19 @@ export default function HomePage() {
                                 <span className="font-medium">{s.time}</span>
                                 <span className="text-[var(--text-muted)]">·</span>
                                 <span className="truncate max-w-[120px]">{s.cinemaName}</span>
-                                {s.ticketUrl && <Ticket className="h-3 w-3 text-[var(--accent)]" />}
+                                <Ticket className="h-3 w-3 text-[var(--accent)]" />
                               </a>
+                              ) : (
+                              <span
+                                key={i}
+                                className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-accent)] px-2.5 py-1.5 text-xs text-[var(--text-secondary)]"
+                              >
+                                <Clock className="h-3 w-3 text-[var(--text-muted)]" />
+                                <span className="font-medium">{s.time}</span>
+                                <span className="text-[var(--text-muted)]">·</span>
+                                <span className="truncate max-w-[120px]">{s.cinemaName}</span>
+                              </span>
+                              )
                             ))}
                         </div>
                       </div>

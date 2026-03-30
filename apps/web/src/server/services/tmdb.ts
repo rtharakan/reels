@@ -137,10 +137,11 @@ export async function enrichFilmsWithPosters<T extends { title: string; year?: n
     const batch = films.slice(i, i + BATCH_SIZE);
     const results = await Promise.all(
       batch.map(async (film) => {
+        // Always prefer TMDB poster URLs — Letterboxd CDN URLs may fail through proxies
         if (film.posterUrl && film.posterUrl.includes('image.tmdb.org')) return film;
         try {
           const tmdbPoster = await resolveTMDBPoster(film.title, film.year);
-          return { ...film, posterUrl: tmdbPoster ?? film.posterUrl };
+          return { ...film, posterUrl: tmdbPoster ?? film.posterUrl ?? undefined };
         } catch {
           return film;
         }
