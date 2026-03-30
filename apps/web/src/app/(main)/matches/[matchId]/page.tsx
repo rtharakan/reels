@@ -4,6 +4,7 @@ import { trpc } from '@/lib/trpc';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Film } from 'lucide-react';
 
 export default function MatchDetailPage() {
   const params = useParams();
@@ -72,15 +73,16 @@ export default function MatchDetailPage() {
               <div className="grid grid-cols-4 gap-2">
                 {match.sharedFilms.slice(0, 8).map((film) => (
                   <div key={film.id}>
-                    {film.posterUrl ? (
-                      <div className="aspect-[2/3] overflow-hidden rounded-lg">
+                    <div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
+                      {film.posterUrl ? (
                         <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="flex aspect-[2/3] items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 p-1 text-xs text-[var(--text-muted)] text-center">
-                        {film.title}
-                      </div>
-                    )}
+                      ) : (
+                        <div className="flex h-full flex-col items-center justify-center p-1 text-center">
+                          <Film className="h-5 w-5 text-slate-400 dark:text-slate-500 mb-1" />
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-3">{film.title}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

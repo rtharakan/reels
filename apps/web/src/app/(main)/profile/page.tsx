@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { Film } from 'lucide-react';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -77,15 +78,16 @@ export default function ProfilePage() {
             <div className="flex gap-2">
               {user.topFilms.map((film) => (
                 <div key={film.id} className="flex-shrink-0">
-                  {film.posterUrl ? (
-                    <div className="aspect-[2/3] w-[60px] overflow-hidden rounded-lg">
+                  <div className="relative aspect-[2/3] w-[60px] overflow-hidden rounded-lg bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
+                    {film.posterUrl ? (
                       <Image src={film.posterUrl} alt={`${film.title} poster`} width={60} height={90} className="h-full w-full object-cover" />
-                    </div>
-                  ) : (
-                    <div className="flex h-[90px] w-[60px] items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 text-xs text-[var(--text-muted)] p-1 text-center">
-                      {film.title}
-                    </div>
-                  )}
+                    ) : (
+                      <div className="flex h-full flex-col items-center justify-center p-1 text-center">
+                        <Film className="h-4 w-4 text-slate-400 dark:text-slate-500 mb-0.5" />
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2">{film.title}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

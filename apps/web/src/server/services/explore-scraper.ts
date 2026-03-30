@@ -49,21 +49,35 @@ function parseFilmFromHtml(filmElement: string): ExploreFilm | null {
   }
 
   let posterUrl: string | undefined;
+
+  // Try multiple poster URL extraction strategies
+  // Priority 1: Direct poster URL attribute
   const posterUrlMatch = filmElement.match(/data-poster-url="([^"]+)"/);
   if (posterUrlMatch) posterUrl = posterUrlMatch[1];
 
+  // Priority 2: Data-image attribute
   if (!posterUrl) {
     const dataImageMatch = filmElement.match(/data-image="([^"]+)"/);
     if (dataImageMatch) posterUrl = dataImageMatch[1];
   }
 
+  // Priority 3: TMDB poster from Letterboxd (they sometimes embed TMDB URLs)
+  if (!posterUrl) {
+    const tmdbMatch = filmElement.match(
+      /src="(https:\/\/image\.tmdb\.org\/t\/p\/[^"]+)"/
+    );
+    if (tmdbMatch) posterUrl = tmdbMatch[1];
+  }
+
+  // Priority 4: Direct Letterboxd CDN image
   if (!posterUrl) {
     const srcMatch = filmElement.match(
-      /src="(https:\/\/[^"]*letterboxd[^"]*\.jpg[^"]*)"/
+      /src="(https:\/\/[^"]*(?:ltrbxd|letterboxd)[^"]*\.(?:jpg|webp|png)[^"]*)"/
     );
     if (srcMatch) posterUrl = srcMatch[1];
   }
 
+  // Upscale Letterboxd CDN thumbnails to full poster size
   if (posterUrl && posterUrl.includes('ltrbxd.com')) {
     posterUrl = posterUrl.replace(/-\d+-\d+-\d+-\d+-crop/, '-0-230-0-345-crop');
     posterUrl = posterUrl.replace(/\/0-\d+-0-\d+\//, '/0-230-0-345/');

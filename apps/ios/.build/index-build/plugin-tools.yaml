@@ -1,0 +1,64 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "PackageStructure": ["<PackageStructure>"]
+  "Reels-arm64-apple-macosx-debug.module": ["<Reels-arm64-apple-macosx-debug.module>"]
+  "main": ["<Reels-arm64-apple-macosx-debug.module>"]
+  "test": ["<Reels-arm64-apple-macosx-debug.module>"]
+default: "main"
+nodes:
+  "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/AppNavigation.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ContentView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/NotificationManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ReelsApp.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Models/Models.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/APIClient.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/Configuration.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/KeychainManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Persistence/CacheManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Theme/ReelsTheme.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/AuthManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/SignInView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Discover/DiscoverView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchDetailView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchesListView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Onboarding/OnboardingView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/EditProfileView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/ProfileView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockReportSheet.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockedUsersView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/DerivedSources/resource_bundle_accessor.swift"]
+    outputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources"]
+    description: "Write auxiliary file /Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources"
+
+  "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/Localizable.strings":
+    tool: copy-tool
+    inputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Resources/Localizable.strings"]
+    outputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/Localizable.strings"]
+    description: "Copying /Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Resources/Localizable.strings"
+
+  "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/PrivacyInfo.xcprivacy":
+    tool: copy-tool
+    inputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Resources/PrivacyInfo.xcprivacy"]
+    outputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/PrivacyInfo.xcprivacy"]
+    description: "Copying /Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Resources/PrivacyInfo.xcprivacy"
+
+  "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Library/Developer/CommandLineTools/usr/bin/swiftc"]
+    outputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+
+  "<Reels-arm64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules/Reels.swiftmodule"]
+    outputs: ["<Reels-arm64-apple-macosx-debug.module>"]
+
+  "C.Reels-arm64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/AppNavigation.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ContentView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/NotificationManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ReelsApp.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Models/Models.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/APIClient.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/Configuration.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/KeychainManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Persistence/CacheManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Theme/ReelsTheme.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/AuthManager.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/SignInView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Discover/DiscoverView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchDetailView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchesListView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Onboarding/OnboardingView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/EditProfileView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/ProfileView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockReportSheet.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockedUsersView.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/DerivedSources/resource_bundle_accessor.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt","<Reels-arm64-apple-macosx-debug.module-resources>","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources"]
+    outputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules/Reels.swiftmodule"]
+    description: "Compiling Swift Module 'Reels' (21 sources)"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","Reels","-emit-dependencies","-emit-module","-emit-module-path","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules/Reels.swiftmodule","-output-file-map","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/output-file-map.json","-parse-as-library","-incremental","@/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources","-I","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx10.13","-incremental","-enable-batch-mode","-serialize-diagnostics","-Onone","-enable-testing","-j8","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE","-module-cache-path","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/include/Reels-Swift.h","-swift-version","5","-Xfrontend","-experimental-lazy-typecheck","-Xfrontend","-experimental-skip-all-function-bodies","-Xfrontend","-experimental-allow-module-with-compiler-errors","-Xfrontend","-empty-abi-descriptor","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g","-package-name","ios"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Package.swift","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+
+  "Reels-arm64-apple-macosx-debug.module-resources":
+    tool: phony
+    inputs: ["/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/Localizable.strings","/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/PrivacyInfo.xcprivacy"]
+    outputs: ["<Reels-arm64-apple-macosx-debug.module-resources>"]
+

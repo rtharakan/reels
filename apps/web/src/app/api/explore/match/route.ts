@@ -15,11 +15,21 @@ import type { ExploreFilm } from '@/server/services/explore-scraper';
 
 const TMDB_API_BASE = 'https://api.themoviedb.org/3';
 
+// In-memory poster cache to avoid redundant TMDB API calls within the same process
+const posterCache = new Map<string, string | null>();
+
+function posterCacheKey(title: string, year: number | undefined): string {
+  return `${title.toLowerCase().trim()}::${year ?? ''}`;
+}
+
 async function resolveTMDBPoster(
   title: string,
   year: number | undefined,
   apiToken: string,
 ): Promise<string | null> {
+  const key = posterCacheKey(title, year);
+  if (posterCache.has(key)) return posterCache.get(key) ?? null;
+
   const params = new URLSearchParams({ query: title });
   if (year) params.set('primary_release_year', String(year));
 
@@ -30,31 +40,71 @@ async function resolveTMDBPoster(
     },
   });
 
-  if (!res.ok) return null;
+  if (res.status === 429) {
+    // TMDB rate limit — wait and retry once
+    const retryAfter = parseInt(res.headers.get('Retry-After') ?? '2', 10);
+    await new Promise((r) => setTimeout(r, retryAfter * 1000));
+    const retryRes = await fetch(`${TMDB_API_BASE}/search/movie?${params}`, {
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!retryRes.ok) { posterCache.set(key, null); return null; }
+    const retryData = await retryRes.json();
+    const retryMovie = retryData.results?.[0];
+    const retryUrl = retryMovie?.poster_path
+      ? `https://image.tmdb.org/t/p/w342${retryMovie.poster_path}`
+      : null;
+    posterCache.set(key, retryUrl);
+    return retryUrl;
+  }
+
+  if (!res.ok) { posterCache.set(key, null); return null; }
   const data = await res.json();
   const movie = data.results?.[0];
-  if (!movie?.poster_path) return null;
-
-  return `https://image.tmdb.org/t/p/w300${movie.poster_path}`;
+  const posterUrl = movie?.poster_path
+    ? `https://image.tmdb.org/t/p/w342${movie.poster_path}`
+    : null;
+  posterCache.set(key, posterUrl);
+  return posterUrl;
 }
 
+/**
+ * Always resolve posters via TMDB for all films.
+ * Letterboxd HTML scraping produces unreliable poster URLs because
+ * their pages use React lazy-loading and the src/data attributes
+ * may not be present in raw HTML responses.
+ * Falls back to the Letterboxd-scraped URL only when TMDB fails.
+ */
 async function enrichPostersWithTMDB(
   films: ExploreFilm[],
 ): Promise<ExploreFilm[]> {
   const apiToken = process.env.TMDB_API_READ_ACCESS_TOKEN ?? process.env.TMDB_API_TOKEN;
-  if (!apiToken) return films;
+  if (!apiToken) {
+    console.warn('[Explore] TMDB_API_READ_ACCESS_TOKEN not set — film posters will be missing. Get a free token at https://www.themoviedb.org/settings/api');
+    return films;
+  }
 
-  const enriched = await Promise.all(
-    films.map(async (film) => {
-      if (film.posterUrl) return film;
-      try {
-        const posterUrl = await resolveTMDBPoster(film.title, film.year, apiToken);
-        return posterUrl ? { ...film, posterUrl } : film;
-      } catch {
-        return film;
-      }
-    }),
-  );
+  // Process in batches of 8 to respect TMDB rate limits (~40 req/10s)
+  const BATCH_SIZE = 8;
+  const enriched: ExploreFilm[] = [];
+
+  for (let i = 0; i < films.length; i += BATCH_SIZE) {
+    const batch = films.slice(i, i + BATCH_SIZE);
+    const results = await Promise.all(
+      batch.map(async (film) => {
+        try {
+          const tmdbPoster = await resolveTMDBPoster(film.title, film.year, apiToken);
+          // Prefer TMDB poster; fall back to Letterboxd-scraped URL
+          return { ...film, posterUrl: tmdbPoster ?? film.posterUrl };
+        } catch {
+          return film;
+        }
+      }),
+    );
+    enriched.push(...results);
+  }
 
   return enriched;
 }

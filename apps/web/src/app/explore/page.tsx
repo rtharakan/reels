@@ -364,30 +364,25 @@ export default function ExplorePage() {
                         rel="noopener noreferrer"
                         className="group block"
                       >
-                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-blue-50 dark:bg-slate-700">
+                        <div className="aspect-[2/3] overflow-hidden rounded-lg bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 relative">
                           {film.posterUrl ? (
                             <img
                               src={film.posterUrl}
                               alt={film.title}
                               loading="lazy"
-                              className="h-full w-full object-cover transition-opacity group-hover:opacity-80"
+                              className="h-full w-full object-cover transition-all group-hover:scale-105 group-hover:opacity-90"
                               onError={(e) => {
                                 const target = e.target as HTMLImageElement;
                                 target.style.display = 'none';
-                                const parent = target.parentElement;
-                                if (parent) {
-                                  const fallback = document.createElement('div');
-                                  fallback.className = 'flex h-full items-center justify-center p-2 text-center';
-                                  fallback.innerHTML = `<span class="text-xs text-slate-400 dark:text-slate-500">${film.title}</span>`;
-                                  parent.appendChild(fallback);
-                                }
+                                target.nextElementSibling?.classList.remove('hidden');
                               }}
                             />
-                          ) : (
-                            <div className="flex h-full items-center justify-center p-2 text-center">
-                              <span className="text-xs text-slate-400 dark:text-slate-500">{film.title}</span>
-                            </div>
-                          )}
+                          ) : null}
+                          <div className={`absolute inset-0 flex flex-col items-center justify-center p-2 text-center ${film.posterUrl ? 'hidden' : ''}`}>
+                            <Film className="h-6 w-6 text-slate-400 dark:text-slate-500 mb-1" />
+                            <span className="text-xs font-medium text-slate-500 dark:text-slate-400 line-clamp-3">{film.title}</span>
+                            {film.year && <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">{film.year}</span>}
+                          </div>
                         </div>
                         <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-300 truncate">{film.title}</p>
                         {film.year && (

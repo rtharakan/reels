@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { trpc } from '@/lib/trpc';
 import Image from 'next/image';
+import { Film } from 'lucide-react';
 
 function getIntentLabel(intent: string) {
   switch (intent) {
@@ -150,15 +151,16 @@ export default function DiscoverPage() {
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {card.sharedFilms.map((film) => (
                   <div key={film.id} className="flex-shrink-0">
-                    {film.posterUrl ? (
-                      <div className="aspect-[2/3] w-[80px] overflow-hidden rounded-lg">
+                    <div className="relative aspect-[2/3] w-[80px] overflow-hidden rounded-lg bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
+                      {film.posterUrl ? (
                         <Image src={film.posterUrl} alt={`${film.title} poster`} width={80} height={120} className="h-full w-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="flex h-[120px] w-[80px] items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 text-xs text-[var(--text-muted)] p-1 text-center">
-                        {film.title}
-                      </div>
-                    )}
+                      ) : (
+                        <div className="flex h-full flex-col items-center justify-center p-1 text-center">
+                          <Film className="h-5 w-5 text-slate-400 dark:text-slate-500 mb-1" />
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-3">{film.title}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

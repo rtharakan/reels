@@ -1,0 +1,470 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+    "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/Localizable.strings" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Resources/Localizable.strings"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/Localizable.strings"
+        }
+      ]
+    },
+    "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/PrivacyInfo.xcprivacy" : {
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Resources/PrivacyInfo.xcprivacy"
+        }
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels_Reels.bundle/PrivacyInfo.xcprivacy"
+        }
+      ]
+    }
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.Reels-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "fileList" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources",
+      "importPath" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/AppNavigation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/NotificationManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ReelsApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Models/Models.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/APIClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/Configuration.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/KeychainManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Persistence/CacheManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Theme/ReelsTheme.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/AuthManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/SignInView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Discover/DiscoverView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchDetailView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchesListView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Onboarding/OnboardingView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/EditProfileView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/ProfileView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockReportSheet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockedUsersView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/DerivedSources/resource_bundle_accessor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<Reels-arm64-apple-macosx-debug.module-resources>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "Reels",
+      "moduleOutputPath" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules/Reels.swiftmodule",
+      "objects" : [
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/AppNavigation.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/ContentView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/NotificationManager.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/ReelsApp.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/Models.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/APIClient.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/Configuration.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/KeychainManager.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/CacheManager.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/ReelsTheme.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/AuthManager.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/SignInView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/DiscoverView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/MatchDetailView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/MatchesListView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/OnboardingView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/EditProfileView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/ProfileView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/BlockReportSheet.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/BlockedUsersView.swift.o",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/resource_bundle_accessor.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx10.13",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-Onone",
+        "-enable-testing",
+        "-j8",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
+        "-module-cache-path",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/include/Reels-Swift.h",
+        "-swift-version",
+        "5",
+        "-Xfrontend",
+        "-experimental-lazy-typecheck",
+        "-Xfrontend",
+        "-experimental-skip-all-function-bodies",
+        "-Xfrontend",
+        "-experimental-allow-module-with-compiler-errors",
+        "-Xfrontend",
+        "-empty-abi-descriptor",
+        "-I",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-L",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-plugin-path",
+        "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "ios"
+      ],
+      "outputFileMapPath" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules/Reels.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : true,
+      "sources" : [
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/AppNavigation.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ContentView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/NotificationManager.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ReelsApp.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Models/Models.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/APIClient.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/Configuration.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/KeychainManager.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Persistence/CacheManager.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Theme/ReelsTheme.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/AuthManager.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/SignInView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Discover/DiscoverView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchDetailView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchesListView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Onboarding/OnboardingView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/EditProfileView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/ProfileView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockReportSheet.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockedUsersView.swift",
+        "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/DerivedSources/resource_bundle_accessor.swift"
+      ],
+      "tempsPath" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "Reels" : [
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "-module-name",
+      "Reels",
+      "-package-name",
+      "ios",
+      "-c",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/AppNavigation.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ContentView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/NotificationManager.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ReelsApp.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Models/Models.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/APIClient.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/Configuration.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/KeychainManager.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Persistence/CacheManager.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Theme/ReelsTheme.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/AuthManager.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/SignInView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Discover/DiscoverView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchDetailView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchesListView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Onboarding/OnboardingView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/EditProfileView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/ProfileView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockReportSheet.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockedUsersView.swift",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/DerivedSources/resource_bundle_accessor.swift",
+      "-I",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx10.13",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-Onone",
+      "-enable-testing",
+      "-j8",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_AVAILABLE",
+      "-module-cache-path",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/include/Reels-Swift.h",
+      "-swift-version",
+      "5",
+      "-Xfrontend",
+      "-experimental-lazy-typecheck",
+      "-Xfrontend",
+      "-experimental-skip-all-function-bodies",
+      "-Xfrontend",
+      "-experimental-allow-module-with-compiler-errors",
+      "-Xfrontend",
+      "-empty-abi-descriptor",
+      "-I",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-L",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-plugin-path",
+      "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "ios",
+      "-driver-use-frontend-path",
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "Reels" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/AppNavigation.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/NotificationManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/App/ReelsApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Models/Models.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/APIClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/Configuration.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Networking/KeychainManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Persistence/CacheManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Core/Theme/ReelsTheme.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/AuthManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Auth/SignInView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Discover/DiscoverView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchDetailView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Matches/MatchesListView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Onboarding/OnboardingView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/EditProfileView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Profile/ProfileView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockReportSheet.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/Reels/Features/Safety/BlockedUsersView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/DerivedSources/resource_bundle_accessor.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/Reels.build/sources"
+    },
+    "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/rthar/Downloads/Co-Pilot Working Session/Reels/apps/ios/.build/index-build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+    }
+  }
+}
