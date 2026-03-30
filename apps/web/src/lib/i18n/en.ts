@@ -179,4 +179,9 @@ export const en = {
   },
 } as const;
 
-export type Translations = typeof en;
+/** Recursive type that maps all leaves to string */
+type DeepStringify<T> = {
+  [K in keyof T]: T[K] extends string ? string : DeepStringify<T[K]>;
+};
+
+export type Translations = DeepStringify<typeof en>;

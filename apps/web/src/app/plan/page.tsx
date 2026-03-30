@@ -145,7 +145,7 @@ export default function PlanPage() {
           if (!acc[s.filmSlug]) {
             acc[s.filmSlug] = { filmTitle: s.filmTitle, filmSlug: s.filmSlug, posterUrl: s.posterUrl, showtimes: [] };
           }
-          acc[s.filmSlug].showtimes.push({ cinemaName: s.cinemaName, time: s.time, ticketUrl: s.ticketUrl });
+          acc[s.filmSlug]!.showtimes.push({ cinemaName: s.cinemaName, time: s.time, ticketUrl: s.ticketUrl });
           return acc;
         }, {}),
       )

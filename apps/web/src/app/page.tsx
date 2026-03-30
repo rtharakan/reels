@@ -115,7 +115,7 @@ export default function HomePage() {
   // Group screenings by date
   const screeningsByDate = screenings.reduce<Record<string, Screening[]>>((acc, s) => {
     if (!acc[s.date]) acc[s.date] = [];
-    acc[s.date].push(s);
+    acc[s.date]!.push(s);
     return acc;
   }, {});
 
