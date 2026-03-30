@@ -9,6 +9,8 @@ import { ThemeToggleCompact } from '@/components/theme-toggle';
 interface NowPlayingFilm {
   id: number;
   title: string;
+  originalTitle?: string;
+  dutchTitle?: string;
   posterUrl: string;
   releaseDate: string;
   overview: string;
@@ -75,14 +77,31 @@ export default function HomePage() {
   }, []);
 
   // When a poster is clicked, fetch screenings for that film in the selected city
+  // Try Dutch title first (for Filmladder matching), then original title, then English
   const handlePosterClick = async (film: NowPlayingFilm) => {
     setSelectedFilm(film);
     setLoadingScreenings(true);
     setScreenings([]);
     try {
-      const res = await fetch(`/api/screenings?city=${city}&film=${encodeURIComponent(film.title)}`);
-      const data = await res.json();
-      setScreenings(data.screenings ?? []);
+      const titlesToTry = [
+        film.dutchTitle,
+        film.originalTitle,
+        film.title,
+      ].filter((t): t is string => !!t && t.length > 0);
+
+      // Deduplicate
+      const uniqueTitles = [...new Set(titlesToTry)];
+
+      let found: Screening[] = [];
+      for (const title of uniqueTitles) {
+        const res = await fetch(`/api/screenings?city=${city}&film=${encodeURIComponent(title)}`);
+        const data = await res.json();
+        if (data.screenings?.length > 0) {
+          found = data.screenings;
+          break;
+        }
+      }
+      setScreenings(found);
     } catch {
       setScreenings([]);
     } finally {

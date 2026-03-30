@@ -72,6 +72,7 @@ interface MatchResponse {
     sharedWatchedCount: number;
   };
   dateIdeas: DateIdea[];
+  dateIdeasSource?: 'watchlist' | 'interests';
   city: string | null;
   cities: CityOption[];
   error?: string;
@@ -456,6 +457,14 @@ export default function ExplorePage() {
                   </Card>
                 ) : (
                   <div className="space-y-3">
+                    {result.dateIdeasSource === 'interests' && (
+                      <div className="rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-4 py-3 text-sm text-[var(--text-secondary)]">
+                        <p className="font-medium text-[var(--accent)] mb-0.5">Based on your shared interests</p>
+                        <p className="text-xs text-[var(--text-muted)]">
+                          These films are currently playing and match your combined taste in genres, likes, and viewing history — not from your watchlists.
+                        </p>
+                      </div>
+                    )}
                     <p className="text-sm text-[var(--text-secondary)] flex items-center gap-1.5">
                       <MapPin className="h-3.5 w-3.5" />
                       Screenings in{' '}

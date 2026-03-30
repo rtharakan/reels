@@ -10,104 +10,9 @@ import { fetchExploreAllSources } from '@/server/services/explore-scraper';
 import { computeExploreMatch } from '@/server/services/explore-matcher';
 import { fetchCityScreenings, DUTCH_CITIES } from '@/server/services/explore-screenings';
 import { findExploreMatchingScreenings } from '@/server/services/explore-film-matcher';
+import { enrichFilmsWithPosters } from '@/server/services/tmdb';
 import { rateLimit } from '@/lib/rate-limit';
 import type { ExploreFilm } from '@/server/services/explore-scraper';
-
-const TMDB_API_BASE = 'https://api.themoviedb.org/3';
-
-// In-memory poster cache to avoid redundant TMDB API calls within the same process
-const posterCache = new Map<string, string | null>();
-
-function posterCacheKey(title: string, year: number | undefined): string {
-  return `${title.toLowerCase().trim()}::${year ?? ''}`;
-}
-
-async function resolveTMDBPoster(
-  title: string,
-  year: number | undefined,
-  apiToken: string,
-): Promise<string | null> {
-  const key = posterCacheKey(title, year);
-  if (posterCache.has(key)) return posterCache.get(key) ?? null;
-
-  const params = new URLSearchParams({ query: title });
-  if (year) params.set('primary_release_year', String(year));
-
-  const res = await fetch(`${TMDB_API_BASE}/search/movie?${params}`, {
-    headers: {
-      Authorization: `Bearer ${apiToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (res.status === 429) {
-    // TMDB rate limit — wait and retry once
-    const retryAfter = parseInt(res.headers.get('Retry-After') ?? '2', 10);
-    await new Promise((r) => setTimeout(r, retryAfter * 1000));
-    const retryRes = await fetch(`${TMDB_API_BASE}/search/movie?${params}`, {
-      headers: {
-        Authorization: `Bearer ${apiToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    if (!retryRes.ok) { posterCache.set(key, null); return null; }
-    const retryData = await retryRes.json();
-    const retryMovie = retryData.results?.[0];
-    const retryUrl = retryMovie?.poster_path
-      ? `https://image.tmdb.org/t/p/w342${retryMovie.poster_path}`
-      : null;
-    posterCache.set(key, retryUrl);
-    return retryUrl;
-  }
-
-  if (!res.ok) { posterCache.set(key, null); return null; }
-  const data = await res.json();
-  const movie = data.results?.[0];
-  const posterUrl = movie?.poster_path
-    ? `https://image.tmdb.org/t/p/w342${movie.poster_path}`
-    : null;
-  posterCache.set(key, posterUrl);
-  return posterUrl;
-}
-
-/**
- * Always resolve posters via TMDB for all films.
- * Letterboxd HTML scraping produces unreliable poster URLs because
- * their pages use React lazy-loading and the src/data attributes
- * may not be present in raw HTML responses.
- * Falls back to the Letterboxd-scraped URL only when TMDB fails.
- */
-async function enrichPostersWithTMDB(
-  films: ExploreFilm[],
-): Promise<ExploreFilm[]> {
-  const apiToken = process.env.TMDB_API_READ_ACCESS_TOKEN ?? process.env.TMDB_API_TOKEN;
-  if (!apiToken) {
-    console.warn('[Explore] TMDB_API_READ_ACCESS_TOKEN not set — film posters will be missing. Get a free token at https://www.themoviedb.org/settings/api');
-    return films;
-  }
-
-  // Process in batches of 8 to respect TMDB rate limits (~40 req/10s)
-  const BATCH_SIZE = 8;
-  const enriched: ExploreFilm[] = [];
-
-  for (let i = 0; i < films.length; i += BATCH_SIZE) {
-    const batch = films.slice(i, i + BATCH_SIZE);
-    const results = await Promise.all(
-      batch.map(async (film) => {
-        try {
-          const tmdbPoster = await resolveTMDBPoster(film.title, film.year, apiToken);
-          // Prefer TMDB poster; fall back to Letterboxd-scraped URL
-          return { ...film, posterUrl: tmdbPoster ?? film.posterUrl };
-        } catch {
-          return film;
-        }
-      }),
-    );
-    enriched.push(...results);
-  }
-
-  return enriched;
-}
 
 // Basic username validation
 const USERNAME_REGEX = /^[a-zA-Z0-9_-]{1,40}$/;
@@ -213,7 +118,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Enrich shared films with TMDB posters for missing poster URLs
-    const enrichedSharedFilms = await enrichPostersWithTMDB(matchResult.sharedFilms);
+    const enrichedSharedFilms = await enrichFilmsWithPosters(matchResult.sharedFilms);
 
     // If a city is provided, find screenings of shared films
     let dateIdeas: {
@@ -223,23 +128,67 @@ export async function POST(request: NextRequest) {
       time: string;
       ticketUrl?: string;
     }[] = [];
+    let dateIdeasSource: 'watchlist' | 'interests' = 'watchlist';
 
     const selectedCity = city && DUTCH_CITIES.some((c) => c.slug === city) ? city : null;
 
-    if (selectedCity && matchResult.sharedFilms.length > 0) {
+    if (selectedCity) {
       try {
         const screenings = await fetchCityScreenings(selectedCity);
-        const matched = findExploreMatchingScreenings(
-          matchResult.sharedFilms,
-          screenings
-        );
-        dateIdeas = matched.map((m) => ({
-          filmTitle: m.film.title,
-          cinemaName: m.screening.cinemaName,
-          date: m.screening.date,
-          time: m.screening.time,
-          ticketUrl: m.screening.ticketUrl,
-        }));
+
+        if (matchResult.sharedFilms.length > 0) {
+          // Primary: match shared watchlist films against cinema screenings
+          const matched = findExploreMatchingScreenings(
+            matchResult.sharedFilms,
+            screenings
+          );
+          dateIdeas = matched.map((m) => ({
+            filmTitle: m.film.title,
+            cinemaName: m.screening.cinemaName,
+            date: m.screening.date,
+            time: m.screening.time,
+            ticketUrl: m.screening.ticketUrl,
+          }));
+        }
+
+        // Fallback: when no watchlist matches, recommend based on combined interests
+        // Use liked + watched films as interest signals
+        if (dateIdeas.length === 0) {
+          dateIdeasSource = 'interests';
+          const interestFilms = [
+            ...matchResult.sharedLikedFilms,
+            ...matchResult.sharedWatchedFilms,
+            ...matchResult.sharedFilms,
+          ];
+          if (interestFilms.length > 0) {
+            const matched = findExploreMatchingScreenings(interestFilms, screenings);
+            dateIdeas = matched.map((m) => ({
+              filmTitle: m.film.title,
+              cinemaName: m.screening.cinemaName,
+              date: m.screening.date,
+              time: m.screening.time,
+              ticketUrl: m.screening.ticketUrl,
+            }));
+          }
+
+          // Final fallback: just show what's playing (any genre overlap with combined viewed films)
+          if (dateIdeas.length === 0 && screenings.length > 0) {
+            const uniqueScreenings = new Map<string, typeof screenings[0]>();
+            for (const s of screenings) {
+              const key = `${s.filmTitle}::${s.date}::${s.time}::${s.cinemaName}`;
+              if (!uniqueScreenings.has(key)) uniqueScreenings.set(key, s);
+            }
+            dateIdeas = Array.from(uniqueScreenings.values())
+              .slice(0, 30)
+              .map((s) => ({
+                filmTitle: s.filmTitle,
+                cinemaName: s.cinemaName,
+                date: s.date,
+                time: s.time,
+                ticketUrl: s.ticketUrl,
+              }));
+          }
+        }
       } catch (err) {
         console.error('[Explore] Failed to fetch screenings:', err);
         // Non-fatal — we still return the match result
@@ -271,6 +220,7 @@ export async function POST(request: NextRequest) {
         sharedWatchedCount: matchResult.sharedWatchedFilms.length,
       },
       dateIdeas: dateIdeas.slice(0, 30),
+      dateIdeasSource,
       city: selectedCity,
       cities: DUTCH_CITIES,
     });
