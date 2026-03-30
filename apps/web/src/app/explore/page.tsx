@@ -20,9 +20,17 @@ import {
   Sparkles,
   Loader2,
   ChevronRight,
+  ChevronDown,
   Popcorn,
   ExternalLink,
 } from 'lucide-react';
+
+/** Group date ideas by film title + date so multiple showtimes collapse. */
+interface GroupedScreening {
+  filmTitle: string;
+  date: string;
+  showtimes: { cinemaName: string; time: string; ticketUrl?: string }[];
+}
 
 interface SharedFilm {
   letterboxdSlug: string;
@@ -85,6 +93,31 @@ function formatDate(dateStr: string): string {
   });
 }
 
+function groupDateIdeas(ideas: DateIdea[]): GroupedScreening[] {
+  const groups = new Map<string, GroupedScreening>();
+  for (const idea of ideas) {
+    const key = `${idea.filmTitle}::${idea.date}`;
+    const existing = groups.get(key);
+    if (existing) {
+      existing.showtimes.push({
+        cinemaName: idea.cinemaName,
+        time: idea.time,
+        ticketUrl: idea.ticketUrl,
+      });
+    } else {
+      groups.set(key, {
+        filmTitle: idea.filmTitle,
+        date: idea.date,
+        showtimes: [{ cinemaName: idea.cinemaName, time: idea.time, ticketUrl: idea.ticketUrl }],
+      });
+    }
+  }
+  for (const group of groups.values()) {
+    group.showtimes.sort((a, b) => a.time.localeCompare(b.time));
+  }
+  return Array.from(groups.values());
+}
+
 export default function ExplorePage() {
   const [user1, setUser1] = useState('');
   const [user2, setUser2] = useState('');
@@ -92,6 +125,7 @@ export default function ExplorePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<MatchResponse | null>(null);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [cities] = useState<CityOption[]>([
     { slug: 'amsterdam', name: 'Amsterdam' },
     { slug: 'rotterdam', name: 'Rotterdam' },
@@ -420,45 +454,96 @@ export default function ExplorePage() {
                         {cities.find((c) => c.slug === city)?.name || city}
                       </Badge>
                     </p>
-                    {result.dateIdeas.map((idea, i) => (
-                      <Card key={`${idea.filmTitle}-${idea.date}-${idea.time}-${i}`}>
-                        <div className="flex items-center gap-4 p-4">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-500 shrink-0">
-                            <Ticket className="h-5 w-5" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-[var(--text-primary)] truncate">
-                              {idea.filmTitle}
-                            </p>
-                            <p className="text-sm text-[var(--text-secondary)] truncate">
-                              {idea.cinemaName}
-                            </p>
-                            <div className="mt-1 flex items-center gap-3 text-xs text-[var(--text-muted)]">
-                              <span className="flex items-center gap-1">
-                                <Calendar className="h-3 w-3" />
-                                {formatDate(idea.date)}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                {idea.time}
-                              </span>
+                    {groupDateIdeas(result.dateIdeas).map((group) => {
+                      const groupKey = `${group.filmTitle}::${group.date}`;
+                      const isExpanded = expandedGroups.has(groupKey);
+                      const hasMultiple = group.showtimes.length > 1;
+                      return (
+                        <Card key={groupKey} className="overflow-hidden">
+                          <button
+                            type="button"
+                            className="flex w-full items-center gap-4 p-4 text-left hover:bg-blue-50/50 dark:hover:bg-slate-700/50 transition-colors"
+                            onClick={() => {
+                              if (!hasMultiple) return;
+                              setExpandedGroups((prev) => {
+                                const next = new Set(prev);
+                                if (next.has(groupKey)) next.delete(groupKey);
+                                else next.add(groupKey);
+                                return next;
+                              });
+                            }}
+                            aria-expanded={hasMultiple ? isExpanded : undefined}
+                          >
+                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-slate-700 text-blue-500 shrink-0">
+                              <Ticket className="h-5 w-5" />
                             </div>
-                          </div>
-                          {idea.ticketUrl && (
-                            <a
-                              href={idea.ticketUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Button size="sm" variant="outline" className="shrink-0">
-                                Tickets
-                                <ChevronRight className="h-3 w-3" />
-                              </Button>
-                            </a>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-[var(--text-primary)] truncate">
+                                {group.filmTitle}
+                              </p>
+                              <div className="mt-1 flex items-center gap-3 text-xs text-[var(--text-muted)]">
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  {formatDate(group.date)}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {hasMultiple
+                                    ? `${group.showtimes.length} showtimes`
+                                    : `${group.showtimes[0]?.time ?? ''} \u00B7 ${group.showtimes[0]?.cinemaName ?? ''}`}
+                                </span>
+                              </div>
+                            </div>
+                            {hasMultiple && (
+                              <ChevronDown className={`h-4 w-4 text-[var(--text-muted)] shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                            )}
+                            {!hasMultiple && group.showtimes[0]?.ticketUrl && (
+                              <a
+                                href={group.showtimes[0]?.ticketUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <Button size="sm" variant="outline" className="shrink-0">
+                                  Tickets
+                                  <ChevronRight className="h-3 w-3" />
+                                </Button>
+                              </a>
+                            )}
+                          </button>
+
+                          {hasMultiple && isExpanded && (
+                            <div className="border-t border-blue-100 dark:border-slate-700">
+                              {group.showtimes.map((st, idx) => (
+                                <div
+                                  key={`${st.cinemaName}-${st.time}-${idx}`}
+                                  className="flex items-center justify-between px-4 py-3 pl-20 border-b border-blue-50 dark:border-slate-700/50 last:border-b-0"
+                                >
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm text-[var(--text-primary)] truncate">{st.cinemaName}</p>
+                                    <p className="text-xs text-[var(--text-muted)] flex items-center gap-1 mt-0.5">
+                                      <Clock className="h-3 w-3" /> {st.time}
+                                    </p>
+                                  </div>
+                                  {st.ticketUrl && (
+                                    <a
+                                      href={st.ticketUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      <Button size="sm" variant="outline" className="shrink-0">
+                                        Tickets
+                                        <ChevronRight className="h-3 w-3" />
+                                      </Button>
+                                    </a>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
                           )}
-                        </div>
-                      </Card>
-                    ))}
+                        </Card>
+                      );
+                    })}
                   </div>
                 )}
               </TabsContent>
