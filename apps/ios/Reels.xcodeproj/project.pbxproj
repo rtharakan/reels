@@ -1,0 +1,586 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		020000000000000000000001 /* ReelsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000001 /* ReelsApp.swift */; };
+		020000000000000000000002 /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000002 /* AppNavigation.swift */; };
+		020000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000003 /* ContentView.swift */; };
+		020000000000000000000004 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000004 /* NotificationManager.swift */; };
+		020000000000000000000005 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000005 /* LanguageManager.swift */; };
+		020000000000000000000006 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000006 /* Models.swift */; };
+		020000000000000000000007 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000007 /* APIClient.swift */; };
+		020000000000000000000008 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000008 /* Configuration.swift */; };
+		020000000000000000000009 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000009 /* KeychainManager.swift */; };
+		02000000000000000000000A /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000000000000000000000A /* CacheManager.swift */; };
+		02000000000000000000000B /* ReelsTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000000000000000000000B /* ReelsTheme.swift */; };
+		02000000000000000000000C /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000000000000000000000C /* AuthManager.swift */; };
+		02000000000000000000000D /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000000000000000000000D /* SignInView.swift */; };
+		02000000000000000000000E /* BuddyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000000000000000000000E /* BuddyView.swift */; };
+		02000000000000000000000F /* DiscoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01000000000000000000000F /* DiscoverView.swift */; };
+		020000000000000000000010 /* MatchDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000010 /* MatchDetailView.swift */; };
+		020000000000000000000011 /* MatchesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000011 /* MatchesListView.swift */; };
+		020000000000000000000012 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000012 /* OnboardingView.swift */; };
+		020000000000000000000013 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000013 /* EditProfileView.swift */; };
+		020000000000000000000014 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000014 /* ProfileView.swift */; };
+		020000000000000000000015 /* BlockReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000015 /* BlockReportSheet.swift */; };
+		020000000000000000000016 /* BlockedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000016 /* BlockedUsersView.swift */; };
+		020000000000000000000017 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000017 /* Localizable.strings */; };
+		020000000000000000000019 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 010000000000000000000019 /* PrivacyInfo.xcprivacy */; };
+		02000000000000000000001A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01000000000000000000001A /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		010000000000000000000001 /* ReelsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelsApp.swift; sourceTree = "<group>"; };
+		010000000000000000000002 /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
+		010000000000000000000003 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		010000000000000000000004 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		010000000000000000000005 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
+		010000000000000000000006 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		010000000000000000000007 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		010000000000000000000008 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		010000000000000000000009 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		01000000000000000000000A /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		01000000000000000000000B /* ReelsTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelsTheme.swift; sourceTree = "<group>"; };
+		01000000000000000000000C /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		01000000000000000000000D /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		01000000000000000000000E /* BuddyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuddyView.swift; sourceTree = "<group>"; };
+		01000000000000000000000F /* DiscoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverView.swift; sourceTree = "<group>"; };
+		010000000000000000000010 /* MatchDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailView.swift; sourceTree = "<group>"; };
+		010000000000000000000011 /* MatchesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesListView.swift; sourceTree = "<group>"; };
+		010000000000000000000012 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		010000000000000000000013 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		010000000000000000000014 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		010000000000000000000015 /* BlockReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockReportSheet.swift; sourceTree = "<group>"; };
+		010000000000000000000016 /* BlockedUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersView.swift; sourceTree = "<group>"; };
+		010000000000000000000017 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		010000000000000000000018 /* Localizable.strings (nl) */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		010000000000000000000019 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		01000000000000000000001A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		07000000000000000000001F /* Reels.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reels.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		030000000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		040000000000000000000001 /* = */ = {
+			isa = PBXGroup;
+			children = (
+				040000000000000000000003 /* Reels */,
+				040000000000000000000002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		040000000000000000000002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07000000000000000000001F /* Reels.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		040000000000000000000003 /* Reels */ = {
+			isa = PBXGroup;
+			children = (
+				040000000000000000000004 /* App */,
+				040000000000000000000005 /* Core */,
+				04000000000000000000000B /* Extensions */,
+				04000000000000000000000C /* Features */,
+				040000000000000000000014 /* Resources */,
+			);
+			path = Reels;
+			sourceTree = "<group>";
+		};
+		040000000000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000001 /* ReelsApp.swift */,
+				010000000000000000000002 /* AppNavigation.swift */,
+				010000000000000000000003 /* ContentView.swift */,
+				010000000000000000000004 /* NotificationManager.swift */,
+				01000000000000000000001A /* Assets.xcassets */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		040000000000000000000005 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				040000000000000000000006 /* Localization */,
+				040000000000000000000007 /* Models */,
+				040000000000000000000008 /* Networking */,
+				040000000000000000000009 /* Persistence */,
+				04000000000000000000000A /* Theme */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		040000000000000000000006 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000005 /* LanguageManager.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		040000000000000000000007 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000006 /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		040000000000000000000008 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000007 /* APIClient.swift */,
+				010000000000000000000008 /* Configuration.swift */,
+				010000000000000000000009 /* KeychainManager.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		040000000000000000000009 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				01000000000000000000000A /* CacheManager.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		04000000000000000000000A /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				01000000000000000000000B /* ReelsTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		04000000000000000000000B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		04000000000000000000000C /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				04000000000000000000000D /* Auth */,
+				04000000000000000000000E /* Buddy */,
+				04000000000000000000000F /* Discover */,
+				040000000000000000000010 /* Matches */,
+				040000000000000000000011 /* Onboarding */,
+				040000000000000000000012 /* Profile */,
+				040000000000000000000013 /* Safety */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		04000000000000000000000D /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				01000000000000000000000C /* AuthManager.swift */,
+				01000000000000000000000D /* SignInView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		04000000000000000000000E /* Buddy */ = {
+			isa = PBXGroup;
+			children = (
+				01000000000000000000000E /* BuddyView.swift */,
+			);
+			path = Buddy;
+			sourceTree = "<group>";
+		};
+		04000000000000000000000F /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				01000000000000000000000F /* DiscoverView.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
+		040000000000000000000010 /* Matches */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000010 /* MatchDetailView.swift */,
+				010000000000000000000011 /* MatchesListView.swift */,
+			);
+			path = Matches;
+			sourceTree = "<group>";
+		};
+		040000000000000000000011 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000012 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		040000000000000000000012 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000013 /* EditProfileView.swift */,
+				010000000000000000000014 /* ProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		040000000000000000000013 /* Safety */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000015 /* BlockReportSheet.swift */,
+				010000000000000000000016 /* BlockedUsersView.swift */,
+			);
+			path = Safety;
+			sourceTree = "<group>";
+		};
+		040000000000000000000014 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000017 /* Localizable.strings */,
+				040000000000000000000015 /* nl.lproj */,
+				010000000000000000000019 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		040000000000000000000015 /* nl.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				010000000000000000000018 /* Localizable.strings (nl) */,
+			);
+			name = nl.lproj;
+			path = nl.lproj;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		050000000000000000000001 /* Reels */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 090000000000000000000001 /* Build configuration list for PBXNativeTarget "Reels" */;
+			buildPhases = (
+				030000000000000000000001 /* Sources */,
+				030000000000000000000002 /* Resources */,
+				030000000000000000000003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Reels;
+			productName = Reels;
+			productReference = 07000000000000000000001F /* Reels.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		060000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					050000000000000000000001 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = 090000000000000000000002 /* Build configuration list for PBXProject "Reels" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				nl,
+			);
+			mainGroup = 040000000000000000000001;
+			productRefGroup = 040000000000000000000002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				050000000000000000000001 /* Reels */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		030000000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				020000000000000000000017 /* Localizable.strings in Resources */,
+				020000000000000000000019 /* PrivacyInfo.xcprivacy in Resources */,
+				02000000000000000000001A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		030000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				020000000000000000000001 /* ReelsApp.swift in Sources */,
+				020000000000000000000002 /* AppNavigation.swift in Sources */,
+				020000000000000000000003 /* ContentView.swift in Sources */,
+				020000000000000000000004 /* NotificationManager.swift in Sources */,
+				020000000000000000000005 /* LanguageManager.swift in Sources */,
+				020000000000000000000006 /* Models.swift in Sources */,
+				020000000000000000000007 /* APIClient.swift in Sources */,
+				020000000000000000000008 /* Configuration.swift in Sources */,
+				020000000000000000000009 /* KeychainManager.swift in Sources */,
+				02000000000000000000000A /* CacheManager.swift in Sources */,
+				02000000000000000000000B /* ReelsTheme.swift in Sources */,
+				02000000000000000000000C /* AuthManager.swift in Sources */,
+				02000000000000000000000D /* SignInView.swift in Sources */,
+				02000000000000000000000E /* BuddyView.swift in Sources */,
+				02000000000000000000000F /* DiscoverView.swift in Sources */,
+				020000000000000000000010 /* MatchDetailView.swift in Sources */,
+				020000000000000000000011 /* MatchesListView.swift in Sources */,
+				020000000000000000000012 /* OnboardingView.swift in Sources */,
+				020000000000000000000013 /* EditProfileView.swift in Sources */,
+				020000000000000000000014 /* ProfileView.swift in Sources */,
+				020000000000000000000015 /* BlockReportSheet.swift in Sources */,
+				020000000000000000000016 /* BlockedUsersView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		080000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Reels;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Reels uses your camera to take profile photos.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Reels accesses your photo library to set a profile photo.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MACCATALYST_REQUIRES_FULL_SCREEN = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = app.reels.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		080000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Reels;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Reels uses your camera to take profile photos.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Reels accesses your photo library to set a profile photo.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MACCATALYST_REQUIRES_FULL_SCREEN = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = app.reels.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		080000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		080000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		090000000000000000000001 /* Build configuration list for PBXNativeTarget "Reels" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				080000000000000000000001 /* Debug */,
+				080000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		090000000000000000000002 /* Build configuration list for PBXProject "Reels" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				080000000000000000000003 /* Debug */,
+				080000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 060000000000000000000001 /* Project object */;
+}

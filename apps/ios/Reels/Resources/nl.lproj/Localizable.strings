@@ -1,0 +1,74 @@
+/* Common */
+"app.name" = "Reels";
+"common.cancel" = "Annuleren";
+"common.done" = "Klaar";
+"common.save" = "Opslaan";
+"common.close" = "Sluiten";
+"common.loading" = "Laden…";
+"common.error" = "Er ging iets mis";
+"common.retry" = "Opnieuw proberen";
+
+/* Auth */
+"auth.signIn.title" = "Reels";
+"auth.signIn.subtitle" = "Vind jouw mensen door film.";
+"auth.signIn.email.placeholder" = "E-mailadres";
+"auth.signIn.email.button" = "Doorgaan met e-mail";
+"auth.signIn.apple.button" = "Doorgaan met Apple";
+"auth.signIn.email.sent" = "Controleer je e-mail voor een inloglink.";
+
+/* Onboarding */
+"onboarding.privacy.title" = "Jouw privacy";
+"onboarding.privacy.body" = "Reels deelt nooit je profiel of gegevens zonder jouw toestemming.";
+"onboarding.profile.title" = "Over jou";
+"onboarding.watchlist.title" = "Watchlist importeren";
+"onboarding.watchlist.placeholder" = "Letterboxd-gebruikersnaam";
+"onboarding.topFilms.title" = "Jouw top 4 films";
+"onboarding.continue" = "Doorgaan";
+"onboarding.finish" = "Aan de slag";
+
+/* Discover */
+"discover.title" = "Ontdekken";
+"discover.empty" = "Niemand nieuw op dit moment. Kom later terug.";
+"discover.interested" = "Geïnteresseerd";
+"discover.skip" = "Overslaan";
+"discover.match.title" = "Het is een match!";
+"discover.match.body" = "Jij en %@ hebben een geweldige smaak.";
+
+/* Matches */
+"matches.title" = "Matches";
+"matches.empty" = "Nog geen matches. Blijf ontdekken.";
+"matches.sharedFilms" = "%d gedeelde films";
+
+/* Profile */
+"profile.title" = "Profiel";
+"profile.edit" = "Profiel bewerken";
+"profile.blockedUsers" = "Geblokkeerde gebruikers";
+"profile.reimport" = "Watchlist opnieuw importeren";
+"profile.deleteAccount" = "Account verwijderen";
+"profile.signOut" = "Uitloggen";
+"profile.delete.title" = "Account verwijderen";
+"profile.delete.message" = "Dit verwijdert je account en alle gegevens permanent. Dit kan niet ongedaan worden gemaakt.";
+"profile.delete.confirm" = "Verwijderen";
+
+/* Safety */
+"safety.block" = "%@ blokkeren";
+"safety.report" = "%@ rapporteren";
+"safety.report.submit" = "Rapport indienen";
+"safety.blocked.title" = "Geblokkeerde gebruikers";
+"safety.blocked.empty" = "Mensen die je blokkeert verschijnen hier.";
+"safety.unblock" = "Deblokkeren";
+
+/* Buddy */
+"buddy.title" = "Buddy";
+"buddy.browse" = "Bekijken";
+"buddy.create" = "Aanmaken";
+"buddy.empty" = "Nog geen buddy-verzoeken. Wees de eerste!";
+"buddy.join" = "Meedoen";
+"buddy.full" = "Vol";
+"buddy.post" = "Verzoek plaatsen";
+"buddy.selectDate" = "Selecteer datum";
+"buddy.selectCity" = "Selecteer stad";
+"buddy.selectFilm" = "Selecteer film";
+"buddy.selectShow" = "Selecteer voorstelling";
+"buddy.maxBuddies" = "Max buddy's";
+"buddy.noScreenings" = "Geen voorstellingen gevonden voor deze datum en stad.";

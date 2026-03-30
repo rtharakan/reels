@@ -14,6 +14,22 @@ if (
   throw new Error('BETTER_AUTH_SECRET must be a strong random value in production');
 }
 
+// Social providers are optional — only included when env vars are present.
+// For go-live with email magic link only, you do NOT need Google or Apple credentials.
+const socialProviders: Record<string, unknown> = {};
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  socialProviders.google = {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  };
+}
+if (process.env.APPLE_CLIENT_ID && process.env.APPLE_CLIENT_SECRET) {
+  socialProviders.apple = {
+    clientId: process.env.APPLE_CLIENT_ID,
+    clientSecret: process.env.APPLE_CLIENT_SECRET,
+  };
+}
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
@@ -21,16 +37,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: false,
   },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    },
-    apple: {
-      clientId: process.env.APPLE_CLIENT_ID!,
-      clientSecret: process.env.APPLE_CLIENT_SECRET!,
-    },
-  },
+  socialProviders,
   plugins: [
     magicLink({
       sendMagicLink: async ({ email, url }) => {

@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd ../.. && pnpm build --filter=web...",
+  "outputDirectory": "apps/web/.next",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

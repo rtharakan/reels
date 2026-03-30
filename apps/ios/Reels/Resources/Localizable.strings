@@ -1,0 +1,74 @@
+/* Common */
+"app.name" = "Reels";
+"common.cancel" = "Cancel";
+"common.done" = "Done";
+"common.save" = "Save";
+"common.close" = "Close";
+"common.loading" = "Loading…";
+"common.error" = "Something went wrong";
+"common.retry" = "Retry";
+
+/* Auth */
+"auth.signIn.title" = "Reels";
+"auth.signIn.subtitle" = "Find your people through film.";
+"auth.signIn.email.placeholder" = "Email address";
+"auth.signIn.email.button" = "Continue with Email";
+"auth.signIn.apple.button" = "Continue with Apple";
+"auth.signIn.email.sent" = "Check your email for a link to sign in.";
+
+/* Onboarding */
+"onboarding.privacy.title" = "Your Privacy";
+"onboarding.privacy.body" = "Reels never shares your profile or data without your consent.";
+"onboarding.profile.title" = "About You";
+"onboarding.watchlist.title" = "Import Watchlist";
+"onboarding.watchlist.placeholder" = "Letterboxd username";
+"onboarding.topFilms.title" = "Your Top 4 Films";
+"onboarding.continue" = "Continue";
+"onboarding.finish" = "Get Started";
+
+/* Discover */
+"discover.title" = "Discover";
+"discover.empty" = "No one new right now. Check back later.";
+"discover.interested" = "Interested";
+"discover.skip" = "Skip";
+"discover.match.title" = "It's a Match!";
+"discover.match.body" = "You and %@ have great taste.";
+
+/* Matches */
+"matches.title" = "Matches";
+"matches.empty" = "No matches yet. Keep discovering.";
+"matches.sharedFilms" = "%d shared films";
+
+/* Profile */
+"profile.title" = "Profile";
+"profile.edit" = "Edit Profile";
+"profile.blockedUsers" = "Blocked Users";
+"profile.reimport" = "Re-import Watchlist";
+"profile.deleteAccount" = "Delete Account";
+"profile.signOut" = "Sign Out";
+"profile.delete.title" = "Delete Account";
+"profile.delete.message" = "This permanently removes your account and all data. This cannot be undone.";
+"profile.delete.confirm" = "Delete";
+
+/* Safety */
+"safety.block" = "Block %@";
+"safety.report" = "Report %@";
+"safety.report.submit" = "Submit Report";
+"safety.blocked.title" = "Blocked Users";
+"safety.blocked.empty" = "People you block will appear here.";
+"safety.unblock" = "Unblock";
+
+/* Buddy */
+"buddy.title" = "Buddy";
+"buddy.browse" = "Browse";
+"buddy.create" = "Create";
+"buddy.empty" = "No buddy requests yet. Be the first!";
+"buddy.join" = "Join";
+"buddy.full" = "Full";
+"buddy.post" = "Post Request";
+"buddy.selectDate" = "Select date";
+"buddy.selectCity" = "Select city";
+"buddy.selectFilm" = "Select film";
+"buddy.selectShow" = "Select showtime";
+"buddy.maxBuddies" = "Max buddies";
+"buddy.noScreenings" = "No screenings found for this date and city.";
