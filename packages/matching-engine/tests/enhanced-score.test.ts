@@ -77,10 +77,12 @@ describe('computeEnhancedMatchScore', () => {
     input.userBLikedGenres = [[18], [80], [53]];
 
     const result = computeEnhancedMatchScore(input);
-    // liked overlap = 1.0, genre similarity = 1.0 (from likes only)
-    // total = 0.30 * 1.0 + 0.25 * 0 + 0.15 * 0 + 0.10 * 0 + 0.20 * 1.0 = 0.50
+    // liked overlap = 1.0, genre similarity = 1.0 (same liked films)
+    // raw score = 0.30 × 1.0 + 0.20 × 1.0 = 0.50
+    // active signals: liked (both >0) + genres (both >0) = 2 → confidence 0.8
+    // total = 0.50 × 0.8 = 0.40
     expect(result.likedOverlap).toBe(1);
-    expect(result.totalScore).toBeCloseTo(0.50);
+    expect(result.totalScore).toBeCloseTo(0.40);
   });
 
   it('weights rated overlap at 25%', () => {
@@ -92,9 +94,11 @@ describe('computeEnhancedMatchScore', () => {
 
     const result = computeEnhancedMatchScore(input);
     // rated overlap = 1.0, genre similarity = 1.0
-    // total = 0.30 * 0 + 0.25 * 1.0 + 0.15 * 0 + 0.10 * 0 + 0.20 * 1.0 = 0.45
+    // raw score = 0.25 × 1.0 + 0.20 × 1.0 = 0.45
+    // active signals: rated (both >0) + genres (both >0) = 2 → confidence 0.8
+    // total = 0.45 × 0.8 = 0.36
     expect(result.ratedOverlap).toBe(1);
-    expect(result.totalScore).toBeCloseTo(0.45);
+    expect(result.totalScore).toBeCloseTo(0.36);
   });
 
   it('weights watched overlap at 15%', () => {
@@ -106,9 +110,11 @@ describe('computeEnhancedMatchScore', () => {
 
     const result = computeEnhancedMatchScore(input);
     // watched overlap = 1.0, genre similarity = 1.0
-    // total = 0.30 * 0 + 0.25 * 0 + 0.15 * 1.0 + 0.10 * 0 + 0.20 * 1.0 = 0.35
+    // raw score = 0.15 × 1.0 + 0.20 × 1.0 = 0.35
+    // active signals: watched (both >0) + genres (both >0) = 2 → confidence 0.8
+    // total = 0.35 × 0.8 = 0.28
     expect(result.watchedOverlap).toBe(1);
-    expect(result.totalScore).toBeCloseTo(0.35);
+    expect(result.totalScore).toBeCloseTo(0.28);
   });
 
   it('weights watchlist overlap at 10%', () => {
@@ -120,9 +126,11 @@ describe('computeEnhancedMatchScore', () => {
 
     const result = computeEnhancedMatchScore(input);
     // watchlist overlap = 1.0, genre similarity = 1.0
-    // total = 0.30 * 0 + 0.25 * 0 + 0.15 * 0 + 0.10 * 1.0 + 0.20 * 1.0 = 0.30
+    // raw score = 0.10 × 1.0 + 0.20 × 1.0 = 0.30
+    // active signals: watchlist (both >0) + genres (both >0) = 2 → confidence 0.8
+    // total = 0.30 × 0.8 = 0.24
     expect(result.watchlistOverlap).toBe(1);
-    expect(result.totalScore).toBeCloseTo(0.30);
+    expect(result.totalScore).toBeCloseTo(0.24);
   });
 
   it('gives more weight to likes + ratings than watchlist alone', () => {
@@ -198,9 +206,12 @@ describe('computeEnhancedMatchScore', () => {
     input.userBWatchedIds = ['w'];
 
     const result = computeEnhancedMatchScore(input);
-    // No film overlap, but identical genre profile
+    // No film overlap, but identical genre profile → genreSimilarity = 1.0
+    // raw score = 0.20 × 1.0 = 0.20
+    // active signals: liked (both >0) + watched (both >0) + genres (both >0) = 3 → confidence 0.9
+    // total = 0.20 × 0.9 = 0.18
     expect(result.genreSimilarity).toBeCloseTo(1);
-    expect(result.totalScore).toBeCloseTo(0.20); // Only genre similarity contributes
+    expect(result.totalScore).toBeCloseTo(0.18);
   });
 
   it('produces correct sum of weighted components', () => {
