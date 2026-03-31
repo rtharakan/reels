@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     title: 'Reels',
   },
   icons: {
-    apple: '/icons/icon-180.png',
-    icon: '/icons/icon-192.png',
+    apple: '/icons/icon-180.svg',
+    icon: '/icons/icon-192.svg',
   },
   openGraph: {
     title: 'Reels — Film-Driven Social Matching',

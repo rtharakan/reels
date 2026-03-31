@@ -20,6 +20,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/scan') ||
     pathname.startsWith('/plan') ||
     pathname.startsWith('/buddy') ||
+    pathname.startsWith('/help') ||
+    pathname.startsWith('/features') ||
     pathname === '/' ||
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/favicon')

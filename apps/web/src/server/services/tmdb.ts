@@ -78,6 +78,43 @@ async function tmdbSearch(query: string, year: number | undefined, token: string
 }
 
 /**
+ * Resolve a poster URL directly from a TMDB movie ID.
+ * Much faster and more reliable than title search.
+ */
+export async function resolveTMDBPosterById(tmdbId: number): Promise<string | null> {
+  const token = getApiToken();
+  if (!token) return null;
+
+  const key = `tmdb-id::${tmdbId}`;
+  if (posterCache.has(key)) {
+    const cached = posterCache.get(key);
+    if (cached) return cached;
+  }
+
+  try {
+    const res = await fetch(`${TMDB_API_BASE}/movie/${tmdbId}?language=en-US`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.status === 429) {
+      const retryAfter = parseInt(res.headers.get('Retry-After') ?? '2', 10);
+      await new Promise((r) => setTimeout(r, retryAfter * 1000));
+    }
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    const url = data.poster_path ? `https://image.tmdb.org/t/p/w342${data.poster_path}` : null;
+    if (url) posterCache.set(key, url);
+    return url;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Resolve a film poster URL from TMDB by title + optional year.
  * Uses an in-memory cache and multi-strategy search to handle punctuation issues.
  */
@@ -89,9 +126,11 @@ export async function resolveTMDBPoster(
   if (!token) return null;
 
   const key = cacheKey(title, year);
-  const cached = posterCache.get(key);
-  // Return cached poster URL, but retry if null was cached (title might resolve with new logic)
-  if (cached) return cached;
+  if (posterCache.has(key)) {
+    const cached = posterCache.get(key);
+    // Return cached hit; skip null entries so we retry failed lookups
+    if (cached) return cached;
+  }
 
   try {
     // Strategy 1: Try exact title with year
@@ -113,6 +152,17 @@ export async function resolveTMDBPoster(
           return url;
         }
       }
+
+      // Strategy 3: Try year ± 1 (festival releases, regional delays)
+      for (const variant of variants.slice(0, 2)) {
+        for (const offset of [-1, 1]) {
+          const url = await tmdbSearch(variant, year + offset, token);
+          if (url) {
+            posterCache.set(key, url);
+            return url;
+          }
+        }
+      }
     }
 
     posterCache.set(key, null);
@@ -125,9 +175,11 @@ export async function resolveTMDBPoster(
 
 /**
  * Batch-resolve posters for an array of films.
+ * Films with a tmdbId get direct TMDB movie lookup (fast & reliable).
+ * Films without tmdbId fall back to title search with punctuation variants.
  * Processes in batches of 8 to respect TMDB rate limits (40 req/10s).
  */
-export async function enrichFilmsWithPosters<T extends { title: string; year?: number; posterUrl?: string }>(
+export async function enrichFilmsWithPosters<T extends { title: string; year?: number; posterUrl?: string; tmdbId?: number }>(
   films: T[],
 ): Promise<T[]> {
   const token = getApiToken();
@@ -140,9 +192,15 @@ export async function enrichFilmsWithPosters<T extends { title: string; year?: n
     const batch = films.slice(i, i + BATCH_SIZE);
     const results = await Promise.all(
       batch.map(async (film) => {
-        // Always prefer TMDB poster URLs — Letterboxd CDN URLs may fail through proxies
+        // Always prefer existing TMDB URLs
         if (film.posterUrl && film.posterUrl.includes('image.tmdb.org')) return film;
         try {
+          // Fast path: direct lookup by TMDB ID (from RSS feed)
+          if (film.tmdbId) {
+            const tmdbPoster = await resolveTMDBPosterById(film.tmdbId);
+            if (tmdbPoster) return { ...film, posterUrl: tmdbPoster };
+          }
+          // Slow path: title search with punctuation variants
           const tmdbPoster = await resolveTMDBPoster(film.title, film.year);
           return { ...film, posterUrl: tmdbPoster ?? film.posterUrl ?? undefined };
         } catch {

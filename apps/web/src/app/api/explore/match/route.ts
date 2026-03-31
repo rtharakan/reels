@@ -81,20 +81,20 @@ export async function POST(request: NextRequest) {
       fetchExploreAllSources(user2),
     ]);
 
-    if (data1.watchlist.films.length === 0 && data1.watched.length === 0 && data1.liked.length === 0) {
+    if (data1.watched.length === 0 && data1.liked.length === 0) {
       return NextResponse.json(
         {
-          error: `${user1}'s profile appears empty or private. Ensure their Letterboxd profile, watchlist, and activity are public.`,
+          error: `${user1}'s Letterboxd profile appears empty. Make sure they have logged some films on Letterboxd and their profile is public.`,
           code: 'EMPTY_WATCHLIST_1',
         },
         { status: 200 }
       );
     }
 
-    if (data2.watchlist.films.length === 0 && data2.watched.length === 0 && data2.liked.length === 0) {
+    if (data2.watched.length === 0 && data2.liked.length === 0) {
       return NextResponse.json(
         {
-          error: `${user2}'s profile appears empty or private. Ensure their Letterboxd profile, watchlist, and activity are public.`,
+          error: `${user2}'s Letterboxd profile appears empty. Make sure they have logged some films on Letterboxd and their profile is public.`,
           code: 'EMPTY_WATCHLIST_2',
         },
         { status: 200 }
@@ -107,13 +107,13 @@ export async function POST(request: NextRequest) {
         watchlist: data1.watchlist.films,
         watched: data1.watched,
         liked: data1.liked,
-        highRated: data1.liked, // Liked films serve as quality proxy
+        highRated: data1.highRated,
       },
       {
         watchlist: data2.watchlist.films,
         watched: data2.watched,
         liked: data2.liked,
-        highRated: data2.liked,
+        highRated: data2.highRated,
       },
     );
 
@@ -199,12 +199,12 @@ export async function POST(request: NextRequest) {
       user1: {
         username: data1.watchlist.username,
         displayName: data1.watchlist.displayName,
-        filmCount: data1.watchlist.totalCount + data1.watched.length,
+        filmCount: data1.watched.length,
       },
       user2: {
         username: data2.watchlist.username,
         displayName: data2.watchlist.displayName,
-        filmCount: data2.watchlist.totalCount + data2.watched.length,
+        filmCount: data2.watched.length,
       },
       match: {
         overlapScore: matchResult.overlapScore,

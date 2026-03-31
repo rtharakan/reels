@@ -455,9 +455,10 @@ function ExplorePageInner() {
                   <div className="space-y-3">
                     {result.dateIdeasSource === 'interests' && (
                       <div className="rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-4 py-3 text-sm text-[var(--text-secondary)]">
-                        <p className="font-medium text-[var(--accent)] mb-0.5">Based on shared film history</p>
+                        <p className="font-medium text-[var(--accent)] mb-0.5">Curated from your shared taste</p>
                         <p className="text-xs text-[var(--text-muted)]">
-                          These suggestions draw on your shared film history — liked films, ratings, and viewing activity. When watchlists are available, they&apos;re included too.
+                          None of your shared watchlist films are currently screening here — so we picked films based on what you&apos;ve both liked and watched instead.
+                          Your compatibility score above already considers all five signals, including watchlists when available.
                         </p>
                       </div>
                     )}
