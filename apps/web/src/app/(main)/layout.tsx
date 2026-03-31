@@ -10,11 +10,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const { t } = useI18n();
 
   const navItems = [
-    { href: '/discover', label: 'Discover', icon: Heart },
-    { href: '/explore', label: t.common.explore ?? 'Explore', icon: Compass },
-    { href: '/buddy', label: t.common.buddy ?? 'Buddy', icon: Popcorn },
-    { href: '/matches', label: 'Matches', icon: Users },
-    { href: '/profile', label: 'Profile', icon: User },
+    { href: '/discover', label: t.common.discover, icon: Heart },
+    { href: '/explore', label: t.common.explore, icon: Compass },
+    { href: '/buddy', label: t.common.buddy, icon: Popcorn },
+    { href: '/matches', label: t.common.matches, icon: Users },
+    { href: '/profile', label: t.common.profile, icon: User },
   ];
 
   return (
