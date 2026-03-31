@@ -176,20 +176,20 @@ describe('Integration: Enhanced Scoring Pipeline', () => {
     // Explore engine uses the same weights
     const exploreResult = computeExploreMatch(
       {
-        watchlist: [{ letterboxdSlug: 'a', title: 'A', year: 2020, posterUrl: null }],
+        watchlist: [{ letterboxdSlug: 'a', title: 'A', year: 2020, posterUrl: undefined }],
         watched: [],
         liked: [
-          { letterboxdSlug: 'x', title: 'X', year: 2020, posterUrl: null },
-          { letterboxdSlug: 'y', title: 'Y', year: 2020, posterUrl: null },
+          { letterboxdSlug: 'x', title: 'X', year: 2020, posterUrl: undefined },
+          { letterboxdSlug: 'y', title: 'Y', year: 2020, posterUrl: undefined },
         ],
         highRated: [],
       },
       {
-        watchlist: [{ letterboxdSlug: 'a', title: 'A', year: 2020, posterUrl: null }],
+        watchlist: [{ letterboxdSlug: 'a', title: 'A', year: 2020, posterUrl: undefined }],
         watched: [],
         liked: [
-          { letterboxdSlug: 'x', title: 'X', year: 2020, posterUrl: null },
-          { letterboxdSlug: 'y', title: 'Y', year: 2020, posterUrl: null },
+          { letterboxdSlug: 'x', title: 'X', year: 2020, posterUrl: undefined },
+          { letterboxdSlug: 'y', title: 'Y', year: 2020, posterUrl: undefined },
         ],
         highRated: [],
       },

@@ -7,7 +7,7 @@ function makeFilm(slug: string, title?: string, year?: number): ExploreFilm {
     letterboxdSlug: slug,
     title: title ?? slug,
     year: year ?? 2020,
-    posterUrl: null,
+    posterUrl: undefined,
   };
 }
 
