@@ -103,7 +103,7 @@ export default function PlanPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!username.trim()) {
-      setError('Please enter your Letterboxd username.');
+      setError(t.plan.enterUsernameError);
       return;
     }
 
@@ -160,10 +160,10 @@ export default function PlanPage() {
             <Calendar className="h-8 w-8 text-[var(--accent)]" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-            Plan your <span className="text-[var(--accent)]">Cinema Week</span>
+            {t.plan.heroTitle} <span className="text-[var(--accent)]">{t.plan.heroTitleAccent}</span>
           </h1>
           <p className="mx-auto mt-3 max-w-lg text-base text-[var(--text-secondary)]">
-            See when films from your Letterboxd watchlist are playing at cinemas near you.
+            {t.plan.heroSubtitle}
           </p>
         </div>
 
@@ -172,17 +172,17 @@ export default function PlanPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Film className="h-5 w-5 text-[var(--text-muted)]" />
-              Your Watchlist Calendar
+              {t.plan.watchlistCalendar}
             </CardTitle>
             <CardDescription>
-              Enter your Letterboxd username and pick a city
+              {t.plan.enterUsername}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="username">Letterboxd Username</Label>
+                  <Label htmlFor="username">{t.plan.letterboxdUsername}</Label>
                   <Input
                     id="username"
                     placeholder="username or letterboxd.com/username"
@@ -192,7 +192,7 @@ export default function PlanPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="city">City</Label>
+                  <Label htmlFor="city">{t.plan.city}</Label>
                   <select
                     id="city"
                     value={city}
@@ -216,13 +216,13 @@ export default function PlanPage() {
               <Button type="submit" size="lg" disabled={isLoading} className="w-full">
                 {isLoading ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Finding screenings...
+                    <Film className="h-4 w-4 animate-spin" />
+                    {t.plan.findingScreenings}
                   </>
                 ) : (
                   <>
                     <Calendar className="h-4 w-4" />
-                    Show Calendar
+                    {t.plan.showCalendar}
                   </>
                 )}
               </Button>
@@ -236,10 +236,10 @@ export default function PlanPage() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-[var(--accent)]/10 via-[var(--accent)]/5 to-transparent animate-pulse" />
               <CardContent className="relative py-8 text-center">
-                <Calendar className="mx-auto h-10 w-10 text-[var(--accent)] animate-pulse mb-3" />
-                <p className="text-lg font-medium text-[var(--text-primary)]">Matching your watchlist…</p>
+                <Film className="mx-auto h-10 w-10 text-[var(--accent)] animate-spin mb-3" />
+                <p className="text-lg font-medium text-[var(--text-primary)]">{t.plan.matchingWatchlist}</p>
                 <p className="text-sm text-[var(--text-secondary)] mt-1">
-                  Checking cinema schedules in {DUTCH_CITIES.find((c) => c.slug === city)?.name}.
+                  {t.plan.checkingCinemas} {DUTCH_CITIES.find((c) => c.slug === city)?.name}.
                 </p>
               </CardContent>
             </div>
@@ -255,11 +255,11 @@ export default function PlanPage() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-sm text-[var(--text-secondary)]">
-                      Calendar for{' '}
+                      {t.plan.calendarFor}{' '}
                       <span className="font-medium text-[var(--accent)]">{result.displayName}</span>
                     </p>
                     <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                      {result.watchlistSize} films on watchlist · {result.totalMatches} screenings found
+                      {result.watchlistSize} {t.plan.filmsOnWatchlist} · {result.totalMatches} {t.plan.screeningsFound}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
@@ -273,13 +273,13 @@ export default function PlanPage() {
             {/* 30-day Calendar Grid */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Next 30 Days</CardTitle>
-                <CardDescription>Days with screenings are highlighted. Click to see showtimes.</CardDescription>
+                <CardTitle className="text-base">{t.plan.next30Days}</CardTitle>
+                <CardDescription>{t.plan.next30DaysDesc}</CardDescription>
               </CardHeader>
               <CardContent>
                 {/* Day-of-week headers */}
                 <div className="grid grid-cols-7 gap-1 mb-1">
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                  {[t.plan.sun, t.plan.mon, t.plan.tue, t.plan.wed, t.plan.thu, t.plan.fri, t.plan.sat].map((d) => (
                     <div key={d} className="text-center text-xs font-medium text-[var(--text-muted)] py-1">
                       {d}
                     </div>
@@ -338,13 +338,13 @@ export default function PlanPage() {
                     {formatDateHeader(selectedDate)}
                   </CardTitle>
                   <CardDescription>
-                    {selectedDayData.screenings.length} screening{selectedDayData.screenings.length !== 1 && 's'} from your watchlist
+                    {selectedDayData.screenings.length} {selectedDayData.screenings.length !== 1 ? t.plan.screenings : t.plan.screening} {t.plan.screeningsFromWatchlist}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {groupedByFilm.length === 0 ? (
                     <p className="text-center text-sm text-[var(--text-muted)] py-6">
-                      No watchlist films playing on this day.
+                      {t.plan.noFilmsPlaying}
                     </p>
                   ) : (
                     <div className="space-y-4">
@@ -381,7 +381,7 @@ export default function PlanPage() {
                                 <div key={i} className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
                                   <Clock className="h-3 w-3 text-[var(--text-muted)] shrink-0" />
                                   <span className="font-medium">{st.time}</span>
-                                  <span className="text-[var(--text-muted)]">at</span>
+                                  <span className="text-[var(--text-muted)]">{t.plan.at}</span>
                                   <span className="truncate">{st.cinemaName}</span>
                                   {st.ticketUrl && (
                                     <a
@@ -411,11 +411,11 @@ export default function PlanPage() {
                 <CardContent className="py-12 text-center">
                   <Film className="mx-auto h-12 w-12 text-[var(--text-muted)] mb-4" />
                   <p className="text-[var(--text-secondary)]">
-                    None of your watchlist films are currently screening in{' '}
+                    {t.plan.noneScreeningIn}{' '}
                     {DUTCH_CITIES.find((c) => c.slug === result.city)?.name}.
                   </p>
                   <p className="text-sm text-[var(--text-muted)] mt-2">
-                    Try a different city or check back later — schedules update daily.
+                    {t.plan.tryDifferentCity}
                   </p>
                 </CardContent>
               </Card>
@@ -427,13 +427,13 @@ export default function PlanPage() {
         {!result && !isLoading && (
           <div className="mt-8">
             <h2 className="text-center text-xl font-semibold text-[var(--text-primary)] mb-8">
-              How Plan works
+              {t.plan.howPlanWorks}
             </h2>
             <div className="grid gap-6 sm:grid-cols-3">
               {[
-                { icon: Film, title: 'Your watchlist', desc: 'We pull your Letterboxd watchlist' },
-                { icon: MapPin, title: 'Local cinemas', desc: 'Cross-reference with screenings in your city' },
-                { icon: Calendar, title: '30-day calendar', desc: 'See exactly when and where to go' },
+                { icon: Film, title: t.plan.yourWatchlist, desc: t.plan.yourWatchlistDesc },
+                { icon: MapPin, title: t.plan.localCinemas, desc: t.plan.localCinemasDesc },
+                { icon: Calendar, title: t.plan.thirtyDayCalendar, desc: t.plan.thirtyDayCalendarDesc },
               ].map(({ icon: Icon, title, desc }) => (
                 <Card key={title} className="text-center">
                   <CardContent className="pt-6">
