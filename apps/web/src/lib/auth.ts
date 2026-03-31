@@ -42,9 +42,6 @@ export const auth = betterAuth({
     magicLink({
       sendMagicLink: async ({ email, url }) => {
         if (process.env.NODE_ENV === 'development') {
-          // Store the latest link so the browser can display it without checking logs
-          const g = globalThis as unknown as Record<string, unknown>;
-          g.__devMagicLink = { email, url, ts: Date.now() };
           console.log(`[Magic Link] ${email}: ${url}`);
           return;
         }

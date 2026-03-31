@@ -218,6 +218,32 @@ export const en = {
     someOverlap: 'Some Overlap',
     oppositesAttract: 'Opposites Attract?',
   },
+
+  // Settings
+  settings: {
+    title: 'Settings',
+    account: 'Account',
+    editProfile: 'Edit Profile',
+    blockedUsers: 'Blocked Users',
+    privacy: 'Privacy Settings',
+    preferences: 'Preferences',
+    language: 'Language',
+    support: 'Support & Legal',
+    help: 'Help & FAQ',
+    termsOfService: 'Terms of Service',
+    privacyPolicy: 'Privacy Policy',
+    about: 'About Reels',
+    data: 'Your Data',
+    exportData: 'Export My Data',
+    deleteAccount: 'Delete Account',
+    logout: 'Log Out',
+    logoutConfirm: 'Log out?',
+    logoutConfirmDesc: 'You can always log back in with your email.',
+    cancel: 'Cancel',
+    deleteConfirm: 'Delete your account?',
+    deleteConfirmDesc: 'This will permanently delete your profile, watchlist, matches, and all data. This cannot be undone.',
+    deleteForever: 'Delete Forever',
+  },
 } as const;
 
 /** Recursive type that maps all leaves to string */

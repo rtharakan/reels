@@ -61,12 +61,17 @@ const GENRE_SIMILARITY_WEIGHT = 0.3;
 /**
  * Enhanced weights — prioritise stronger taste signals.
  *
- * Rationale:
+ * Rationale (inspired by Hinge/Feeld matching principles):
  * - Likes (30%): Strongest signal — user explicitly endorsed the film.
  * - High ratings (25%): Strong conscious appreciation (≥4★).
+ * - Genre similarity (20%): Overall taste profile compatibility across all sources.
  * - Watched overlap (15%): Shared viewing experience, even if not loved.
  * - Watchlist overlap (10%): Shared curiosity/intent (weakest direct signal).
- * - Genre similarity (20%): Overall taste profile compatibility across all sources.
+ *
+ * Signal presence bonus:
+ * When both users have data across multiple signal types (likes, ratings, watched, watchlist),
+ * the score gets a confidence boost — more overlapping signals = more reliable match.
+ * This prevents inflated scores from a single coincidental overlap.
  */
 const LIKED_OVERLAP_WEIGHT = 0.30;
 const RATED_OVERLAP_WEIGHT = 0.25;
@@ -137,12 +142,32 @@ export function computeEnhancedMatchScore(input: EnhancedMatchScoreInput): Enhan
   const genreVectorB = buildGenreVector(allGenresB);
   const genreSimilarity = computeGenreSimilarity(genreVectorA, genreVectorB);
 
-  const totalScore =
+  const rawScore =
     LIKED_OVERLAP_WEIGHT * liked.score +
     RATED_OVERLAP_WEIGHT * rated.score +
     WATCHED_OVERLAP_WEIGHT * watched.score +
     WATCHLIST_OVERLAP_WEIGHT * watchlist.score +
     GENRE_SIMILARITY_WEIGHT_ENHANCED * genreSimilarity;
+
+  // Signal confidence multiplier (Hinge-inspired):
+  // More active signals = more reliable score.
+  // Count how many signal types both users actually have data for.
+  const signalPresent = [
+    input.userALikedIds.length > 0 && input.userBLikedIds.length > 0,
+    input.userAHighRatedIds.length > 0 && input.userBHighRatedIds.length > 0,
+    input.userAWatchedIds.length > 0 && input.userBWatchedIds.length > 0,
+    input.userAWatchlistIds.length > 0 && input.userBWatchlistIds.length > 0,
+    allGenresA.length > 0 && allGenresB.length > 0,
+  ].filter(Boolean).length;
+
+  // Confidence: 1 signal = 0.7x, 2 = 0.8x, 3 = 0.9x, 4 = 0.95x, 5 = 1.0x
+  const confidenceMultiplier = signalPresent <= 1 ? 0.7
+    : signalPresent === 2 ? 0.8
+    : signalPresent === 3 ? 0.9
+    : signalPresent === 4 ? 0.95
+    : 1.0;
+
+  const totalScore = rawScore * confidenceMultiplier;
 
   // Combine all shared film IDs (deduplicated) for legacy compat
   const allSharedIds = new Set([

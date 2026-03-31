@@ -199,15 +199,19 @@ export async function fetchCityScreenings(
     }
   }
 
-  // Filter to next 14 days
-  const today = new Date();
+  // Filter to next 14 days AND only future showtimes
+  const now = new Date();
+  const today = new Date(now);
   today.setHours(0, 0, 0, 0);
   const maxDate = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000);
 
   return allScreenings
     .filter((s) => {
       const d = new Date(s.date + 'T00:00:00');
-      return d >= today && d <= maxDate;
+      if (d < today || d > maxDate) return false;
+      // For today's screenings, only show future times
+      const screeningDateTime = new Date(`${s.date}T${s.time}:00`);
+      return screeningDateTime > now;
     })
     .sort((a, b) => {
       const dateDiff = a.date.localeCompare(b.date);

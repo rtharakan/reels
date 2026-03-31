@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,12 +18,11 @@ import {
   Clock,
   Loader2,
   MapPin,
-  Popcorn,
   Ticket,
   Film,
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
-import { LanguageToggle } from '@/components/language-toggle';
+import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { useI18n } from '@/lib/i18n';
 
 interface Screening {
@@ -153,30 +151,7 @@ export default function PlanPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Header */}
-      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
-            <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/explore">
-              <Button variant="ghost" size="sm">{t.common.explore}</Button>
-            </Link>
-            <Link href="/scan">
-              <Button variant="ghost" size="sm">{t.common.scan}</Button>
-            </Link>
-            <LanguageToggle />
-            <Link href="/login">
-              <Button variant="ghost" size="sm">{t.common.login}</Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">{t.common.getStarted}</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       <main className="mx-auto max-w-4xl px-4 py-8">
         {/* Hero */}
@@ -475,23 +450,7 @@ export default function PlanPage() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-[var(--border-default)] mt-16">
-        <div className="mx-auto max-w-5xl px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <div className="flex items-center gap-1.5">
-            <Popcorn className="h-3.5 w-3.5 text-[var(--accent)]" />
-            <span>Reels</span>
-          </div>
-          <nav className="flex items-center gap-4">
-            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">Explore</Link>
-            <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">Scan</Link>
-            <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">Plan</Link>
-            <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">About</Link>
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">Terms</Link>
-          </nav>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

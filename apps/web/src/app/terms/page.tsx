@@ -1,38 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { Popcorn } from 'lucide-react';
-import { LanguageToggle } from '@/components/language-toggle';
+import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { useI18n } from '@/lib/i18n';
 
 export default function TermsOfServicePage() {
   const { t } = useI18n();
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Header */}
-      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
-            <span className="text-lg font-semibold text-[var(--text-primary)]">Reels</span>
-          </Link>
-          <nav className="flex items-center gap-3">
-            <Link href="/explore" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.explore}
-            </Link>
-            <LanguageToggle />
-            <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.login}
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-colors"
-            >
-              {t.common.getStarted}
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <PublicHeader />
 
       <div className="mx-auto max-w-2xl px-4 py-12">
       <h1 className="text-3xl font-bold text-[var(--text-primary)]">Terms of Service</h1>
@@ -355,22 +331,7 @@ export default function TermsOfServicePage() {
         </section>
       </div>
 
-      <footer className="mt-12 border-t border-[var(--border-default)] pt-6 text-xs text-[var(--text-muted)]">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <nav className="flex items-center gap-3">
-            <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">
-              Home
-            </Link>
-            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">
-              Explore
-            </Link>
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">
-              Privacy Policy
-            </Link>
-          </nav>
-          <span>&copy; {new Date().getFullYear()} Reels. All rights reserved.</span>
-        </div>
-      </footer>
+      <PublicFooter />
       </div>
     </main>
   );

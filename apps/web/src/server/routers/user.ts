@@ -240,7 +240,7 @@ export const userRouter = router({
     return { success: true };
   }),
 
-  exportData: protectedProcedure.query(async ({ ctx }) => {
+  exportData: protectedProcedure.mutation(async ({ ctx }) => {
     const user = await ctx.prisma.user.findUnique({
       where: { id: ctx.userId },
       select: {

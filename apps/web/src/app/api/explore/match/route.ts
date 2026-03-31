@@ -81,20 +81,20 @@ export async function POST(request: NextRequest) {
       fetchExploreAllSources(user2),
     ]);
 
-    if (data1.watchlist.films.length === 0 && data1.watched.length === 0) {
+    if (data1.watchlist.films.length === 0 && data1.watched.length === 0 && data1.liked.length === 0) {
       return NextResponse.json(
         {
-          error: `${user1}'s profile is empty or private`,
+          error: `${user1}'s profile appears empty or private. Ensure their Letterboxd profile, watchlist, and activity are public.`,
           code: 'EMPTY_WATCHLIST_1',
         },
         { status: 200 }
       );
     }
 
-    if (data2.watchlist.films.length === 0 && data2.watched.length === 0) {
+    if (data2.watchlist.films.length === 0 && data2.watched.length === 0 && data2.liked.length === 0) {
       return NextResponse.json(
         {
-          error: `${user2}'s profile is empty or private`,
+          error: `${user2}'s profile appears empty or private. Ensure their Letterboxd profile, watchlist, and activity are public.`,
           code: 'EMPTY_WATCHLIST_2',
         },
         { status: 200 }

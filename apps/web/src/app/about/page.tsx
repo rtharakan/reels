@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import {
-  Popcorn,
   BarChart3,
   Info,
   Heart,
@@ -15,43 +14,14 @@ import {
   ArrowRight,
   Sparkles,
 } from 'lucide-react';
-import { LanguageToggle } from '@/components/language-toggle';
+import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { useI18n } from '@/lib/i18n';
 
 export default function AboutPage() {
   const { t } = useI18n();
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Header */}
-      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
-            <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
-          </Link>
-          <nav className="flex items-center gap-2 sm:gap-3">
-            <Link href="/explore" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.explore}
-            </Link>
-            <Link href="/scan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.scan}
-            </Link>
-            <Link href="/plan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.plan}
-            </Link>
-            <LanguageToggle />
-            <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.login}
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98]"
-            >
-              {t.common.getStarted}
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <PublicHeader />
 
       <div className="mx-auto max-w-3xl px-4 py-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)] mb-2">About Reels</h1>
@@ -228,22 +198,7 @@ export default function AboutPage() {
         </section>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-[var(--border-default)] mt-12">
-        <div className="mx-auto max-w-5xl px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <div className="flex items-center gap-1.5">
-            <Popcorn className="h-3.5 w-3.5" />
-            <span>Reels</span>
-          </div>
-          <nav className="flex items-center gap-4">
-            <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">Home</Link>
-            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">Explore</Link>
-            <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">Scan</Link>
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">Terms</Link>
-          </nav>
-        </div>
-      </footer>
+      <PublicFooter />
     </main>
   );
 }

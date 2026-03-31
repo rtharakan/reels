@@ -184,6 +184,7 @@ async function discoverCandidateUsernames(
   }
 
   const filmsToScan = seedFilms.slice(0, maxFilmsToScan);
+  // Use lowercase keys to prevent case-sensitive duplicates (e.g. "JohnDoe" vs "johndoe")
   const allUsernames = new Set<string>();
 
   for (let i = 0; i < filmsToScan.length; i++) {
@@ -196,8 +197,9 @@ async function discoverCandidateUsernames(
 
     const fans = await discoverFansOfFilm(film.letterboxdSlug, 1);
     for (const name of fans) {
-      if (name.toLowerCase() !== sourceUsername.toLowerCase()) {
-        allUsernames.add(name);
+      const nameLower = name.toLowerCase();
+      if (nameLower !== sourceUsername.toLowerCase() && !allUsernames.has(nameLower)) {
+        allUsernames.add(nameLower);
       }
     }
 

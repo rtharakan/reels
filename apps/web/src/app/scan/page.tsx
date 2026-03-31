@@ -17,7 +17,6 @@ import {
   Search,
   Loader2,
   ExternalLink,
-  Popcorn,
   Radar,
   Users,
   Film,
@@ -28,8 +27,7 @@ import {
   Clock,
   Target,
 } from 'lucide-react';
-import { ThemeToggleCompact } from '@/components/theme-toggle';
-import { LanguageToggle } from '@/components/language-toggle';
+import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { useI18n } from '@/lib/i18n';
 
 interface ScanResult {
@@ -115,31 +113,7 @@ export default function ScanPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Header */}
-      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
-            <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/explore">
-              <Button variant="ghost" size="sm">{t.common.explore}</Button>
-            </Link>
-            <Link href="/plan">
-              <Button variant="ghost" size="sm">{t.common.plan}</Button>
-            </Link>
-            <LanguageToggle />
-            <ThemeToggleCompact />
-            <Link href="/login">
-              <Button variant="ghost" size="sm">{t.common.login}</Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm">{t.common.getStarted}</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       <main className="mx-auto max-w-3xl px-4 py-8">
         {/* Hero */}
@@ -430,23 +404,7 @@ export default function ScanPage() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-[var(--border-default)] mt-16">
-        <div className="mx-auto max-w-5xl px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <div className="flex items-center gap-1.5">
-            <Popcorn className="h-3.5 w-3.5 text-[var(--accent)]" />
-            <span>Reels</span>
-          </div>
-          <nav className="flex items-center gap-4">
-            <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.home}</Link>
-            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
-            <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.plan}</Link>
-            <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.about}</Link>
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.privacy}</Link>
-            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.terms}</Link>
-          </nav>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

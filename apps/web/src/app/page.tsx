@@ -92,11 +92,17 @@ export default function HomePage() {
       .replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
   }, []);
 
-  // When a poster is clicked, filter screenings by that film title
+  // When a poster is clicked, filter screenings by that film title (only future showtimes)
   const handlePosterClick = useCallback((film: NowShowingFilm) => {
     setSelectedFilm(film);
     const normFilm = normalizeTitle(film.title);
-    const matched = allCityScreenings.filter((s) => normalizeTitle(s.filmTitle) === normFilm);
+    const now = new Date();
+    const matched = allCityScreenings.filter((s) => {
+      if (normalizeTitle(s.filmTitle) !== normFilm) return false;
+      // Only show future showtimes
+      const screeningTime = new Date(`${s.date}T${s.time}:00`);
+      return screeningTime > now;
+    });
     setScreenings(matched);
   }, [allCityScreenings, normalizeTitle]);
 
