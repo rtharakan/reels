@@ -32,7 +32,7 @@ export default function MatchesPage() {
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <p className="text-4xl">🎬</p>
           <p className="mt-4 text-base font-medium text-[var(--text-primary)]">No matches yet</p>
-          <p className="mt-1 text-sm text-[var(--text-muted)]">Keep discovering!</p>
+          <p className="mt-1 text-sm text-[var(--text-muted)]">Keep exploring — your fellow cinephile is out there.</p>
         </div>
       </div>
     );

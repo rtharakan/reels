@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, type FormEvent, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -122,10 +123,11 @@ function groupDateIdeas(ideas: DateIdea[]): GroupedScreening[] {
   return Array.from(groups.values());
 }
 
-export default function ExplorePage() {
+function ExplorePageInner() {
   const { t } = useI18n();
-  const [user1, setUser1] = useState('');
-  const [user2, setUser2] = useState('');
+  const searchParams = useSearchParams();
+  const [user1, setUser1] = useState(() => searchParams.get('user1') ?? '');
+  const [user2, setUser2] = useState(() => searchParams.get('user2') ?? '');
   const [city, setCity] = useState('amsterdam');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -152,8 +154,8 @@ export default function ExplorePage() {
     { slug: 'zwolle', name: 'Zwolle' },
   ]);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: FormEvent | null) => {
+    if (e) e.preventDefault();
     if (!user1.trim() || !user2.trim()) {
       setError('Please enter both Letterboxd usernames or profile links.');
       return;
@@ -189,6 +191,18 @@ export default function ExplorePage() {
     }
   };
 
+  // Auto-trigger comparison when arriving from a link with both usernames pre-filled
+  // (e.g. the Compare button on the Scan page)
+  useEffect(() => {
+    const p1 = searchParams.get('user1');
+    const p2 = searchParams.get('user2');
+    if (p1 && p2) {
+      handleSubmit(null);
+    }
+    // Only run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const compatibility = result?.match
     ? getCompatibilityLabel(result.match.combinedScore)
     : null;
@@ -223,7 +237,7 @@ export default function ExplorePage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={(e) => handleSubmit(e)} className="space-y-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="user1">{t.explore.person1}</Label>
@@ -441,9 +455,9 @@ export default function ExplorePage() {
                   <div className="space-y-3">
                     {result.dateIdeasSource === 'interests' && (
                       <div className="rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-4 py-3 text-sm text-[var(--text-secondary)]">
-                        <p className="font-medium text-[var(--accent)] mb-0.5">Based on your shared interests</p>
+                        <p className="font-medium text-[var(--accent)] mb-0.5">Based on shared film history</p>
                         <p className="text-xs text-[var(--text-muted)]">
-                          These films are currently playing and match your combined taste in genres, likes, and viewing history — not from your watchlists.
+                          These suggestions draw on your shared film history — liked films, ratings, and viewing activity. When watchlists are available, they&apos;re included too.
                         </p>
                       </div>
                     )}
@@ -687,5 +701,13 @@ export default function ExplorePage() {
 
       <PublicFooter />
     </div>
+  );
+}
+
+export default function ExplorePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center"><div className="text-[var(--text-muted)] text-sm">Loading...</div></div>}>
+      <ExplorePageInner />
+    </Suspense>
   );
 }

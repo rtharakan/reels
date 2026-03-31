@@ -342,11 +342,10 @@ export default function ScanPage() {
               <CardContent className="flex flex-col items-center py-8 text-center">
                 <Sparkles className="h-8 w-8 text-[var(--accent)] mb-3" />
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
-                  Found someone interesting?
+                  Found a fellow cinephile?
                 </h3>
                 <p className="text-sm text-[var(--text-secondary)] mb-4 max-w-sm">
-                  Create a free Reels account to get matched, connect, and plan cinema dates
-                  with people who share your film taste.
+                  Join Reels to get daily matches, connect with film lovers who share your taste, and plan cinema dates. It&apos;s free.
                 </p>
                 <Link href="/signup">
                   <Button>

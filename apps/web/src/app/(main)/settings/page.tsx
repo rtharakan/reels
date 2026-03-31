@@ -75,7 +75,7 @@ export default function SettingsPage() {
     {
       title: t.settings?.support ?? 'Support & Legal',
       items: [
-        { icon: HelpCircle, label: t.settings?.help ?? 'Help & FAQ', href: '/about' },
+        { icon: HelpCircle, label: t.settings?.help ?? 'Help & FAQ', href: '/help' },
         { icon: FileText, label: t.settings?.termsOfService ?? 'Terms of Service', href: '/terms' },
         { icon: Lock, label: t.settings?.privacyPolicy ?? 'Privacy Policy', href: '/privacy' },
         { icon: Info, label: t.settings?.about ?? 'About Reels', href: '/about' },

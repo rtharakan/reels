@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { href: '/plan', key: 'plan' },
   { href: '/buddy', key: 'buddy' },
   { href: '/about', key: 'about' },
+  { href: '/help', key: 'help' },
 ] as const;
 
 export function PublicHeader() {
@@ -25,6 +26,7 @@ export function PublicHeader() {
     plan: t.common.plan,
     buddy: t.common.buddy,
     about: t.common.about,
+    help: t.common.help ?? 'Help',
   };
 
   return (
@@ -82,12 +84,15 @@ export function PublicFooter() {
           <Popcorn className="h-3.5 w-3.5 text-[var(--accent)]" />
           <span>Reels</span>
         </div>
-        <nav className="flex items-center gap-4">
+        <nav className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
           <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.scan}</Link>
           <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.plan}</Link>
           <Link href="/buddy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.buddy}</Link>
           <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.about}</Link>
+          <Link href="/help" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.help ?? 'Help'}</Link>
+          <Link href="/features" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.features ?? 'Feature Requests'}</Link>
+          <span className="text-[var(--border-default)]">·</span>
           <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.privacy}</Link>
           <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.terms}</Link>
         </nav>

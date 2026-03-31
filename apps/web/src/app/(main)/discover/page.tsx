@@ -15,11 +15,11 @@ function getIntentLabel(intent: string) {
 }
 
 function getScoreExplanation(score: number, sharedCount: number): string {
-  if (score >= 0.5) return `You and this person are a rare match — ${sharedCount} films in common across your watchlists, likes, and ratings.`;
-  if (score >= 0.3) return `Strong connection! You share ${sharedCount} films and similar genre tastes.`;
-  if (score >= 0.15) return `You have ${sharedCount} shared films and overlapping genres.`;
-  if (score >= 0.05) return `Some overlap with ${sharedCount} shared films. You might discover new favorites together.`;
-  return `Different tastes can spark great conversations — ${sharedCount} films overlap.`;
+  if (score >= 0.5) return `A rare cinematic soulmate — ${sharedCount} films in common across watchlists, likes, and ratings.`;
+  if (score >= 0.3) return `A genuine connection. You share ${sharedCount} films and deeply overlapping taste.`;
+  if (score >= 0.15) return `${sharedCount} shared films and a similar sensibility. Worth exploring.`;
+  if (score >= 0.05) return `${sharedCount} films in common — you might discover something new through their lens.`;
+  return `Different corners of cinema — ${sharedCount} overlapping films. Sometimes contrast is the best conversation.`;
 }
 
 export default function DiscoverPage() {
@@ -94,9 +94,9 @@ export default function DiscoverPage() {
       <div className="flex min-h-[80vh] flex-col items-center justify-center px-4">
         <div className="text-center">
           <p className="text-4xl">🎬</p>
-          <h1 className="mt-4 text-xl font-semibold text-[var(--text-primary)]">All caught up</h1>
+          <h1 className="mt-4 text-xl font-semibold text-[var(--text-primary)]">You&apos;re all caught up</h1>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
-            Check back tomorrow for new matches
+            Ten cinephiles a day — come back tomorrow for your next batch.
           </p>
         </div>
       </div>
