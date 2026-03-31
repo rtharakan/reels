@@ -38,11 +38,11 @@ export default function SignupPage() {
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--accent-soft)]">
             <span className="text-2xl">✉️</span>
           </div>
-          <h1 className="text-2xl font-semibold text-[var(--text-primary)]">Check your email</h1>
+          <h1 className="text-2xl font-semibold text-[var(--text-primary)]">{t.auth.checkEmail}</h1>
           <p className="text-[var(--text-secondary)] leading-relaxed">
-            We sent a sign-up link to <strong className="text-[var(--text-primary)]">{email}</strong>
+            {t.auth.sentSignupLink} <strong className="text-[var(--text-primary)]">{email}</strong>
           </p>
-          <p className="text-sm text-[var(--text-muted)]">Expires in 10 minutes</p>
+          <p className="text-sm text-[var(--text-muted)]">{t.auth.expires}</p>
         </div>
       </main>
     );
@@ -53,13 +53,13 @@ export default function SignupPage() {
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <Link href="/" className="text-2xl font-semibold tracking-tight text-[var(--text-primary)] hover:opacity-80 transition-opacity">Reels</Link>
-          <p className="mt-2 text-sm text-[var(--text-muted)]">Create your account</p>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">{t.auth.createAccount}</p>
         </div>
 
         <form onSubmit={handleSignUp} className="space-y-4">
           <div>
             <label htmlFor="signup-email" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">
-              Email
+              {t.auth.email}
             </label>
             <input
               id="signup-email"
@@ -68,7 +68,7 @@ export default function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="block w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-colors"
-              placeholder="you@example.com"
+              placeholder={t.auth.emailPlaceholder}
             />
           </div>
           {error && <p className="text-sm text-red-500" role="alert">{error}</p>}
@@ -77,7 +77,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-medium text-white hover:bg-[var(--accent-hover)] disabled:opacity-50 transition-all active:scale-[0.98]"
           >
-            {loading ? 'Sending...' : 'Sign up with email'}
+            {loading ? t.auth.sending : t.common.signUpWithEmail}
           </button>
         </form>
 
@@ -86,7 +86,7 @@ export default function SignupPage() {
             <div className="w-full border-t border-[var(--border-default)]" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[var(--bg-primary)] px-3 text-[var(--text-muted)]">or</span>
+            <span className="bg-[var(--bg-primary)] px-3 text-[var(--text-muted)]">{t.auth.or}</span>
           </div>
         </div>
 
@@ -100,24 +100,25 @@ export default function SignupPage() {
             <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
           </svg>
-          Sign up with Google
+          {t.auth.signUpGoogle}
         </button>
 
         <div className="space-y-2 text-center text-sm text-[var(--text-muted)]">
+          <div className="flex justify-center"><LanguageToggle /></div>
           <p>
-            Already have an account?{' '}
+            {t.auth.haveAccount}{' '}
             <Link href="/login" className="text-[var(--accent)] hover:underline">
-              Login
+              {t.common.login}
             </Link>
           </p>
           <p className="text-xs">
-            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">Explore</Link>
+            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
             {' · '}
-            <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">Home</Link>
+            <Link href="/" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.home}</Link>
             {' · '}
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">Privacy</Link>
+            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.privacy}</Link>
             {' · '}
-            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">Terms</Link>
+            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.terms}</Link>
           </p>
         </div>
       </div>
