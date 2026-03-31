@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, Users, Film, Sparkles, ArrowRight, Popcorn, Calendar, MapPin, ChevronLeft, ChevronRight, Clock, Ticket } from 'lucide-react';
+import { Heart, Users, Film, Sparkles, ArrowRight, Popcorn, Calendar, MapPin, ChevronLeft, ChevronRight, Clock, Ticket, ChevronDown } from 'lucide-react';
 import { ThemeToggleCompact } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
 import { useI18n } from '@/lib/i18n';
@@ -60,6 +60,19 @@ export default function HomePage() {
   const [allCityScreenings, setAllCityScreenings] = useState<Screening[]>([]);
   const [loading, setLoading] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
+    }
+    if (moreOpen) document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [moreOpen]);
 
   // Fetch films + screenings from Filmladder (actual cinema data) when city changes
   useEffect(() => {
@@ -135,9 +148,25 @@ export default function HomePage() {
             <Link href="/buddy" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
               {t.common.buddy}
             </Link>
-            <Link href="/about" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.about}
-            </Link>
+            <div ref={moreRef} className="relative hidden sm:block">
+              <button
+                type="button"
+                onClick={() => setMoreOpen((o) => !o)}
+                className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1"
+                aria-expanded={moreOpen}
+                aria-haspopup="true"
+              >
+                {t.common.more}
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {moreOpen && (
+                <div className="absolute right-0 top-full mt-1 w-44 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] py-1 shadow-lg z-50">
+                  <Link href="/about" onClick={() => setMoreOpen(false)} className="block px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors">{t.common.about}</Link>
+                  <Link href="/help" onClick={() => setMoreOpen(false)} className="block px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors">{t.common.help}</Link>
+                  <Link href="/features" onClick={() => setMoreOpen(false)} className="block px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors">{t.common.features}</Link>
+                </div>
+              )}
+            </div>
             <LanguageToggle />
             <ThemeToggleCompact />
             <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
@@ -185,7 +214,7 @@ export default function HomePage() {
       {loading ? (
         <section className="mx-auto max-w-5xl px-4 pb-12">
           <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
+            <Film className="h-4 w-4 animate-spin text-[var(--accent)]" />
             {t.common.loading}
           </div>
         </section>
