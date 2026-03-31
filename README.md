@@ -1,7 +1,8 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/status-v1.2-brightgreen" alt="Status: v1.2" />
+  <img src="https://img.shields.io/badge/status-v1.3-brightgreen" alt="Status: v1.3" />
   <img src="https://img.shields.io/github/license/rtharakan/reels" alt="MIT License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome" />
+  <img src="https://img.shields.io/badge/tests-89%2B%20passing-brightgreen" alt="89+ Tests Passing" />
 </p>
 
 # Reels
@@ -49,6 +50,17 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 - **Multi-language** — full English and Dutch (NL) translations with in-app language toggle
 - **Native mobile apps** — iOS (SwiftUI) and Android (Jetpack Compose) with matching design system
 
+### v1.3 Changelog
+
+- **Production-ready test suite** — 89+ unit, integration, and security tests across all packages
+- **GDPR hard-delete** — account deletion now completely removes all user data (no soft-delete)
+- **Email branding** — magic link email template updated to terracotta accent (#D4856A)
+- **URL injection prevention** — HTML entity escaping on magic link URLs
+- **Android push support** — device router accepts both `ios` and `android` platforms
+- **Security audit** — XSS, IDOR, SQL injection, rate limiting, headers, CSP validated
+- **Documentation** — comprehensive docs, FAQ, deployment guide, security policy
+- **Branch cleanup** — three clean branches: `main` (web), `ios/v1.3-app`, `android/v1.3-app`
+
 ### v1.2 Changelog
 
 - **Homepage showtimes** — pre-fetches all city screenings once, instant client-side fuzzy matching (no more per-click API calls)
@@ -60,15 +72,15 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 - **i18n system** — lightweight React context provider with EN/NL toggle and localStorage persistence
 - **iOS app** — full SwiftUI app with auth, onboarding, discover, matches, profile, safety + Dutch localization
 - **Android app** — full Kotlin/Compose app with Material3, Hilt DI, Retrofit, identical feature set + Dutch strings
-- **Branch cleanup** — three clean branches: `main` (web), `ios/v1.2-app`, `android/v1.2-app`
+- **Branch cleanup** — three clean branches: `main` (web), `ios/v1.3-app`, `android/v1.3-app`
 
 ## Mobile Apps
 
 ### iOS
-On the `ios/v1.2-app` branch. Requires Xcode 15+ and iOS 17+.
+On the `ios/v1.3-app` branch. Requires Xcode 15+ and iOS 17+.
 
 ### Android
-On the `android/v1.2-app` branch. Requires Android Studio Hedgehog+ and API 26+.
+On the `android/v1.3-app` branch. Requires Android Studio Hedgehog+ and API 26+.
 
 ## Documentation
 

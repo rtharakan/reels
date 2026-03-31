@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/status-v1.0-brightgreen" alt="Status: v1.0" />
+  <img src="https://img.shields.io/badge/status-v1.3-brightgreen" alt="Status: v1.3" />
   <img src="https://img.shields.io/github/license/rtharakan/reels" alt="MIT License" />
   <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome" />
 </p>
@@ -139,9 +139,13 @@ All contributions must follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 - [x] Performance optimizations (DB queries, lazy loading, caching)
 - [x] Grouped showtimes with expandable accordion
 - [x] Rate limiting and production hardening
-- [ ] iOS app (SwiftUI) — in progress on separate branch
-- [ ] GDPR data export and scheduled cleanup
-- [ ] App Store submission
+- [x] i18n — full English and Dutch translations
+- [x] Buddy system — cinema date coordination with chat
+- [x] iOS app (SwiftUI) — complete on `ios/v1.3-app` branch
+- [x] Android app (Kotlin/Compose) — complete on `android/v1.3-app` branch
+- [x] GDPR compliance — full data export and hard-delete account deletion
+- [x] Comprehensive test suite — 89+ unit, integration, and security tests
+- [ ] App Store / Play Store submission
 
 ---
 
