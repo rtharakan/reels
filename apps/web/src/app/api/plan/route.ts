@@ -5,7 +5,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchExploreWatchlist } from '@/server/services/explore-scraper';
+import { scrapeWatchlist } from '@reels/letterboxd-scraper';
+import type { ExploreFilm } from '@/server/services/explore-scraper';
 import { fetchCityScreenings, DUTCH_CITIES } from '@/server/services/explore-screenings';
 import { findExploreMatchingScreenings } from '@/server/services/explore-film-matcher';
 import { enrichFilmsWithPosters } from '@/server/services/tmdb';
@@ -48,18 +49,40 @@ export async function POST(request: NextRequest) {
 
     const selectedCity = city && DUTCH_CITIES.some((c) => c.slug === city) ? city : 'amsterdam';
 
-    // Fetch watchlist and city screenings in parallel
-    const [watchlistData, cityScreenings] = await Promise.all([
-      fetchExploreWatchlist(username),
+    // Scrape watchlist via HTML (RSS feeds don't include watchlist data)
+    // and fetch city screenings in parallel
+    const [scrapeResult, cityScreenings] = await Promise.all([
+      scrapeWatchlist(username),
       fetchCityScreenings(selectedCity),
     ]);
 
-    if (watchlistData.films.length === 0) {
+    if (scrapeResult.isPrivate || scrapeResult.error) {
+      return NextResponse.json(
+        { error: scrapeResult.error ?? `${username}'s watchlist appears empty or private`, code: 'EMPTY_WATCHLIST' },
+        { status: 200 },
+      );
+    }
+
+    if (scrapeResult.films.length === 0) {
       return NextResponse.json(
         { error: `${username}'s watchlist appears empty or private`, code: 'EMPTY_WATCHLIST' },
         { status: 200 },
       );
     }
+
+    // Convert scraped films to ExploreFilm format for the matcher
+    const watchlistFilms: ExploreFilm[] = scrapeResult.films.map((f) => ({
+      letterboxdSlug: f.slug,
+      title: f.title,
+      letterboxdUrl: `https://letterboxd.com/film/${f.slug}/`,
+    }));
+
+    const watchlistData = {
+      username,
+      displayName: username,
+      films: watchlistFilms,
+      totalCount: scrapeResult.films.length,
+    };
 
     // Match watchlist films against currently playing screenings
     const matched = findExploreMatchingScreenings(watchlistData.films, cityScreenings);
