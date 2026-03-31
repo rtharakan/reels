@@ -195,13 +195,13 @@ export default function ScanPage() {
               <Button type="submit" size="lg" disabled={isScanning} className="w-full">
                 {isScanning ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Scanning Letterboxd...
+                    <Film className="h-4 w-4 animate-spin" />
+                    {t.scan.scanning}
                   </>
                 ) : (
                   <>
                     <Radar className="h-4 w-4" />
-                    Start Scan
+                    {t.scan.scanProfile}
                   </>
                 )}
               </Button>

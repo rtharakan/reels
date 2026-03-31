@@ -334,7 +334,7 @@ export default function BuddyPage() {
 
             {browsLoading ? (
               <div className="flex items-center justify-center gap-2 py-12 text-sm text-[var(--text-muted)]">
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Film className="h-4 w-4 animate-spin" />
                 {t.common.loading}
               </div>
             ) : requests.length === 0 ? (
@@ -518,7 +518,7 @@ export default function BuddyPage() {
                 {/* Film selection */}
                 {formLoading ? (
                   <div className="flex items-center gap-2 py-8 text-sm text-[var(--text-muted)] justify-center">
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Film className="h-4 w-4 animate-spin" />
                     {t.buddy.loadingScreenings}
                   </div>
                 ) : formFilms.length === 0 ? (
@@ -627,7 +627,7 @@ export default function BuddyPage() {
                         className="w-full rounded-xl bg-[var(--accent)] py-3 text-sm font-semibold text-white hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98] disabled:opacity-60"
                       >
                         {formPosting ? (
-                          <><Loader2 className="inline h-4 w-4 mr-1.5 animate-spin" />{t.buddy.posting}</>
+                          <><Film className="inline h-4 w-4 mr-1.5 animate-spin" />{t.buddy.posting}</>
                         ) : formSuccess ? (
                           '✓'
                         ) : (
@@ -664,7 +664,7 @@ export default function BuddyPage() {
             <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[200px]">
               {chatLoading ? (
                 <div className="flex justify-center py-8">
-                  <Loader2 className="h-5 w-5 animate-spin text-[var(--text-muted)]" />
+                  <Film className="h-5 w-5 animate-spin text-[var(--text-muted)]" />
                 </div>
               ) : chatMessages.length === 0 ? (
                 <p className="text-center text-sm text-[var(--text-muted)] py-8">

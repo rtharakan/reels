@@ -295,7 +295,7 @@ function ExplorePageInner() {
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Film className="h-4 w-4 animate-spin" />
                     {t.explore.fetching}
                   </>
                 ) : (
