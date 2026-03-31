@@ -213,12 +213,8 @@ export const userRouter = router({
     }),
 
   deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
-    await ctx.prisma.user.update({
-      where: { id: ctx.userId },
-      data: { deletedAt: new Date() },
-    });
-
-    // Clean up all user data
+    // Hard-delete all user data for full GDPR compliance
+    // Order matters: delete relations first, then the user record
     await Promise.all([
       ctx.prisma.matchScore.deleteMany({
         where: { OR: [{ userId: ctx.userId }, { candidateId: ctx.userId }] },
@@ -235,7 +231,28 @@ export const userRouter = router({
       ctx.prisma.deviceToken.deleteMany({
         where: { userId: ctx.userId },
       }),
+      ctx.prisma.match.deleteMany({
+        where: { OR: [{ userAId: ctx.userId }, { userBId: ctx.userId }] },
+      }),
+      ctx.prisma.block.deleteMany({
+        where: { OR: [{ blockerId: ctx.userId }, { blockedUserId: ctx.userId }] },
+      }),
+      ctx.prisma.report.deleteMany({
+        where: { OR: [{ reporterId: ctx.userId }, { reportedUserId: ctx.userId }] },
+      }),
+      ctx.prisma.watchlistEntry.deleteMany({ where: { userId: ctx.userId } }),
+      ctx.prisma.watchedEntry.deleteMany({ where: { userId: ctx.userId } }),
+      ctx.prisma.ratingEntry.deleteMany({ where: { userId: ctx.userId } }),
+      ctx.prisma.likedEntry.deleteMany({ where: { userId: ctx.userId } }),
+      ctx.prisma.buddyInterest.deleteMany({ where: { userId: ctx.userId } }),
+      ctx.prisma.buddyMessage.deleteMany({ where: { senderId: ctx.userId } }),
+      ctx.prisma.buddyRequest.deleteMany({ where: { creatorId: ctx.userId } }),
     ]);
+
+    // Delete sessions and accounts, then the user record
+    await ctx.prisma.session.deleteMany({ where: { userId: ctx.userId } });
+    await ctx.prisma.account.deleteMany({ where: { userId: ctx.userId } });
+    await ctx.prisma.user.delete({ where: { id: ctx.userId } });
 
     return { success: true };
   }),
