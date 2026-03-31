@@ -48,32 +48,36 @@ export default function ProfilePage() {
 
       <div className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Display name</label>
+          <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Display name <span aria-hidden="true">*</span></label>
           <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} maxLength={50}
+            aria-required="true" aria-invalid={!!errors.name} aria-describedby={errors.name ? 'name-error' : undefined}
             className="block w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--ring)] focus:outline-none transition-colors" />
-          {errors.name && <p className="mt-1 text-sm text-red-500" role="alert">{errors.name}</p>}
+          {errors.name && <p id="name-error" className="mt-1 text-sm text-red-500" role="alert">{errors.name}</p>}
         </div>
 
         <div>
-          <label htmlFor="age" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Age</label>
+          <label htmlFor="age" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Age <span aria-hidden="true">*</span></label>
           <input id="age" type="number" min={17} value={age} onChange={(e) => setAge(e.target.value)}
+            aria-required="true" aria-invalid={!!errors.age} aria-describedby={errors.age ? 'age-error' : undefined}
             className="block w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--ring)] focus:outline-none transition-colors" />
-          {errors.age && <p className="mt-1 text-sm text-red-500" role="alert">{errors.age}</p>}
+          {errors.age && <p id="age-error" className="mt-1 text-sm text-red-500" role="alert">{errors.age}</p>}
         </div>
 
         <div>
-          <label htmlFor="location" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Location</label>
+          <label htmlFor="location" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Location <span aria-hidden="true">*</span></label>
           <input id="location" type="text" value={location} onChange={(e) => setLocation(e.target.value)} maxLength={100} placeholder="City, Country"
+            aria-required="true" aria-invalid={!!errors.location} aria-describedby={errors.location ? 'location-error' : undefined}
             className="block w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:ring-2 focus:ring-[var(--ring)] focus:outline-none transition-colors" />
-          {errors.location && <p className="mt-1 text-sm text-red-500" role="alert">{errors.location}</p>}
+          {errors.location && <p id="location-error" className="mt-1 text-sm text-red-500" role="alert">{errors.location}</p>}
         </div>
 
         <div>
-          <label htmlFor="bio" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Bio</label>
+          <label htmlFor="bio" className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">Bio <span aria-hidden="true">*</span></label>
           <textarea id="bio" rows={3} value={bio} onChange={(e) => setBio(e.target.value)} maxLength={500}
+            aria-required="true" aria-invalid={!!errors.bio} aria-describedby="bio-count bio-error"
             className="block w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--ring)] focus:outline-none resize-none transition-colors" />
-          <p className="mt-1 text-xs text-[var(--text-muted)]">{bio.length}/500</p>
-          {errors.bio && <p className="text-sm text-red-500" role="alert">{errors.bio}</p>}
+          <p id="bio-count" className="mt-1 text-xs text-[var(--text-muted)]">{bio.length}/500</p>
+          {errors.bio && <p id="bio-error" className="text-sm text-red-500" role="alert">{errors.bio}</p>}
         </div>
 
         <fieldset>

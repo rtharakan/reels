@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Heart, Users, User, Compass, Popcorn, Settings, Radar, HelpCircle } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
+import { trpc } from '@/lib/trpc';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { t } = useI18n();
+  const { data: matches } = trpc.match.list.useQuery(undefined, { refetchInterval: 30000 });
 
   const navItems = [
     { href: '/discover', label: t.common.discover, icon: Heart },
@@ -72,11 +74,12 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               : href === '/discover'
                 ? pathname === '/discover'
                 : pathname?.startsWith(href);
+            const matchCount = href === '/matches' ? (matches?.length ?? 0) : 0;
             return (
               <Link
                 key={href}
                 href={href}
-                className={`flex flex-col items-center gap-0.5 rounded-xl px-3 py-2 text-[11px] font-medium transition-all ${
+                className={`relative flex flex-col items-center gap-0.5 rounded-xl px-3 py-2 text-[11px] font-medium transition-all ${
                   isActive
                     ? 'text-[var(--accent)]'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
@@ -85,6 +88,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               >
                 <Icon className={`h-5 w-5 ${isActive ? 'stroke-[2.5]' : 'stroke-[1.5]'}`} aria-hidden="true" />
                 <span>{label}</span>
+                {matchCount > 0 && href === '/matches' && (
+                  <span className="absolute -top-0.5 right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[var(--accent)] px-1 text-[10px] font-bold text-white" aria-label={`${matchCount} matches`}>
+                    {matchCount > 99 ? '99+' : matchCount}
+                  </span>
+                )}
               </Link>
             );
           })}

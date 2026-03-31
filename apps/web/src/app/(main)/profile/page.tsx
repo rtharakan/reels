@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Film } from 'lucide-react';
+import { DeleteAccountDialog } from '@/components/delete-account-dialog';
+import { TmdbAttribution } from '@/components/tmdb-attribution';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -128,39 +130,19 @@ export default function ProfilePage() {
         </div>
 
         {/* TMDB Attribution */}
-        <p className="text-center text-xs text-[var(--text-muted)] pt-2">
-          Film data powered by{' '}
-          <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer" className="underline hover:text-[var(--text-secondary)]">
-            TMDB
-          </a>
-        </p>
+        <TmdbAttribution className="pt-2" />
       </div>
 
       {/* Delete confirmation dialog */}
       {showDeleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="delete-title">
-          <div className="w-full max-w-sm rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 shadow-soft-lg">
-            <h2 id="delete-title" className="text-lg font-semibold text-[var(--text-primary)]">Delete your account?</h2>
-            <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
-              This will permanently delete your profile, watchlist, matches, and all data.
-              This cannot be undone.
-            </p>
-            <div className="mt-6 flex gap-3">
-              <button onClick={() => setShowDeleteConfirm(false)} className="flex-1 rounded-xl border border-[var(--border-default)] px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-accent)] transition-colors">
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  deleteMutation.mutate();
-                  setShowDeleteConfirm(false);
-                }}
-                className="flex-1 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
+        <DeleteAccountDialog
+          onConfirm={() => {
+            deleteMutation.mutate();
+            setShowDeleteConfirm(false);
+          }}
+          onCancel={() => setShowDeleteConfirm(false)}
+          isPending={deleteMutation.isPending}
+        />
       )}
     </div>
   );

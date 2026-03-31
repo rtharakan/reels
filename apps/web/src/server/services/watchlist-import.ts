@@ -185,6 +185,26 @@ export async function importWatchlist(
   await syncEntries(prisma, userId, likedIds, 'likedEntry');
   await syncRatingEntries(prisma, userId, ratedFilms);
 
+  // T105: SeenUser re-eligibility on watchlist re-import
+  // When ≥30% of resolved films are new, prune SeenUser entries
+  // so the user can be re-discovered by others with updated taste
+  const allResolvedIds = new Set([...watchlistIds, ...watchedIds, ...likedIds, ...ratedFilms.map(r => r.filmId)]);
+  const previousEntries = await prisma.watchlistEntry.findMany({
+    where: { userId },
+    select: { filmId: true },
+  });
+  const previousFilmIds = new Set(previousEntries.map(e => e.filmId));
+  const newFilmIds = [...allResolvedIds].filter(id => !previousFilmIds.has(id));
+  const newRatio = previousFilmIds.size > 0 ? newFilmIds.length / allResolvedIds.size : 1;
+
+  if (newRatio >= 0.3 && allResolvedIds.size >= 5) {
+    // Prune SeenUser entries where this user was the one seen,
+    // giving others a chance to rediscover them
+    await prisma.seenUser.deleteMany({
+      where: { seenUserId: userId },
+    });
+  }
+
   // Update user's letterboxd username
   await prisma.user.update({
     where: { id: userId },

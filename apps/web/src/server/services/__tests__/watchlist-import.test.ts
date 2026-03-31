@@ -62,6 +62,9 @@ function createMockPrisma() {
     user: {
       update: vi.fn().mockResolvedValue({}),
     },
+    seenUser: {
+      deleteMany: vi.fn().mockResolvedValue({ count: 0 }),
+    },
     $transaction: vi.fn().mockImplementation(async (ops: unknown[]) => {
       return Promise.all(ops);
     }),
