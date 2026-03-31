@@ -97,7 +97,7 @@ The matching engine lives in `packages/matching-engine/` and computes a compatib
 |---|---|---|
 | **Liked overlap** | 30% | Films both users explicitly liked — strongest signal of taste |
 | **High-rated overlap** | 25% | Films both rated 4+ stars — conscious appreciation |
-| **Genre similarity** | 20% | Cosine similarity across normalised genre frequency vectors |
+| **Genre similarity** | 20% | Cosine similarity across normalized genre frequency vectors |
 | **Watched overlap** | 15% | Films both users have seen — shared viewing experience |
 | **Watchlist overlap** | 10% | Films both want to see — shared intent |
 

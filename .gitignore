@@ -40,3 +40,5 @@ apps/web/prisma/migrations/**/migration_lock.toml
 .vercel/
 apps/web/tsconfig.tsbuildinfo
 *.tsbuildinfo
+.vercel
+.env*.local

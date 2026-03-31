@@ -33,7 +33,7 @@ Requires Node.js 20+, pnpm, PostgreSQL, and a [TMDB API token](https://developer
 | `apps/ios` | SwiftUI native iOS app |
 | `apps/android` | Kotlin + Jetpack Compose Android app |
 | `packages/matching-engine` | Jaccard overlap + cosine genre similarity scoring |
-| `packages/letterboxd-scraper` | Polite Letterboxd profile scraper + TMDB normaliser |
+| `packages/letterboxd-scraper` | Polite Letterboxd profile scraper + TMDB normalizer |
 | `packages/shared-types` | TypeScript types used across the monorepo |
 | `packages/ui` | Shared design system components |
 

@@ -8,7 +8,7 @@ Be respectful, be constructive, be welcoming. We're building something together.
 
 We want Reels to be a project where anyone can contribute — regardless of experience level, background, identity, or where they're from. To make that work, we hold ourselves to a few straightforward standards.
 
-### Expected Behaviour
+### Expected Behavior
 
 - Treat others the way you'd want to be treated in a code review.
 - Give and accept feedback gracefully.
@@ -16,7 +16,7 @@ We want Reels to be a project where anyone can contribute — regardless of expe
 - Ask questions. Help newcomers.
 - Credit others' work when building on it.
 
-### Unacceptable Behaviour
+### Unacceptable Behavior
 
 - Harassment, insults, or personal attacks — in any form.
 - Publishing someone's private information without their consent.

@@ -63,7 +63,7 @@ The `main` branch is protected:
 |---|---|---|
 | Web app | `apps/web/` | Next.js 14, tRPC, Prisma |
 | Matching engine | `packages/matching-engine/` | Jaccard + cosine similarity |
-| Letterboxd scraper | `packages/letterboxd-scraper/` | Cheerio, TMDB normalisation |
+| Letterboxd scraper | `packages/letterboxd-scraper/` | Cheerio, TMDB normalization |
 | Shared types | `packages/shared-types/` | TypeScript interfaces |
 | UI components | `packages/ui/` | Tailwind + shadcn primitives |
 

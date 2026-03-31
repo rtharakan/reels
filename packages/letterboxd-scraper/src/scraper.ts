@@ -43,17 +43,32 @@ function extractFilmsFromPage(html: string): ScrapedFilm[] {
   const $ = cheerio.load(html);
   const films: ScrapedFilm[] = [];
 
-  $('li.poster-container').each((_, el) => {
-    const poster = $(el).find('div.film-poster');
-    const slug = poster.attr('data-film-slug') ?? '';
-    const letterboxdId = poster.attr('data-film-id') ?? '';
-    const img = poster.find('img');
-    const title = img.attr('alt') ?? slug;
+  // New Letterboxd structure: react-component LazyPoster with data-item-slug
+  $('div.react-component[data-component-class="LazyPoster"]').each((_, el) => {
+    const $el = $(el);
+    const slug = $el.attr('data-item-slug') ?? '';
+    const letterboxdId = $el.attr('data-film-id') ?? '';
+    const title = $el.attr('data-item-name') ?? $el.find('img').attr('alt') ?? slug;
 
     if (slug) {
       films.push({ slug, title, letterboxdId });
     }
   });
+
+  // Fallback: legacy structure (li.poster-container)
+  if (films.length === 0) {
+    $('li.poster-container').each((_, el) => {
+      const poster = $(el).find('div.film-poster');
+      const slug = poster.attr('data-film-slug') ?? '';
+      const letterboxdId = poster.attr('data-film-id') ?? '';
+      const img = poster.find('img');
+      const title = img.attr('alt') ?? slug;
+
+      if (slug) {
+        films.push({ slug, title, letterboxdId });
+      }
+    });
+  }
 
   return films;
 }
@@ -162,21 +177,20 @@ function extractRatedFilmsFromPage(html: string): ScrapedRatedFilm[] {
   const $ = cheerio.load(html);
   const films: ScrapedRatedFilm[] = [];
 
-  $('li.poster-container').each((_, el) => {
-    const poster = $(el).find('div.film-poster');
-    const slug = poster.attr('data-film-slug') ?? '';
-    const letterboxdId = poster.attr('data-film-id') ?? '';
-    const img = poster.find('img');
-    const title = img.attr('alt') ?? slug;
+  // New Letterboxd structure: react-component LazyPoster
+  $('div.react-component[data-component-class="LazyPoster"]').each((_, el) => {
+    const $el = $(el);
+    const slug = $el.attr('data-item-slug') ?? '';
+    const letterboxdId = $el.attr('data-film-id') ?? '';
+    const title = $el.attr('data-item-name') ?? $el.find('img').attr('alt') ?? slug;
 
-    // Rating is encoded as class "rated-X" on a span, where X is 1-10 (half-stars)
-    const ratingEl = $(el).find('span.rating');
+    const ratingEl = $el.parent().find('span.rating');
     let rating = 0;
     if (ratingEl.length > 0) {
       const classes = ratingEl.attr('class') ?? '';
       const ratingMatch = classes.match(/rated-(\d+)/);
       if (ratingMatch) {
-        rating = parseInt(ratingMatch[1]!, 10) / 2; // Convert 1-10 scale to 0.5-5.0
+        rating = parseInt(ratingMatch[1]!, 10) / 2;
       }
     }
 
@@ -184,6 +198,31 @@ function extractRatedFilmsFromPage(html: string): ScrapedRatedFilm[] {
       films.push({ slug, title, letterboxdId, rating });
     }
   });
+
+  // Fallback: legacy structure (li.poster-container)
+  if (films.length === 0) {
+    $('li.poster-container').each((_, el) => {
+      const poster = $(el).find('div.film-poster');
+      const slug = poster.attr('data-film-slug') ?? '';
+      const letterboxdId = poster.attr('data-film-id') ?? '';
+      const img = poster.find('img');
+      const title = img.attr('alt') ?? slug;
+
+      const ratingEl = $(el).find('span.rating');
+      let rating = 0;
+      if (ratingEl.length > 0) {
+        const classes = ratingEl.attr('class') ?? '';
+        const ratingMatch = classes.match(/rated-(\d+)/);
+        if (ratingMatch) {
+          rating = parseInt(ratingMatch[1]!, 10) / 2;
+        }
+      }
+
+      if (slug && rating > 0) {
+        films.push({ slug, title, letterboxdId, rating });
+      }
+    });
+  }
 
   return films;
 }

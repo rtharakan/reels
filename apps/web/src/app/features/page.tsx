@@ -38,7 +38,7 @@ const INITIAL_REQUESTS: FeatureRequest[] = [
     id: '1',
     title: 'Director-based matching',
     description:
-      "Match with cinephiles who share your favourite directors — not just films. If you're both obsessed with Agnès Varda, that says a lot.",
+      "Match with cinephiles who share your favorite directors — not just films. If you're both obsessed with Agnès Varda, that says a lot.",
     category: 'Matching',
     votes: 142,
     status: 'planned',
