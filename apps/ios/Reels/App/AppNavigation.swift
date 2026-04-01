@@ -36,15 +36,15 @@ struct AppNavigation: View {
                 }
                 .tag(Tab.buddy)
 
-            // Picker — to be implemented in Phase 7
-            Text(lang.localizedString("nav.picker"))
+            // Picker
+            PickerView()
                 .tabItem {
                     Label(lang.localizedString("nav.picker"), systemImage: "ticket.fill")
                 }
                 .tag(Tab.picker)
 
-            // Mood Reels — to be implemented in Phase 7
-            Text(lang.localizedString("nav.moodReels"))
+            // Mood Reels
+            MoodReelsView()
                 .tabItem {
                     Label(lang.localizedString("nav.moodReels"), systemImage: "sparkles")
                 }
