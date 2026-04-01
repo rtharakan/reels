@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, Users, Film, Sparkles, ArrowRight, Popcorn, Calendar, MapPin, ChevronLeft, ChevronRight, Clock, Ticket } from 'lucide-react';
+import { Film, Sparkles, ArrowRight, MapPin, ChevronLeft, ChevronRight, Clock, Ticket } from 'lucide-react';
 import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { useI18n } from '@/lib/i18n';
 
@@ -314,25 +314,6 @@ export default function HomePage() {
           )}
         </section>
       )}
-
-      {/* Features */}
-      <section className="mx-auto max-w-3xl px-4 pb-20">
-        <div className="grid gap-6 sm:grid-cols-5">
-          {[
-            { icon: Film, title: t.home.featureImport, desc: t.home.featureImportDesc, href: '/explore' },
-            { icon: Users, title: t.home.featureDiscover, desc: t.home.featureDiscoverDesc, href: '/scan' },
-            { icon: Heart, title: t.home.featureConnect, desc: t.home.featureConnectDesc, href: '/signup' },
-            { icon: Calendar, title: t.home.featurePlan, desc: t.home.featurePlanDesc, href: '/plan' },
-            { icon: Popcorn, title: t.home.featureBuddy, desc: t.home.featureBuddyDesc, href: '/buddy' },
-          ].map(({ icon: Icon, title, desc, href }) => (
-            <Link key={title} href={href} className="flex flex-col items-center text-center p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] hover:border-[var(--accent)]/30 hover:shadow-sm transition-all group">
-              <Icon className="h-6 w-6 text-[var(--accent)] mb-2.5 group-hover:scale-110 transition-transform" />
-              <h3 className="font-semibold text-[var(--text-primary)] mb-1 text-sm">{title}</h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{desc}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
 
       <PublicFooter />
     </main>

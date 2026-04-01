@@ -23,7 +23,6 @@ import {
   Loader2,
   ChevronRight,
   ChevronDown,
-  Popcorn,
   ExternalLink,
 } from 'lucide-react';
 import { PublicHeader, PublicFooter } from '@/components/public-header';

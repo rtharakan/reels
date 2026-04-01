@@ -122,7 +122,7 @@ export default function ScanPage() {
             <Radar className="h-8 w-8 text-[var(--accent)]" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-            Scan for <span className="text-[var(--accent)]">Film Twins</span>
+            {t.scan.title} <span className="text-[var(--accent)]">{t.scan.titleAccent}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base text-[var(--text-secondary)]">
             Enter your Letterboxd profile and our agent will explore the platform

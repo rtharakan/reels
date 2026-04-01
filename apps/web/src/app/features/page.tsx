@@ -9,7 +9,6 @@ import {
   Heart,
   Search,
   Shield,
-  Popcorn,
   Plus,
   Sparkles,
   MessageCircle,

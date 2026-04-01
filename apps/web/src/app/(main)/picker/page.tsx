@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Ticket, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
+import { Ticket, ArrowRight, MapPin, Film, Search } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { trpc } from '@/lib/trpc';
 import { FilmSearch } from '@/components/picker/film-search';
@@ -14,37 +15,82 @@ interface SelectedFilm {
   posterPath: string | null;
 }
 
-type Step = 'choose-pathway' | 'search-film' | 'select-showtimes' | 'plan-created';
+interface NowShowingFilm {
+  id: string;
+  title: string;
+  year?: number;
+  posterUrl: string;
+  screeningCount: number;
+}
+
+const DUTCH_CITIES = [
+  { slug: 'amsterdam', name: 'Amsterdam' },
+  { slug: 'rotterdam', name: 'Rotterdam' },
+  { slug: 'den-haag', name: 'Den Haag' },
+  { slug: 'utrecht', name: 'Utrecht' },
+  { slug: 'eindhoven', name: 'Eindhoven' },
+  { slug: 'groningen', name: 'Groningen' },
+  { slug: 'haarlem', name: 'Haarlem' },
+  { slug: 'leiden', name: 'Leiden' },
+  { slug: 'nijmegen', name: 'Nijmegen' },
+  { slug: 'arnhem', name: 'Arnhem' },
+  { slug: 'maastricht', name: 'Maastricht' },
+  { slug: 'breda', name: 'Breda' },
+];
+
+type Step = 'pick-film' | 'select-showtimes' | 'plan-created';
 
 export default function PickerPage() {
   const { t } = useI18n();
-  const [step, setStep] = useState<Step>('choose-pathway');
-  const [pathway, setPathway] = useState<'FILM_FIRST' | 'FULLY_SPECIFIED'>('FILM_FIRST');
+  const [step, setStep] = useState<Step>('pick-film');
   const [selectedFilm, setSelectedFilm] = useState<SelectedFilm | null>(null);
+  const [nowPlayingFilmTitle, setNowPlayingFilmTitle] = useState<string>('');
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [planId, setPlanId] = useState<string | null>(null);
   const [city, setCity] = useState('amsterdam');
   const [copied, setCopied] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
-  // Pathway B fields
-  const [bFilmTitle, setBFilmTitle] = useState('');
-  const [bDate, setBDate] = useState('');
-  const [bCinema, setBCinema] = useState('');
+  // Now playing films from filmladder
+  const [nowPlaying, setNowPlaying] = useState<NowShowingFilm[]>([]);
+  const [nowLoading, setNowLoading] = useState(true);
 
   const { data: myPlans } = trpc.picker.myPlans.useQuery(undefined, { retry: false });
   const createPlan = trpc.picker.create.useMutation();
 
+  // Fetch now-playing films when city changes
+  useEffect(() => {
+    setNowLoading(true);
+    fetch(`/api/now-showing?city=${encodeURIComponent(city)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setNowPlaying(data.films ?? []);
+        setNowLoading(false);
+      })
+      .catch(() => setNowLoading(false));
+  }, [city]);
+
+  const handleSelectNowPlaying = useCallback((film: NowShowingFilm) => {
+    setNowPlayingFilmTitle(film.title);
+    setSelectedFilm(null);
+    setStep('select-showtimes');
+  }, []);
+
+  const handleSelectSearch = useCallback((film: { tmdbId: number; title: string; year: number | null; posterPath: string | null }) => {
+    setSelectedFilm(film);
+    setNowPlayingFilmTitle(film.title);
+    setStep('select-showtimes');
+  }, []);
+
   const handleCreatePlan = async (showtimes: Array<{ cinemaName: string; cinemaCity: string; date: string; time: string; ticketUrl?: string; isManualEntry: boolean }>) => {
-    const filmTitle = pathway === 'FILM_FIRST' ? selectedFilm?.title ?? '' : bFilmTitle;
+    const filmTitle = selectedFilm?.title ?? nowPlayingFilmTitle;
     const result = await createPlan.mutateAsync({
       filmTitle,
       filmTmdbId: selectedFilm?.tmdbId,
       filmPosterPath: selectedFilm?.posterPath ?? undefined,
       filmYear: selectedFilm?.year ?? undefined,
-      pathway,
-      city: pathway === 'FILM_FIRST' ? city : undefined,
-      cinema: pathway === 'FULLY_SPECIFIED' ? bCinema : undefined,
-      targetDate: pathway === 'FULLY_SPECIFIED' ? bDate : undefined,
+      pathway: 'FILM_FIRST',
+      city,
       showtimes,
     });
     setShareUrl(result.shareUrl);
@@ -83,27 +129,86 @@ export default function PickerPage() {
         <p className="text-sm text-[var(--text-secondary)]">{t.picker.subtitle}</p>
       </div>
 
-      {step === 'choose-pathway' && (
+      {step === 'pick-film' && (
         <div className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2">
+          {/* City selector */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-[var(--text-primary)]">{t.home.nowPlaying}</h2>
+            <div className="flex items-center gap-1.5">
+              <MapPin className="h-3.5 w-3.5 text-[var(--text-muted)]" />
+              <select
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="bg-transparent text-sm font-medium text-[var(--text-secondary)] border-none focus:outline-none cursor-pointer"
+              >
+                {DUTCH_CITIES.map((c) => (
+                  <option key={c.slug} value={c.slug}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Now Playing Grid */}
+          {nowLoading ? (
+            <div className="flex items-center gap-2 py-12 justify-center text-sm text-[var(--text-muted)]">
+              <Film className="h-4 w-4 animate-spin text-[var(--accent)]" />
+              {t.common.loading}
+            </div>
+          ) : nowPlaying.length > 0 ? (
+            <>
+              <p className="text-xs text-[var(--text-muted)]">{t.home.clickPoster}</p>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                {nowPlaying.map((film) => (
+                  <button
+                    key={film.id}
+                    onClick={() => handleSelectNowPlaying(film)}
+                    className="group relative rounded-xl overflow-hidden transition-all duration-200 hover:scale-[1.03] hover:shadow-lg"
+                  >
+                    {film.posterUrl ? (
+                      <Image
+                        src={film.posterUrl}
+                        alt={film.title}
+                        width={140}
+                        height={210}
+                        className="rounded-xl object-cover w-full"
+                        unoptimized
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          img.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="flex h-[210px] w-full items-center justify-center rounded-xl bg-[var(--bg-accent)] p-2 text-center">
+                        <span className="text-xs text-[var(--text-muted)]">{film.title}</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                      <p className="text-xs text-white font-medium truncate">{film.title}</p>
+                      <p className="text-[10px] text-white/70">{film.screeningCount} {t.explore.showtimes}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-[var(--text-muted)] text-center py-8">{t.picker.noShowtimes}</p>
+          )}
+
+          {/* Search fallback */}
+          <div className="border-t border-[var(--border-default)] pt-4">
             <button
               type="button"
-              onClick={() => { setPathway('FILM_FIRST'); setStep('search-film'); }}
-              className="group rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 text-left transition-all hover:border-[var(--accent)] hover:shadow-md"
+              onClick={() => setShowSearch(!showSearch)}
+              className="flex items-center gap-2 text-sm text-[var(--accent)] hover:underline"
             >
-              <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">{t.picker.pathwayATitle}</h3>
-              <p className="text-sm text-[var(--text-secondary)]">{t.picker.pathwayADesc}</p>
-              <ArrowRight className="mt-4 h-5 w-5 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors" />
+              <Search className="h-4 w-4" />
+              {t.picker.searchFilms}
             </button>
-            <button
-              type="button"
-              onClick={() => { setPathway('FULLY_SPECIFIED'); setStep('search-film'); }}
-              className="group rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 text-left transition-all hover:border-[var(--accent)] hover:shadow-md"
-            >
-              <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">{t.picker.pathwayBTitle}</h3>
-              <p className="text-sm text-[var(--text-secondary)]">{t.picker.pathwayBDesc}</p>
-              <ArrowRight className="mt-4 h-5 w-5 text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors" />
-            </button>
+            {showSearch && (
+              <div className="mt-4">
+                <FilmSearch onSelect={handleSelectSearch} />
+              </div>
+            )}
           </div>
 
           {/* My Plans section */}
@@ -128,67 +233,28 @@ export default function PickerPage() {
             </div>
           )}
           {myPlans?.plans?.length === 0 && (
-            <p className="text-center text-sm text-[var(--text-muted)] py-8">{t.picker.noPlans}</p>
-          )}
-        </div>
-      )}
-
-      {step === 'search-film' && (
-        <div className="space-y-6">
-          {pathway === 'FULLY_SPECIFIED' && (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">{t.picker.filmTitle}</label>
-                <input
-                  type="text"
-                  value={bFilmTitle}
-                  onChange={(e) => setBFilmTitle(e.target.value)}
-                  className="w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] px-3 py-2 text-sm text-[var(--text-primary)]"
-                  placeholder={t.picker.filmTitle}
-                />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">{t.picker.date}</label>
-                  <input type="date" value={bDate} onChange={(e) => setBDate(e.target.value)} className="w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] px-3 py-2 text-sm" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-1">{t.picker.cinema}</label>
-                  <input type="text" value={bCinema} onChange={(e) => setBCinema(e.target.value)} className="w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] px-3 py-2 text-sm" placeholder={t.picker.cinemaName} />
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setStep('select-showtimes')}
-                disabled={!bFilmTitle.trim()}
-                className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50 transition-opacity"
-              >
-                {t.picker.selectShowtimes}
-              </button>
-            </div>
-          )}
-
-          {pathway === 'FILM_FIRST' && (
-            <FilmSearch
-              onSelect={(film) => {
-                setSelectedFilm(film);
-                setStep('select-showtimes');
-              }}
-            />
+            <p className="text-center text-sm text-[var(--text-muted)] py-4">{t.picker.noPlans}</p>
           )}
         </div>
       )}
 
       {step === 'select-showtimes' && (
-        <ShowtimeSelector
-          filmTitle={pathway === 'FILM_FIRST' ? selectedFilm?.title ?? '' : bFilmTitle}
-          city={city}
-          cinema={pathway === 'FULLY_SPECIFIED' ? bCinema : undefined}
-          date={pathway === 'FULLY_SPECIFIED' ? bDate : undefined}
-          onCityChange={setCity}
-          onSubmit={handleCreatePlan}
-          isCreating={createPlan.isPending}
-        />
+        <div>
+          <button
+            type="button"
+            onClick={() => { setStep('pick-film'); setSelectedFilm(null); setNowPlayingFilmTitle(''); }}
+            className="mb-4 text-sm text-[var(--accent)] hover:underline"
+          >
+            ← {t.picker.pathwayATitle}
+          </button>
+          <ShowtimeSelector
+            filmTitle={selectedFilm?.title ?? nowPlayingFilmTitle}
+            city={city}
+            onCityChange={setCity}
+            onSubmit={handleCreatePlan}
+            isCreating={createPlan.isPending}
+          />
+        </div>
       )}
 
       {step === 'plan-created' && shareUrl && (

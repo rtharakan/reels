@@ -113,8 +113,8 @@ export const en = {
 
   // Scan page
   scan: {
-    title: 'Profile',
-    titleAccent: 'Scanner',
+    title: 'Film',
+    titleAccent: 'Twins',
     subtitle: 'Enter a Letterboxd username to get a detailed analysis of their film taste, including their most-loved genres, decades, and viewing patterns.',
     scanProfile: 'Scan Profile',
     scanning: 'Scanning film profile...',
@@ -123,8 +123,8 @@ export const en = {
 
   // Plan page
   plan: {
-    title: 'Watchlist',
-    titleAccent: 'Planner',
+    title: 'Cinema',
+    titleAccent: 'Week',
     subtitle: 'Enter your Letterboxd username and pick a city to see which of your watchlist films are playing in Dutch cinemas right now.',
     planDate: 'Plan Your Cinema Visit',
     searching: 'Searching cinemas for your watchlist films...',

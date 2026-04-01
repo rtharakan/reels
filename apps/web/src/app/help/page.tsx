@@ -10,7 +10,6 @@ import {
   Users,
   MessageCircle,
   Shield,
-  Popcorn,
   HelpCircle,
   Lightbulb,
   Lock,
@@ -156,7 +155,7 @@ const FAQ_SECTIONS: { title: string; icon: React.ElementType; items: FAQItem[] }
   },
   {
     title: 'Cinema Buddy & Plan',
-    icon: Popcorn,
+    icon: Users,
     items: [
       {
         question: 'What is Cinema Buddy?',

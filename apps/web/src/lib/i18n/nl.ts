@@ -115,8 +115,8 @@ export const nl: Translations = {
 
   // Scan page
   scan: {
-    title: 'Profiel',
-    titleAccent: 'Scanner',
+    title: 'Film',
+    titleAccent: 'Tweelingen',
     subtitle: 'Voer een Letterboxd-gebruikersnaam in voor een gedetailleerde analyse van hun filmsmaak, inclusief meest geliefde genres, decennia en kijkpatronen.',
     scanProfile: 'Profiel scannen',
     scanning: 'Filmprofiel scannen...',
@@ -125,8 +125,8 @@ export const nl: Translations = {
 
   // Plan page
   plan: {
-    title: 'Watchlist',
-    titleAccent: 'Planner',
+    title: 'Bioscoop',
+    titleAccent: 'Week',
     subtitle: 'Voer je Letterboxd-gebruikersnaam in en kies een stad om te zien welke van je watchlist-films nu draaien in Nederlandse bioscopen.',
     planDate: 'Plan je bioscoopbezoek',
     searching: 'Bioscopen doorzoeken voor je watchlist-films...',
