@@ -72,3 +72,65 @@
 "buddy.selectShow" = "Select showtime";
 "buddy.maxBuddies" = "Max buddies";
 "buddy.noScreenings" = "No screenings found for this date and city.";
+
+/* Navigation */
+"nav.match" = "Match";
+"nav.filmTwins" = "Film Twins";
+"nav.cinemaWeek" = "Cinema Week";
+"nav.buddy" = "Buddy";
+"nav.picker" = "Picker";
+"nav.moodReels" = "Mood Reels";
+
+/* Picker */
+"picker.title" = "Cinema Picker";
+"picker.subtitle" = "Plan a cinema trip with friends.";
+"picker.pathwayA" = "Pick a Film";
+"picker.pathwayB" = "I Know What I Want";
+"picker.createPlan" = "Create Plan";
+"picker.myPlans" = "My Plans";
+"picker.searchFilms" = "Search for a film...";
+"picker.selectShowtimes" = "Select Showtimes";
+"picker.noShowtimes" = "No showtimes found — enter manually below.";
+"picker.addShowtime" = "Add Showtime";
+"picker.sharePlan" = "Share Plan";
+"picker.copyLink" = "Copy Link";
+"picker.linkCopied" = "Link copied!";
+"picker.planCreated" = "Plan created!";
+"picker.joinPlan" = "Join Plan";
+"picker.displayName" = "Your name";
+"picker.voting" = "Voting";
+"picker.confirmed" = "Confirmed";
+"picker.expired" = "Expired";
+"picker.confirmShowtime" = "Confirm Showtime";
+"picker.createNewPlan" = "Create New Plan";
+"picker.participants" = "Participants";
+"picker.organizer" = "Organizer";
+"picker.buyTickets" = "Buy Tickets";
+"picker.available" = "Available";
+"picker.unavailable" = "Unavailable";
+"picker.maybe" = "Maybe";
+
+/* Mood Reels */
+"mood.title" = "Mood Reels";
+"mood.betaBadge" = "Beta — Easter Egg";
+"mood.selectMood" = "Select your mood";
+"mood.vibePrompt" = "What's your vibe today?";
+"mood.setYourMood" = "Set your mood";
+"mood.suggestions" = "Film Suggestions";
+"mood.moodTwins" = "Mood Twins";
+"mood.moodTwinsEmpty" = "You're the first one in this mood today — check back later";
+"mood.connect" = "Connect";
+"mood.viewHistory" = "View history";
+"mood.matchStrength" = "Match strength";
+"mood.sourceCommunity" = "Community";
+"mood.sourceAi" = "AI Beta";
+"mood.nostalgic" = "Nostalgic";
+"mood.adventurous" = "Adventurous";
+"mood.heartbroken" = "Heartbroken";
+"mood.hype" = "Hype";
+"mood.chill" = "Chill";
+"mood.romantic" = "Romantic";
+"mood.mysterious" = "Mysterious";
+"mood.inspired" = "Inspired";
+"mood.melancholic" = "Melancholic";
+"mood.cozy" = "Cozy";

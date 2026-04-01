@@ -72,3 +72,65 @@
 "buddy.selectShow" = "Selecteer voorstelling";
 "buddy.maxBuddies" = "Max buddy's";
 "buddy.noScreenings" = "Geen voorstellingen gevonden voor deze datum en stad.";
+
+/* Navigation */
+"nav.match" = "Match";
+"nav.filmTwins" = "Film Tweelingen";
+"nav.cinemaWeek" = "Bioscoop Week";
+"nav.buddy" = "Buddy";
+"nav.picker" = "Picker";
+"nav.moodReels" = "Mood Reels";
+
+/* Picker */
+"picker.title" = "Bioscoop Picker";
+"picker.subtitle" = "Plan een bioscoopuitje met vrienden.";
+"picker.pathwayA" = "Kies een film";
+"picker.pathwayB" = "Ik weet wat ik wil";
+"picker.createPlan" = "Plan maken";
+"picker.myPlans" = "Mijn plannen";
+"picker.searchFilms" = "Zoek een film...";
+"picker.selectShowtimes" = "Selecteer voorstellingen";
+"picker.noShowtimes" = "Geen voorstellingen gevonden — voer handmatig in.";
+"picker.addShowtime" = "Voorstelling toevoegen";
+"picker.sharePlan" = "Plan delen";
+"picker.copyLink" = "Link kopiëren";
+"picker.linkCopied" = "Link gekopieerd!";
+"picker.planCreated" = "Plan aangemaakt!";
+"picker.joinPlan" = "Deelnemen aan plan";
+"picker.displayName" = "Jouw naam";
+"picker.voting" = "Stemmen";
+"picker.confirmed" = "Bevestigd";
+"picker.expired" = "Verlopen";
+"picker.confirmShowtime" = "Voorstelling bevestigen";
+"picker.createNewPlan" = "Nieuw plan maken";
+"picker.participants" = "Deelnemers";
+"picker.organizer" = "Organisator";
+"picker.buyTickets" = "Tickets kopen";
+"picker.available" = "Beschikbaar";
+"picker.unavailable" = "Niet beschikbaar";
+"picker.maybe" = "Misschien";
+
+/* Mood Reels */
+"mood.title" = "Mood Reels";
+"mood.betaBadge" = "Beta — Easter Egg";
+"mood.selectMood" = "Kies je stemming";
+"mood.vibePrompt" = "Wat is jouw vibe vandaag?";
+"mood.setYourMood" = "Stel je stemming in";
+"mood.suggestions" = "Filmsuggesties";
+"mood.moodTwins" = "Mood Tweelingen";
+"mood.moodTwinsEmpty" = "Je bent de eerste in deze stemming vandaag — kom later terug";
+"mood.connect" = "Verbinden";
+"mood.viewHistory" = "Geschiedenis bekijken";
+"mood.matchStrength" = "Matchsterkte";
+"mood.sourceCommunity" = "Community";
+"mood.sourceAi" = "AI Beta";
+"mood.nostalgic" = "Nostalgisch";
+"mood.adventurous" = "Avontuurlijk";
+"mood.heartbroken" = "Gebroken hart";
+"mood.hype" = "Hype";
+"mood.chill" = "Chill";
+"mood.romantic" = "Romantisch";
+"mood.mysterious" = "Mysterieus";
+"mood.inspired" = "Geïnspireerd";
+"mood.melancholic" = "Melancholisch";
+"mood.cozy" = "Gezellig";

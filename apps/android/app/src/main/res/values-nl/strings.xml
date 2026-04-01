@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Reels</string>
+
+    <!-- Navigation -->
+    <string name="nav_match">Match</string>
+    <string name="nav_film_twins">Film Tweelingen</string>
+    <string name="nav_cinema_week">Bioscoop Week</string>
+    <string name="nav_buddy">Buddy</string>
+    <string name="nav_picker">Picker</string>
+    <string name="nav_mood_reels">Mood Reels</string>
+
+    <!-- Common -->
+    <string name="common_cancel">Annuleren</string>
+    <string name="common_done">Klaar</string>
+    <string name="common_save">Opslaan</string>
+    <string name="common_close">Sluiten</string>
+    <string name="common_loading">Laden…</string>
+    <string name="common_error">Er ging iets mis</string>
+    <string name="common_retry">Opnieuw proberen</string>
+
+    <!-- Auth -->
+    <string name="auth_sign_in_title">Reels</string>
+    <string name="auth_sign_in_subtitle">Vind jouw mensen door film.</string>
+    <string name="auth_sign_in_email_placeholder">E-mailadres</string>
+    <string name="auth_sign_in_email_button">Doorgaan met e-mail</string>
+    <string name="auth_sign_in_google_button">Doorgaan met Google</string>
+
+    <!-- Discover -->
+    <string name="discover_title">Ontdekken</string>
+    <string name="discover_empty">Niemand nieuw op dit moment. Kom later terug.</string>
+    <string name="discover_interested">Geïnteresseerd</string>
+    <string name="discover_skip">Overslaan</string>
+    <string name="discover_match_title">Het is een match!</string>
+
+    <!-- Matches -->
+    <string name="matches_title">Matches</string>
+    <string name="matches_empty">Nog geen matches. Blijf ontdekken.</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profiel</string>
+    <string name="profile_edit">Profiel bewerken</string>
+    <string name="profile_sign_out">Uitloggen</string>
+    <string name="profile_delete_account">Account verwijderen</string>
+
+    <!-- Buddy -->
+    <string name="buddy_title">Buddy</string>
+    <string name="buddy_browse">Bekijken</string>
+    <string name="buddy_create">Aanmaken</string>
+
+    <!-- Picker -->
+    <string name="picker_title">Bioscoop Picker</string>
+    <string name="picker_subtitle">Plan een bioscoopuitje met vrienden.</string>
+    <string name="picker_pathway_a">Kies een film</string>
+    <string name="picker_pathway_b">Ik weet wat ik wil</string>
+    <string name="picker_create_plan">Plan maken</string>
+    <string name="picker_my_plans">Mijn plannen</string>
+    <string name="picker_search_films">Zoek een film…</string>
+    <string name="picker_select_showtimes">Selecteer voorstellingen</string>
+    <string name="picker_no_showtimes">Geen voorstellingen gevonden — voer handmatig in.</string>
+    <string name="picker_add_showtime">Voorstelling toevoegen</string>
+    <string name="picker_share_plan">Plan delen</string>
+    <string name="picker_copy_link">Link kopiëren</string>
+    <string name="picker_link_copied">Link gekopieerd!</string>
+    <string name="picker_plan_created">Plan aangemaakt!</string>
+    <string name="picker_join_plan">Deelnemen aan plan</string>
+    <string name="picker_display_name">Jouw naam</string>
+    <string name="picker_voting">Stemmen</string>
+    <string name="picker_confirmed">Bevestigd</string>
+    <string name="picker_expired">Verlopen</string>
+    <string name="picker_confirm_showtime">Voorstelling bevestigen</string>
+    <string name="picker_create_new_plan">Nieuw plan maken</string>
+    <string name="picker_participants">Deelnemers</string>
+    <string name="picker_organizer">Organisator</string>
+    <string name="picker_buy_tickets">Tickets kopen</string>
+    <string name="picker_available">Beschikbaar</string>
+    <string name="picker_unavailable">Niet beschikbaar</string>
+    <string name="picker_maybe">Misschien</string>
+
+    <!-- Mood Reels -->
+    <string name="mood_title">Mood Reels</string>
+    <string name="mood_beta_badge">Beta — Easter Egg</string>
+    <string name="mood_select_mood">Kies je stemming</string>
+    <string name="mood_vibe_prompt">Wat is jouw vibe vandaag?</string>
+    <string name="mood_set_your_mood">Stel je stemming in</string>
+    <string name="mood_suggestions">Filmsuggesties</string>
+    <string name="mood_mood_twins">Mood Tweelingen</string>
+    <string name="mood_mood_twins_empty">Je bent de eerste in deze stemming vandaag — kom later terug</string>
+    <string name="mood_connect">Verbinden</string>
+    <string name="mood_view_history">Geschiedenis bekijken</string>
+    <string name="mood_match_strength">Matchsterkte</string>
+    <string name="mood_source_community">Community</string>
+    <string name="mood_source_ai">AI Beta</string>
+    <string name="mood_nostalgic">Nostalgisch</string>
+    <string name="mood_adventurous">Avontuurlijk</string>
+    <string name="mood_heartbroken">Gebroken hart</string>
+    <string name="mood_hype">Hype</string>
+    <string name="mood_chill">Chill</string>
+    <string name="mood_romantic">Romantisch</string>
+    <string name="mood_mysterious">Mysterieus</string>
+    <string name="mood_inspired">Geïnspireerd</string>
+    <string name="mood_melancholic">Melancholisch</string>
+    <string name="mood_cozy">Gezellig</string>
+</resources>
