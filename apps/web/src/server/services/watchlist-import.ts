@@ -41,7 +41,7 @@ async function syncRatingEntries(
     where: { userId },
     select: { id: true, filmId: true, rating: true },
   });
-  const existingMap = new Map(existing.map((e) => [e.filmId, e]));
+  const existingMap = new Map(existing.map((e) => [e.filmId, e] as const));
   const newSet = new Set(ratedFilms.map((r) => r.filmId));
 
   // Remove entries no longer present

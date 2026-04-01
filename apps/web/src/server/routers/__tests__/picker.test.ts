@@ -272,7 +272,7 @@ describe('Picker Router — Business Logic', () => {
     // Simulates the organizer check: plan.organizerId !== ctx.userId
     const organizerId = 'user-1';
     const callerId = 'user-2';
-    expect(organizerId !== callerId).toBe(true);
+    expect(organizerId as string).not.toBe(callerId);
   });
 
   it('confirm should accept organizer', () => {
@@ -283,7 +283,7 @@ describe('Picker Router — Business Logic', () => {
 
   it('vote should reject when plan status is not VOTING', () => {
     const planStatus = 'CONFIRMED';
-    expect(planStatus !== 'VOTING').toBe(true);
+    expect(planStatus as string).not.toBe('VOTING');
   });
 
   it('vote should accept when plan status is VOTING', () => {

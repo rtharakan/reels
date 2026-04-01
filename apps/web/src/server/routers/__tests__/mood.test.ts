@@ -106,7 +106,7 @@ describe('Mood Router — Business Logic', () => {
     const allMoods = [...deactivated, newMood];
     const activeMoods = allMoods.filter(m => m.isActive);
     expect(activeMoods).toHaveLength(1);
-    expect(activeMoods[0].mood).toBe('NOSTALGIC');
+    expect(activeMoods[0]!.mood).toBe('NOSTALGIC');
   });
 
   it('expressInterest should reject self-interest', () => {
@@ -146,7 +146,7 @@ describe('Mood Router — Business Logic', () => {
 
     const filtered = twins.filter(t => !blockedUserIds.has(t.userId));
     expect(filtered).toHaveLength(1);
-    expect(filtered[0].userId).toBe('user-b');
+    expect(filtered[0]!.userId).toBe('user-b');
   });
 });
 
@@ -192,8 +192,8 @@ describe('Mood Router — getHistory', () => {
     const sorted = [...moods].sort((a, b) =>
       new Date(b.selectedAt).getTime() - new Date(a.selectedAt).getTime(),
     );
-    expect(sorted[0].mood).toBe('NOSTALGIC');
-    expect(sorted[2].mood).toBe('CHILL');
+    expect(sorted[0]!.mood).toBe('NOSTALGIC');
+    expect(sorted[2]!.mood).toBe('CHILL');
   });
 
   it('currentMood returns the active mood', () => {

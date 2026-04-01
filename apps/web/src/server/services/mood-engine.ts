@@ -82,7 +82,7 @@ async function getCommunitySuggestions(
     select: { id: true, title: true, year: true, posterPath: true },
   });
 
-  const filmMap = new Map(films.map((f) => [f.id, f]));
+  const filmMap = new Map(films.map((f) => [f.id, f] as const));
 
   return taggedFilms
     .reduce<MoodSuggestion[]>((acc, t) => {
