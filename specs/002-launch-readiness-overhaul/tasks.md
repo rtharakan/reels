@@ -244,12 +244,12 @@
 
 ### Performance (T115–T116)
 
-- [ ] T115 [P] [US5] Run Lighthouse CI on all new and key existing pages: `/`, `/picker`, `/picker/[planId]`, `/mood`, `/explore`, `/matches` — target LCP < 2s and TTI < 3s on simulated Fast 3G in Lighthouse; fix any pages failing by: lazy-loading below-the-fold components, adding `loading.tsx` skeletons, optimising images with Next.js `<Image>` (`priority` prop for above-fold images), removing render-blocking resources
-- [ ] T116 [US5] Verify all interactive elements respond within 300ms — test `picker.vote` mutation latency, mood selector tap-to-suggestions latency, nav dropdown open latency; if any exceed 300ms, add optimistic UI updates (optimistic vote state for voting grid, instant mood highlight before suggestion load)
+- [X] T115 [P] [US5] Run Lighthouse CI on all new and key existing pages: `/`, `/picker`, `/picker/[planId]`, `/mood`, `/explore`, `/matches` — target LCP < 2s and TTI < 3s on simulated Fast 3G in Lighthouse; fix any pages failing by: lazy-loading below-the-fold components, adding `loading.tsx` skeletons, optimising images with Next.js `<Image>` (`priority` prop for above-fold images), removing render-blocking resources
+- [X] T116 [US5] Verify all interactive elements respond within 300ms — test `picker.vote` mutation latency, mood selector tap-to-suggestions latency, nav dropdown open latency; if any exceed 300ms, add optimistic UI updates (optimistic vote state for voting grid, instant mood highlight before suggestion load)
 
 ### Branch Sync & Merge (T117–T121)
 
-- [ ] T117 [US5] On `002-launch-readiness-overhaul`: run `pnpm build && pnpm test` one final time — confirm zero build errors, zero test failures, zero TypeScript errors; confirm `pnpm audit` is clean
+- [X] T117 [US5] On `002-launch-readiness-overhaul`: run `pnpm build && pnpm test` one final time — confirm zero build errors, zero test failures, zero TypeScript errors; confirm `pnpm audit` is clean
 - [ ] T118 [US5] Merge feature branch into `main`: `git checkout main && git pull origin main && git merge 002-launch-readiness-overhaul --no-ff -m "merge: 002 launch readiness overhaul — Picker, Mood Reels, navigation, localization, QA" && git push origin main`
 - [ ] T119 [US5] Sync `ios` branch with `main`: `git checkout ios && git merge main --no-ff -m "merge: sync ios with main post-002 launch readiness" && git push origin ios`; verify iOS build still passes after merge
 - [ ] T120 [US5] Sync `android` branch with `main`: `git checkout android && git merge main --no-ff -m "merge: sync android with main post-002 launch readiness" && git push origin android`; verify Android build (`./gradlew assembleDebug`) still passes after merge
@@ -268,11 +268,11 @@
 
 ## Final Phase: Polish & Cross-Cutting Concerns
 
-- [ ] T126 [P] Update `apps/web/public/manifest.json` to include `/picker` and `/mood` in the PWA `shortcuts` array so users can launch these from their home screen; verify `start_url` and `scope` are correct
-- [ ] T127 [P] Verify `robots.txt` at `apps/web/public/robots.txt` — `/picker` and `/mood` routes should be indexed (not disallowed), `/api/` and `/api/cron/` should be disallowed; update if needed
-- [ ] T128 Update `apps/web/prisma/seed.ts` to include a sample `PickerPlan` (in VOTING state with 3 showtimes and 2 participants) for demo/staging environments so the Picker feature is immediately demonstrable after `pnpm db:seed`
+- [X] T126 [P] Update `apps/web/public/manifest.json` to include `/picker` and `/mood` in the PWA `shortcuts` array so users can launch these from their home screen; verify `start_url` and `scope` are correct
+- [X] T127 [P] Verify `robots.txt` at `apps/web/public/robots.txt` — `/picker` and `/mood` routes should be indexed (not disallowed), `/api/` and `/api/cron/` should be disallowed; update if needed
+- [X] T128 Update `apps/web/prisma/seed.ts` to include a sample `PickerPlan` (in VOTING state with 3 showtimes and 2 participants) for demo/staging environments so the Picker feature is immediately demonstrable after `pnpm db:seed`
 - [ ] T129 Verify `[i18n-missing]` logging works in production: deploy a page with a temporarily missing Dutch key, confirm Vercel function logs show `[i18n-missing] key=` entry, revert the test key; confirm logging infrastructure is operational
-- [ ] T130 [P] Clean up all temporary files created during T026–T125 (any audit markdown files, temporary test scripts); run `pnpm lint` and `pnpm typecheck` on the final state of all three branches to confirm zero errors
+- [X] T130 [P] Clean up all temporary files created during T026–T125 (any audit markdown files, temporary test scripts); run `pnpm lint` and `pnpm typecheck` on the final state of all three branches to confirm zero errors
 - [ ] T131 Final security sign-off: `pnpm audit` clean, confirm OWASP checklist from T107 is fully resolved, confirm no API keys or secrets are committed to any branch; verify `.gitignore` excludes `.env*` files
 
 ---
