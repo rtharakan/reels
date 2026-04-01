@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
         totalMatches: matched.length,
         calendar: calendarDays,
       },
-      { headers: { 'Cache-Control': 'public, max-age=1800, stale-while-revalidate=3600' } },
+      { headers: { 'Cache-Control': 'public, max-age=300, stale-while-revalidate=600' } },
     );
   } catch (error) {
     console.error('[Plan API] Error:', error);

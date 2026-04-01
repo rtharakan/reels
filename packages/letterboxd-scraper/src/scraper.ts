@@ -34,6 +34,7 @@ async function fetchPage(url: string): Promise<{ status: number; html: string }>
   const res = await fetch(url, {
     headers: { 'User-Agent': USER_AGENT },
     redirect: 'manual',
+    cache: 'no-store',
   });
   const html = await res.text();
   return { status: res.status, html };

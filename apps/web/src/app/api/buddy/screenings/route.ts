@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       { films: filmsWithPosters, cinemas, date, city, availableDates },
-      { headers: { 'Cache-Control': 'public, max-age=900, stale-while-revalidate=1800' } },
+      { headers: { 'Cache-Control': 'public, max-age=300, stale-while-revalidate=600' } },
     );
   } catch {
     return NextResponse.json({ error: 'Failed to fetch screenings' }, { status: 500 });

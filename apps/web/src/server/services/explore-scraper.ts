@@ -127,7 +127,7 @@ async function fetchActivityRSS(username: string): Promise<string> {
   const url = `${LETTERBOXD_BASE_URL}/${username}/rss/`;
   let res: Response;
   try {
-    res = await fetch(url, { headers: RSS_HEADERS });
+    res = await fetch(url, { headers: RSS_HEADERS, cache: 'no-store' });
   } catch (err) {
     throw new Error(
       `Network error fetching Letterboxd data for "${username}". Check your connection.`,
@@ -243,6 +243,7 @@ export async function validateExploreUsername(username: string): Promise<boolean
     const res = await fetch(`${LETTERBOXD_BASE_URL}/${username}/rss/`, {
       method: 'HEAD',
       headers: RSS_HEADERS,
+      cache: 'no-store',
     });
     return res.ok;
   } catch {

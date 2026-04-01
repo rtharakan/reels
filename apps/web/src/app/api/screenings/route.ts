@@ -85,12 +85,12 @@ export async function GET(request: NextRequest) {
     if (filmTitle) {
       const filtered = screenings.filter((s) => fuzzyMatchTitle(filmTitle, s.filmTitle));
       return NextResponse.json({ screenings: filtered, city, filmTitle }, {
-        headers: { 'Cache-Control': 'public, max-age=1800, stale-while-revalidate=3600' },
+        headers: { 'Cache-Control': 'public, max-age=300, stale-while-revalidate=600' },
       });
     }
 
     return NextResponse.json({ screenings, city }, {
-      headers: { 'Cache-Control': 'public, max-age=1800, stale-while-revalidate=3600' },
+      headers: { 'Cache-Control': 'public, max-age=300, stale-while-revalidate=600' },
     });
   } catch {
     return NextResponse.json({ error: 'Failed to fetch screenings' }, { status: 500 });

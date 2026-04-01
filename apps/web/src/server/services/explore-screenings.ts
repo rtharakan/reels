@@ -88,6 +88,7 @@ async function fetchFilmScreeningsFromFilmladder(
         Accept: 'text/html,application/xhtml+xml',
         'Accept-Language': 'nl-NL,nl;q=0.9,en;q=0.8',
       },
+      cache: 'no-store',
     });
 
     if (!response.ok) return screenings;
@@ -166,6 +167,7 @@ export async function fetchCityScreenings(
       Accept: 'text/html,application/xhtml+xml',
       'Accept-Language': 'nl-NL,nl;q=0.9,en;q=0.8',
     },
+    cache: 'no-store',
   });
 
   if (!response.ok) {
