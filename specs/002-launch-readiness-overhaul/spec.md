@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "The product launch failed. The main reason is that the product was not fully ready, there were performance issues, security flaws, and features that do not work. Resolve and ensure the product is launched immediately. Five core workstreams: Picker feature, navigation consistency, Easter Egg feature, Dutch localization with icon/naming overhaul, and full QA/deployment."
 
+## Clarifications
+
+### Session 2026-04-01
+
+- Q: How should showtimes be sourced for the Picker feature MVP? → A: Hybrid — auto-populate from existing Filmladder.nl scraper (already built for Explore/Buddy) for Dutch cinemas, with manual entry fallback. Reuse existing `explore-screenings.ts` service and `/api/screenings` route. Experience must be neat and simple with automatic filling where available.
+- Q: How should moods map to film recommendations in Mood Reels? → A: Community-driven mood tags as the default recommendation layer. Additionally, an experimental (beta) AI-assisted layer using Voyage-4-nano (open-source, Apache 2.0) from Hugging Face for semantic mood-to-film matching via plot embeddings and MongoDB Atlas Vector Search. The AI layer enhances community tags with nuanced semantic understanding.
+- Q: How should guest participants in Picker plans be identified and what data should persist? → A: Guests identified by display name + browser session cookie only. No PII collected. Votes persist for the plan's lifetime only and are deleted when the plan expires. No GDPR consent flow required for guests.
+- Q: When should an open (unconfirmed) Picker plan expire? → A: 7 days after creation. Expired plans are archived; guest data is deleted upon expiry.
+- Q: What observability approach for production error tracking and missing translation key logging? → A: Structured server-side logging (console.error + Vercel function logs) with `[i18n-missing]` prefixed log entries for missing translation keys. No new third-party service. Sufficient for launch; upgradeable to Sentry later.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Group Cinema Trip Planning via Picker (Priority: P1)
@@ -128,12 +138,12 @@ An engineer reviews the entire product across all three deployment targets (web 
 ### Edge Cases
 
 - What happens when a Picker plan has zero participants voting? — The plan remains open; organizer sees a prompt to remind friends
-- What happens when all showtimes for a Picker plan have passed? — The plan is marked as expired with a prompt to create a new one
+- What happens when all showtimes for a Picker plan have passed? — The plan is marked as expired with a prompt to create a new one. Unconfirmed plans also auto-expire 7 days after creation; guest participant data is deleted upon expiry
 - What happens when Mood Reels has no other users in the same mood? — Film suggestions still appear; "Mood Twins" section shows a friendly "You're the first one in this mood today — check back later" message
 - What happens when a user switches language mid-session? — All UI text updates immediately without page reload; in-progress forms retain their input values
 - What happens when the dropdown menu has more items than the viewport height? — The overlay scrolls internally with a visible scrollbar; it never exceeds 80% of viewport height
 - What happens when a translated string is missing in Dutch? — The system falls back to English for that specific string and logs the missing key for developer attention
-- What happens when a Picker link is opened by a non-Reels user? — They see the plan details as a guest and can vote without creating an account; a subtle prompt encourages sign-up
+- What happens when a Picker link is opened by a non-Reels user? — They see the plan details as a guest and can vote by entering a display name only (no email or PII required); identified by session cookie; a subtle prompt encourages sign-up
 
 ## Requirements *(mandatory)*
 
@@ -143,7 +153,7 @@ An engineer reviews the entire product across all three deployment targets (web 
 
 - **FR-001**: System MUST provide two distinct pathways for creating a cinema plan: "Pick a Film" (film-first) and "I Know What I Want" (date/film/cinema)
 - **FR-002**: System MUST allow organizers to search for films by title with results including poster image, year, and synopsis
-- **FR-003**: System MUST display available showtimes grouped by cinema and date once a film is selected
+- **FR-003**: System MUST auto-populate available showtimes from the existing Filmladder.nl scraper for Dutch cinemas when a film and city are selected, grouped by cinema and date, with manual entry fallback if no results are found
 - **FR-004**: System MUST generate a unique shareable link for each Picker plan that is accessible to both logged-in users and guests
 - **FR-005**: System MUST provide a time-slot voting grid where each participant can mark available/unavailable for each showtime option
 - **FR-006**: System MUST display real-time voting results showing participant availability per showtime as a visual heat-map or tally
@@ -165,7 +175,7 @@ An engineer reviews the entire product across all three deployment targets (web 
 **Mood Reels (Easter Egg / Beta)**
 
 - **FR-018**: System MUST provide a mood selector with at least 8 distinct mood options, each represented by a unique icon and colour
-- **FR-019**: System MUST generate mood-based film recommendations by cross-referencing the selected mood with the user's taste profile (genres, liked films, watchlist)
+- **FR-019**: System MUST generate mood-based film recommendations using two layers: (1) community-driven mood tags on films as the default source, and (2) an experimental AI-assisted layer using Voyage-4-nano (open-source, Apache 2.0, via `sentence-transformers`) for semantic mood-to-plot embedding matching via MongoDB Atlas Vector Search. Both layers are cross-referenced with the user's taste profile (genres, liked films, watchlist)
 - **FR-020**: System MUST display 5–10 personalised film suggestions per mood selection with mood-match explanations
 - **FR-021**: System MUST show a "Mood Twins" section displaying other users currently in the same mood with shared film overlap data
 - **FR-022**: Mood Reels MUST be clearly labelled with a "Beta — Easter Egg" badge on all surfaces
@@ -178,7 +188,7 @@ An engineer reviews the entire product across all three deployment targets (web 
 - **FR-026**: Language selection MUST be accessible from every page via a persistent toggle in the header or footer
 - **FR-027**: When language is switched, all visible text MUST update immediately without full page reload
 - **FR-028**: Each feature MUST use its designated icon and title consistently across navigation, page headers, and all in-app references (per the naming table in User Story 4)
-- **FR-029**: If a translated string is missing, the system MUST fall back to English and log the missing key
+- **FR-029**: If a translated string is missing, the system MUST fall back to English and log the missing key to server stderr with a `[i18n-missing]` prefix for grep/alerting via Vercel function logs
 - **FR-030**: Notifications, error messages, and system-generated content MUST respect the user's language preference
 
 **QA, Performance & Security**
@@ -199,10 +209,10 @@ An engineer reviews the entire product across all three deployment targets (web 
 
 ### Key Entities
 
-- **PickerPlan**: Represents a group cinema outing plan. Key attributes: organizer, film, pathway type (film-first or fully specified), status (voting/confirmed/expired), confirmed showtime, shareable link identifier
+- **PickerPlan**: Represents a group cinema outing plan. Key attributes: organizer, film, pathway type (film-first or fully specified), status (voting/confirmed/expired), confirmed showtime, shareable link identifier, created timestamp, expiry (7 days after creation for unconfirmed plans; confirmed plans do not expire)
 - **PickerShowtime**: A candidate showtime option within a plan. Key attributes: cinema name, date, time, film screening reference
 - **PickerVote**: A participant's availability vote on a showtime option. Key attributes: participant (user or guest identifier), showtime reference, availability status (available/unavailable)
-- **PickerParticipant**: A person participating in a plan. Key attributes: user reference (nullable for guests), display name, joined timestamp
+- **PickerParticipant**: A person participating in a plan. Key attributes: user reference (nullable for guests), display name, session token (cookie-based for guests, no PII stored), joined timestamp. Guest data expires and is deleted when the plan expires
 - **UserMood**: A user's current or historical mood selection. Key attributes: user, mood type, selected timestamp, active flag
 - **MoodFilmSuggestion**: A film recommended based on mood + taste profile. Key attributes: film, mood type, match explanation, match strength score
 
@@ -227,11 +237,12 @@ An engineer reviews the entire product across all three deployment targets (web 
 ## Assumptions
 
 - The existing Letterboxd scraper, matching engine, and authentication system will be reused as-is; no changes to core matching algorithm are needed
-- Showtime data for the Picker feature will be sourced from a third-party cinema listings provider or manual entry by the organizer (the system does not need to maintain its own showtimes database initially — organizers can input showtimes manually from cinema websites as an MVP approach)
-- The mood-to-film mapping for Mood Reels will use genre tags and existing film metadata (TMDB genres, user ratings, liked films) rather than requiring a new content tagging system
+- Showtime data for the Picker feature will be sourced via the existing Filmladder.nl scraper (reusing `explore-screenings.ts` and `/api/screenings`) for Dutch cinemas, with manual entry fallback when auto-population returns no results. The product is scoped to the Netherlands for cinema listings.
+- The mood-to-film mapping for Mood Reels uses two layers: (1) community-driven mood tags where users tag films with moods, providing a crowd-sourced default recommendation source, and (2) an experimental AI layer using Voyage-4-nano (voyageai/voyage-4-nano, Apache 2.0) via the `sentence-transformers` library for semantic embedding of mood queries against film plot descriptions, stored and queried via MongoDB Atlas Vector Search (1024 dimensions, cosine similarity). The AI layer is labelled as beta/experimental and enhances the community tags
 - Guest participation in Picker plans (via shared link) does not require account creation; guests are identified by a display name they provide
 - The Android app will need significant development to reach feature parity, as currently only a scaffold exists; Kotlin + Jetpack Compose + Material3 will be used per existing architecture decisions
 - The Dutch translations for new features (Picker, Mood Reels) will be authored as part of this specification's implementation, extending the existing i18n system
 - Performance and security testing will use standard tooling (Lighthouse for performance, dependency scanning and manual OWASP audit for security)
+- Production observability uses structured server-side logging (console.error + Vercel function logs) with prefixed log entries (e.g., `[i18n-missing]`) for missing translation keys and runtime errors. No third-party error tracking service required at launch; infrastructure is upgradeable to Sentry later if needed
 - The three-branch deployment model (main for web, iOS branch, Android branch) is the established workflow; CI/CD pipelines exist or will be established for each
 - "Cinema Week" is a marketing-friendly name for the Plan feature and does not imply the feature is limited to weekly planning
