@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Popcorn } from 'lucide-react';
+import { Film } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { NavHeader } from '@/components/nav-header';
 
@@ -15,7 +15,7 @@ export function PublicFooter() {
     <footer className="border-t border-[var(--border-default)]">
       <div className="mx-auto max-w-5xl px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
         <div className="flex items-center gap-1.5">
-          <Popcorn className="h-3.5 w-3.5 text-[var(--accent)]" />
+          <Film className="h-3.5 w-3.5 text-[var(--accent)]" />
           <span>Reels</span>
         </div>
         <nav className="flex flex-wrap items-center gap-x-4 gap-y-2">
