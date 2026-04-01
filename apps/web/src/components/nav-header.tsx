@@ -7,7 +7,7 @@ import {
   Heart,
   Radar,
   Calendar,
-  Popcorn,
+  Users,
   Ticket,
   Sparkles,
   Menu,
@@ -15,6 +15,9 @@ import {
   Settings,
   HelpCircle,
   ChevronDown,
+  Film,
+  Info,
+  Lightbulb,
 } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -27,7 +30,7 @@ const FEATURE_LINKS = [
   { href: '/explore', icon: Heart, i18nKey: 'match' as const },
   { href: '/scan', icon: Radar, i18nKey: 'filmTwins' as const },
   { href: '/plan', icon: Calendar, i18nKey: 'cinemaWeek' as const },
-  { href: '/buddy', icon: Popcorn, i18nKey: 'buddy' as const },
+  { href: '/buddy', icon: Users, i18nKey: 'buddy' as const },
   { href: '/picker', icon: Ticket, i18nKey: 'picker' as const },
   { href: '/mood', icon: Sparkles, i18nKey: 'moodReels' as const },
 ] as const;
@@ -101,7 +104,7 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         {/* Logo */}
         <Link href={isAuthenticated ? '/discover' : '/'} className="flex items-center gap-2 shrink-0" aria-label="Reels home">
-          <Popcorn className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
+          <Film className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
           <span className="text-base font-bold text-[var(--text-primary)]">Reels</span>
         </Link>
 
@@ -123,24 +126,60 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
             </Link>
           ))}
 
-          {/* More dropdown for secondary items */}
-          {isAuthenticated && (
-            <div ref={moreRef} className="relative">
-              <button
-                type="button"
-                onClick={() => setMoreOpen((o) => !o)}
-                className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors"
-                aria-expanded={moreOpen}
-                aria-haspopup="true"
+          {/* More dropdown for secondary items — visible to all users */}
+          <div ref={moreRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setMoreOpen((o) => !o)}
+              className="flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors"
+              aria-expanded={moreOpen}
+              aria-haspopup="true"
+            >
+              {t.common.more}
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {moreOpen && (
+              <div
+                className="fixed right-auto top-[56px] w-44 max-h-[80vh] overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] py-1 shadow-lg z-50"
+                role="menu"
               >
-                {t.common.more}
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {moreOpen && (
-                <div
-                  className="fixed right-auto top-[56px] w-44 max-h-[80vh] overflow-y-auto rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] py-1 shadow-lg z-50"
-                  role="menu"
+                <Link
+                  href="/about"
+                  className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
+                    isActive('/about')
+                      ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-accent)]'
+                  }`}
+                  role="menuitem"
                 >
+                  <Info className="h-4 w-4" aria-hidden="true" />
+                  {t.common.about}
+                </Link>
+                <Link
+                  href="/help"
+                  className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
+                    isActive('/help')
+                      ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-accent)]'
+                  }`}
+                  role="menuitem"
+                >
+                  <HelpCircle className="h-4 w-4" aria-hidden="true" />
+                  {t.nav.help}
+                </Link>
+                <Link
+                  href="/features"
+                  className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
+                    isActive('/features')
+                      ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
+                      : 'text-[var(--text-secondary)] hover:bg-[var(--bg-accent)]'
+                  }`}
+                  role="menuitem"
+                >
+                  <Lightbulb className="h-4 w-4" aria-hidden="true" />
+                  {t.common.features}
+                </Link>
+                {isAuthenticated && (
                   <Link
                     href="/settings"
                     className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
@@ -153,22 +192,10 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
                     <Settings className="h-4 w-4" aria-hidden="true" />
                     {t.nav.settings}
                   </Link>
-                  <Link
-                    href="/help"
-                    className={`flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
-                      isActive('/help')
-                        ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
-                        : 'text-[var(--text-secondary)] hover:bg-[var(--bg-accent)]'
-                    }`}
-                    role="menuitem"
-                  >
-                    <HelpCircle className="h-4 w-4" aria-hidden="true" />
-                    {t.nav.help}
-                  </Link>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
+          </div>
         </nav>
 
         {/* Right side: language toggle + auth + mobile hamburger */}
@@ -226,31 +253,52 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
 
             <hr className="my-2 border-[var(--border-default)]" />
 
+            <Link
+              href="/about"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 min-h-[44px] text-sm font-medium transition-colors ${
+                isActive('/about')
+                  ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
+                  : 'text-[var(--text-primary)] hover:bg-[var(--bg-accent)]'
+              }`}
+            >
+              <Info className="h-5 w-5" aria-hidden="true" />
+              {t.common.about}
+            </Link>
+            <Link
+              href="/help"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 min-h-[44px] text-sm font-medium transition-colors ${
+                isActive('/help')
+                  ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
+                  : 'text-[var(--text-primary)] hover:bg-[var(--bg-accent)]'
+              }`}
+            >
+              <HelpCircle className="h-5 w-5" aria-hidden="true" />
+              {t.nav.help}
+            </Link>
+            <Link
+              href="/features"
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 min-h-[44px] text-sm font-medium transition-colors ${
+                isActive('/features')
+                  ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
+                  : 'text-[var(--text-primary)] hover:bg-[var(--bg-accent)]'
+              }`}
+            >
+              <Lightbulb className="h-5 w-5" aria-hidden="true" />
+              {t.common.features}
+            </Link>
+
             {isAuthenticated && (
-              <>
-                <Link
-                  href="/settings"
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 min-h-[44px] text-sm font-medium transition-colors ${
-                    isActive('/settings')
-                      ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
-                      : 'text-[var(--text-primary)] hover:bg-[var(--bg-accent)]'
-                  }`}
-                >
-                  <Settings className="h-5 w-5" aria-hidden="true" />
-                  {t.nav.settings}
-                </Link>
-                <Link
-                  href="/help"
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 min-h-[44px] text-sm font-medium transition-colors ${
-                    isActive('/help')
-                      ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
-                      : 'text-[var(--text-primary)] hover:bg-[var(--bg-accent)]'
-                  }`}
-                >
-                  <HelpCircle className="h-5 w-5" aria-hidden="true" />
-                  {t.nav.help}
-                </Link>
-              </>
+              <Link
+                href="/settings"
+                className={`flex items-center gap-3 rounded-xl px-4 py-3 min-h-[44px] text-sm font-medium transition-colors ${
+                  isActive('/settings')
+                    ? 'text-[var(--accent)] bg-[var(--accent-soft)]'
+                    : 'text-[var(--text-primary)] hover:bg-[var(--bg-accent)]'
+                }`}
+              >
+                <Settings className="h-5 w-5" aria-hidden="true" />
+                {t.nav.settings}
+              </Link>
             )}
 
             {!isAuthenticated && (

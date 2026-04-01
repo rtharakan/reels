@@ -278,6 +278,9 @@ export default function BuddyPage() {
 
       {/* Hero */}
       <section className="flex flex-col items-center justify-center px-4 pt-12 pb-8">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent-soft)] border border-[var(--border-default)]">
+          <Users className="h-8 w-8 text-[var(--accent)]" />
+        </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)] text-center leading-[1.1]">
           {t.buddy.title}{' '}
           <span className="text-[var(--accent)]">{t.buddy.titleAccent}</span>

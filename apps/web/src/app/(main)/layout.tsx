@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Heart, Users, User, Popcorn } from 'lucide-react';
+import { Heart, Users, User } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { trpc } from '@/lib/trpc';
 import { NavHeader } from '@/components/nav-header';
@@ -15,7 +15,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   const navItems = [
     { href: '/discover', label: t.common.discover, icon: Heart },
     { href: '/explore', label: t.nav.match, icon: Heart },
-    { href: '/buddy', label: t.nav.buddy, icon: Popcorn },
+    { href: '/buddy', label: t.nav.buddy, icon: Users },
     { href: '/matches', label: t.common.matches, icon: Users },
     { href: '/profile', label: t.common.profile, icon: User },
   ];
