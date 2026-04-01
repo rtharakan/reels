@@ -1,7 +1,8 @@
 import { z } from 'zod';
-import { router, onboardedProcedure } from '../trpc';
+import { router, publicProcedure, onboardedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import type { PrismaClient } from '@prisma/client';
+import { getMoodSuggestions } from '../services/mood-engine';
 
 const MoodTypeEnum = z.enum([
   'NOSTALGIC', 'ADVENTUROUS', 'HEARTBROKEN', 'HYPE', 'CHILL',
@@ -138,6 +139,41 @@ export const moodRouter = router({
       });
 
       return { success: true, isMatch: !!mutual };
+    }),
+
+  /**
+   * Public mood explore — no auth required.
+   * Uses HuggingFace/Voyage AI + MongoDB Atlas Vector Search when configured,
+   * falls back to TMDB genre-based discovery.
+   * Ref: https://huggingface.co/blog/mongodb-community/hugging-face-mongodb-voyage-4-nano
+   */
+  explore: publicProcedure
+    .input(z.object({ mood: MoodTypeEnum }))
+    .query(async ({ input, ctx }) => {
+      const ip = 'public-mood';
+      checkRateLimit(`mood-explore:${ip}`, 20);
+
+      // Try community suggestions if user is authenticated
+      let communitySuggestions: Awaited<ReturnType<typeof getCommunitysuggestions>> = [];
+      if (ctx.session?.user?.id) {
+        try {
+          communitySuggestions = await getCommunitysuggestions(ctx.prisma, ctx.session.user.id, input.mood);
+        } catch {
+          // Ignore if DB query fails for unauth
+        }
+      }
+
+      // Always get AI/TMDB suggestions (works without auth)
+      const aiSuggestions = await getMoodSuggestions(ctx.prisma, ctx.session?.user?.id ?? 'anonymous', input.mood as never);
+
+      // Merge: community first, then AI (deduplicated)
+      const seen = new Set(communitySuggestions.map((s) => s?.filmTitle?.toLowerCase()));
+      const merged = [
+        ...communitySuggestions.filter(Boolean),
+        ...aiSuggestions.filter((s) => !seen.has(s.filmTitle.toLowerCase())),
+      ];
+
+      return { suggestions: merged.slice(0, 10), moodTwins: [] };
     }),
 });
 

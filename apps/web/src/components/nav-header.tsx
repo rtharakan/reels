@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { LanguageToggle } from '@/components/language-toggle';
+import { ThemeToggleCompact } from '@/components/theme-toggle';
 
 interface NavHeaderProps {
   isAuthenticated: boolean;
@@ -200,6 +201,7 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
 
         {/* Right side: language toggle + auth + mobile hamburger */}
         <div className="flex items-center gap-2">
+          <ThemeToggleCompact />
           <LanguageToggle />
 
           {!isAuthenticated && (

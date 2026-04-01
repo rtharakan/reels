@@ -19,10 +19,13 @@ export function PublicFooter() {
           <span>Reels</span>
         </div>
         <nav className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
-          <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.scan}</Link>
-          <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.plan}</Link>
-          <Link href="/buddy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.buddy}</Link>
+          <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.nav.match}</Link>
+          <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">{t.nav.filmTwins}</Link>
+          <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.nav.cinemaWeek}</Link>
+          <Link href="/buddy" className="hover:text-[var(--text-secondary)] transition-colors">{t.nav.buddy}</Link>
+          <Link href="/picker" className="hover:text-[var(--text-secondary)] transition-colors">{t.nav.picker}</Link>
+          <Link href="/mood" className="hover:text-[var(--text-secondary)] transition-colors">{t.nav.moodReels}</Link>
+          <span className="text-[var(--border-default)]">·</span>
           <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.about}</Link>
           <Link href="/help" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.help ?? 'Help'}</Link>
           <Link href="/features" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.features ?? 'Feature Requests'}</Link>

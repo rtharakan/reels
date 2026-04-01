@@ -32,13 +32,18 @@ export const pickerRouter = router({
         return cached.data as { results: Array<{ tmdbId: number; title: string; year: number | null; posterPath: string | null; overview: string | null }> };
       }
 
-      const apiKey = process.env.TMDB_API_KEY;
-      if (!apiKey) {
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'TMDB API key not configured' });
+      const token = process.env.TMDB_API_READ_ACCESS_TOKEN ?? process.env.TMDB_API_TOKEN;
+      if (!token) {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'TMDB API token not configured' });
       }
 
-      const url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(input.query)}&api_key=${apiKey}&language=en-US&page=1`;
-      const res = await fetch(url);
+      const url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(input.query)}&language=en-US&page=1`;
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       if (!res.ok) {
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'TMDB search failed' });
       }

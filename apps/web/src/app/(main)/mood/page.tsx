@@ -39,31 +39,39 @@ export default function MoodPage() {
 
   const setMoodMutation = trpc.mood.setMood.useMutation();
 
-  // Load existing suggestions if user has an active mood
-  const { data: existingData } = trpc.mood.getSuggestions.useQuery(undefined, {
-    retry: false,
-  });
-
-  // Use existing data if no new selection 
-  const displaySuggestions = suggestions.length > 0 ? suggestions : (existingData?.suggestions ?? []) as Suggestion[];
-  const displayTwins = moodTwins.length > 0 ? moodTwins : (existingData?.moodTwins ?? []) as MoodTwin[];
+  // Use existing data if no new selection
+  const displaySuggestions = suggestions;
+  const displayTwins = moodTwins;
 
   const handleSelectMood = async (mood: MoodType) => {
     setSelectedMood(mood);
     setIsLoading(true);
     setError(null);
 
-    // 3-second timeout for slow responses
     const timeoutId = setTimeout(() => {
-      // toast handled in the mutation success
-    }, 3000);
+      // Handled below
+    }, 5000);
     timeoutRef.current = timeoutId;
 
     try {
-      const result = await setMoodMutation.mutateAsync({ mood });
+      // Try authenticated setMood first (persists mood + gets community data)
+      let result: { suggestions: unknown[]; moodTwins: unknown[] } | null = null;
+      try {
+        const authResult = await setMoodMutation.mutateAsync({ mood });
+        result = authResult;
+      } catch {
+        // Not authenticated — use public explore endpoint
+      }
+
+      if (!result || (result.suggestions.length === 0)) {
+        // Fallback to public explore (HuggingFace AI + TMDB, no auth needed)
+        const publicResult = await trpcExplore(mood);
+        result = publicResult ?? result ?? { suggestions: [], moodTwins: [] };
+      }
+
       clearTimeout(timeoutId);
-      setSuggestions(result.suggestions as Suggestion[]);
-      setMoodTwins(result.moodTwins as MoodTwin[]);
+      setSuggestions((result?.suggestions ?? []) as Suggestion[]);
+      setMoodTwins((result?.moodTwins ?? []) as MoodTwin[]);
     } catch {
       clearTimeout(timeoutId);
       setError(t.mood.retryButton);
@@ -71,6 +79,28 @@ export default function MoodPage() {
       setIsLoading(false);
     }
   };
+
+  // Helper to call the public mood.explore endpoint
+  const exploreMood = trpc.mood.explore.useQuery(
+    { mood: selectedMood! },
+    { enabled: false },
+  );
+
+  async function trpcExplore(mood: MoodType) {
+    try {
+      // Use fetch directly to avoid hook rules — call the public explore endpoint
+      const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+      const res = await fetch(`${baseUrl}/api/trpc/mood.explore?input=${encodeURIComponent(JSON.stringify({ mood }))}`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data?.result?.data ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  // Suppress unused var warning — exploreMood ref kept for potential future use
+  void exploreMood;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
