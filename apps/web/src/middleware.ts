@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { auth } from '@/lib/auth';
+
+// Lightweight middleware — only checks for session cookie presence.
+// Full session validation happens server-side in API routes / server components.
+// This avoids importing the heavy auth + Prisma stack into the Edge Function
+// (which would exceed Vercel's 1 MB Edge Function size limit).
+
+const SESSION_COOKIE = 'reels.session_token';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -29,23 +35,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check session
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
+  // Check for session cookie
+  const sessionCookie = request.cookies.get(SESSION_COOKIE);
 
-  if (!session?.user) {
+  if (!sessionCookie?.value) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Check onboarding status
-  if (pathname.startsWith('/onboarding')) {
-    return NextResponse.next();
-  }
-
-  // For all other protected routes, check if onboarding is complete
-  // We need to check the database for onboardingCompletedAt
-  // For now, we trust the session exists and handle onboarding redirect in page components
   return NextResponse.next();
 }
 

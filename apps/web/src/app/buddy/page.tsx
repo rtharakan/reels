@@ -277,8 +277,8 @@ export default function BuddyPage() {
       <PublicHeader />
 
       {/* Hero */}
-      <section className="flex flex-col items-center justify-center px-4 pt-16 pb-8">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-[var(--text-primary)] text-center leading-[1.1]">
+      <section className="flex flex-col items-center justify-center px-4 pt-12 pb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)] text-center leading-[1.1]">
           {t.buddy.title}{' '}
           <span className="text-[var(--accent)]">{t.buddy.titleAccent}</span>
         </h1>

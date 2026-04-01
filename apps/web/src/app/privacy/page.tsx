@@ -11,7 +11,7 @@ export default function PrivacyPolicyPage() {
       <PublicHeader />
 
       <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="text-3xl font-bold text-[var(--text-primary)]">Privacy Policy</h1>
+      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">Privacy Policy</h1>
       <p className="mt-2 text-sm text-[var(--text-muted)]">Effective Date: March 29, 2026</p>
 
       <div className="mt-8 space-y-8 text-sm leading-relaxed text-[var(--text-secondary)]">

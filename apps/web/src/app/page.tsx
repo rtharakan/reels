@@ -3,9 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, Users, Film, Sparkles, ArrowRight, Popcorn, Calendar, MapPin, ChevronLeft, ChevronRight, Clock, Ticket, ChevronDown } from 'lucide-react';
-import { ThemeToggleCompact } from '@/components/theme-toggle';
-import { LanguageToggle } from '@/components/language-toggle';
+import { Heart, Users, Film, Sparkles, ArrowRight, Popcorn, Calendar, MapPin, ChevronLeft, ChevronRight, Clock, Ticket } from 'lucide-react';
+import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { useI18n } from '@/lib/i18n';
 
 interface NowShowingFilm {
@@ -60,19 +59,6 @@ export default function HomePage() {
   const [allCityScreenings, setAllCityScreenings] = useState<Screening[]>([]);
   const [loading, setLoading] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
-        setMoreOpen(false);
-      }
-    }
-    if (moreOpen) document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [moreOpen]);
 
   // Fetch films + screenings from Filmladder (actual cinema data) when city changes
   useEffect(() => {
@@ -128,59 +114,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Header */}
-      <header className="border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-2">
-            <Popcorn className="h-6 w-6 text-[var(--accent)]" />
-            <span className="text-lg font-bold text-[var(--text-primary)]">Reels</span>
-          </div>
-          <nav className="flex items-center gap-2 sm:gap-3">
-            <Link href="/explore" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.explore}
-            </Link>
-            <Link href="/scan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.scan}
-            </Link>
-            <Link href="/plan" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.plan}
-            </Link>
-            <Link href="/buddy" className="hidden sm:inline text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.buddy}
-            </Link>
-            <div ref={moreRef} className="relative hidden sm:block">
-              <button
-                type="button"
-                onClick={() => setMoreOpen((o) => !o)}
-                className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1"
-                aria-expanded={moreOpen}
-                aria-haspopup="true"
-              >
-                {t.common.more}
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {moreOpen && (
-                <div className="absolute right-0 top-full mt-1 w-44 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] py-1 shadow-lg z-50">
-                  <Link href="/about" onClick={() => setMoreOpen(false)} className="block px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors">{t.common.about}</Link>
-                  <Link href="/help" onClick={() => setMoreOpen(false)} className="block px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors">{t.common.help}</Link>
-                  <Link href="/features" onClick={() => setMoreOpen(false)} className="block px-4 py-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors">{t.common.features}</Link>
-                </div>
-              )}
-            </div>
-            <LanguageToggle />
-            <ThemeToggleCompact />
-            <Link href="/login" className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">
-              {t.common.login}
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[var(--accent-hover)] transition-colors active:scale-[0.98]"
-            >
-              {t.common.getStarted}
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <PublicHeader />
 
       {/* Hero */}
       <section className="flex flex-col items-center justify-center px-4 pt-20 pb-12">
@@ -400,24 +334,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-[var(--border-default)]">
-        <div className="mx-auto max-w-5xl px-4 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <div className="flex items-center gap-1.5">
-            <Popcorn className="h-3.5 w-3.5 text-[var(--accent)]" />
-            <span>Reels</span>
-          </div>
-          <nav className="flex items-center gap-4">
-            <Link href="/explore" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.explore}</Link>
-            <Link href="/scan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.scan}</Link>
-            <Link href="/plan" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.plan}</Link>
-            <Link href="/buddy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.buddy}</Link>
-            <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.about}</Link>
-            <Link href="/privacy" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.privacy}</Link>
-            <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">{t.common.terms}</Link>
-          </nav>
-        </div>
-      </footer>
+      <PublicFooter />
     </main>
   );
 }

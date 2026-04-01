@@ -211,16 +211,16 @@ function ExplorePageInner() {
     <div className="min-h-screen bg-[var(--bg-primary)]">
       <PublicHeader />
 
-      <main className="mx-auto max-w-5xl px-4 py-8">
+      <main className="mx-auto max-w-5xl px-4 py-12">
         {/* Hero Section */}
         <div className="mb-12 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent-soft)] border border-[var(--border-default)]">
             <Heart className="h-8 w-8 text-[var(--accent)]" />
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--text-primary)]">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
             {t.explore.title} <span className="text-[var(--accent)]">{t.explore.titleAccent}</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-[var(--text-secondary)]">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-[var(--text-secondary)]">
             {t.explore.subtitle}
           </p>
         </div>

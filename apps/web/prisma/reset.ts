@@ -43,7 +43,7 @@ async function main() {
     'WatchlistEntry', 'Film', 'Verification', 'Session', 'Account', 'User',
   ];
 
-  results.forEach((r, i) => {
+  results.forEach((r: { count: number }, i: number) => {
     if (r.count > 0) console.log(`  ✓ ${tables[i]}: ${r.count} rows deleted`);
   });
 

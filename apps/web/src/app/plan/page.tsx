@@ -153,7 +153,7 @@ export default function PlanPage() {
     <div className="min-h-screen bg-[var(--bg-primary)]">
       <PublicHeader />
 
-      <main className="mx-auto max-w-4xl px-4 py-8">
+      <main className="mx-auto max-w-3xl px-4 py-12">
         {/* Hero */}
         <div className="mb-10 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent-soft)] border border-[var(--border-default)]">

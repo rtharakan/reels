@@ -63,6 +63,10 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: 'reels',
+    defaultCookieAttributes: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    },
   },
 });
 

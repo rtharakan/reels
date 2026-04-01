@@ -15,6 +15,7 @@ import {
   MessageCircle,
   ArrowRight,
   Star,
+  LogIn,
 } from 'lucide-react';
 import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { useSession } from '@/lib/auth-client';
 
 interface FeatureRequest {
   id: string;
@@ -107,25 +109,36 @@ const STATUS_CONFIG: Record<FeatureRequest['status'], { label: string; color: st
 
 const CATEGORIES = ['All', 'Matching', 'Discover', 'Social', 'Platform', 'Privacy', 'Other'];
 
-function FeatureCard({ request, onVote }: { request: FeatureRequest; onVote: (id: string) => void }) {
+function FeatureCard({ request, onVote, isAuthenticated }: { request: FeatureRequest; onVote: (id: string) => void; isAuthenticated: boolean }) {
   const status = STATUS_CONFIG[request.status];
   return (
     <Card className="overflow-hidden transition-shadow hover:shadow-sm">
       <div className="flex items-stretch">
         {/* Vote column */}
-        <button
-          type="button"
-          onClick={() => onVote(request.id)}
-          aria-label={`Upvote: ${request.title}`}
-          className={`flex flex-col items-center justify-center gap-1 border-r border-[var(--border-default)] px-4 py-4 text-center transition-colors min-w-[60px] ${
-            request.hasVoted
-              ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
-              : 'text-[var(--text-muted)] hover:bg-[var(--bg-accent)] hover:text-[var(--text-secondary)]'
-          }`}
-        >
-          <ChevronUp className="h-5 w-5" />
-          <span className="text-sm font-semibold">{request.votes + (request.hasVoted ? 0 : 0)}</span>
-        </button>
+        {isAuthenticated ? (
+          <button
+            type="button"
+            onClick={() => onVote(request.id)}
+            aria-label={`Upvote: ${request.title}`}
+            className={`flex flex-col items-center justify-center gap-1 border-r border-[var(--border-default)] px-4 py-4 text-center transition-colors min-w-[60px] ${
+              request.hasVoted
+                ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
+                : 'text-[var(--text-muted)] hover:bg-[var(--bg-accent)] hover:text-[var(--text-secondary)]'
+            }`}
+          >
+            <ChevronUp className="h-5 w-5" />
+            <span className="text-sm font-semibold">{request.votes}</span>
+          </button>
+        ) : (
+          <Link
+            href="/login"
+            aria-label="Sign in to vote"
+            className="flex flex-col items-center justify-center gap-1 border-r border-[var(--border-default)] px-4 py-4 text-center transition-colors min-w-[60px] text-[var(--text-muted)] hover:bg-[var(--bg-accent)] hover:text-[var(--text-secondary)]"
+          >
+            <ChevronUp className="h-5 w-5" />
+            <span className="text-sm font-semibold">{request.votes}</span>
+          </Link>
+        )}
 
         {/* Content */}
         <div className="flex-1 p-4">
@@ -146,6 +159,8 @@ function FeatureCard({ request, onVote }: { request: FeatureRequest; onVote: (id
 }
 
 export default function FeaturesPage() {
+  const { data: session } = useSession();
+  const isAuthenticated = !!session?.user;
   const [requests, setRequests] = useState<FeatureRequest[]>(INITIAL_REQUESTS);
   const [filter, setFilter] = useState('All');
   const [showForm, setShowForm] = useState(false);
@@ -156,6 +171,7 @@ export default function FeaturesPage() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const handleVote = (id: string) => {
+    if (!isAuthenticated) return;
     setRequests((prev) =>
       prev.map((r) =>
         r.id === id
@@ -234,10 +250,19 @@ export default function FeaturesPage() {
               </button>
             ))}
           </div>
-          <Button size="sm" onClick={() => { setShowForm((f) => !f); setSubmitted(false); }} className="gap-1.5">
-            <Plus className="h-3.5 w-3.5" />
-            Suggest a feature
-          </Button>
+          {isAuthenticated ? (
+            <Button size="sm" onClick={() => { setShowForm((f) => !f); setSubmitted(false); }} className="gap-1.5">
+              <Plus className="h-3.5 w-3.5" />
+              Suggest a feature
+            </Button>
+          ) : (
+            <Button size="sm" asChild className="gap-1.5">
+              <Link href="/login">
+                <LogIn className="h-3.5 w-3.5" />
+                Sign in to suggest
+              </Link>
+            </Button>
+          )}
         </div>
 
         {/* Submission form */}
@@ -315,6 +340,15 @@ export default function FeaturesPage() {
         )}
 
         {/* Feature list */}
+        {!isAuthenticated && (
+          <div className="mb-4 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-4 flex items-center gap-3">
+            <LogIn className="h-5 w-5 text-[var(--accent)] shrink-0" />
+            <p className="text-sm text-[var(--text-secondary)]">
+              <Link href="/login" className="font-medium text-[var(--accent)] hover:underline">Sign in</Link>{' '}
+              to vote on feature requests.
+            </p>
+          </div>
+        )}
         <div className="space-y-3">
           {sorted.length === 0 ? (
             <div className="py-12 text-center text-[var(--text-muted)] text-sm">
@@ -322,7 +356,7 @@ export default function FeaturesPage() {
             </div>
           ) : (
             sorted.map((req) => (
-              <FeatureCard key={req.id} request={req} onVote={handleVote} />
+              <FeatureCard key={req.id} request={req} onVote={handleVote} isAuthenticated={isAuthenticated} />
             ))
           )}
         </div>

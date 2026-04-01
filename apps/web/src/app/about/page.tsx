@@ -36,7 +36,7 @@ export default function AboutPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-soft)]">
               <BarChart3 className="h-5 w-5 text-[var(--accent)]" />
             </div>
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">5-Signal Scoring</h2>
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">5-Signal Scoring</h2>
           </div>
 
           <p className="text-[var(--text-secondary)] mb-6">
