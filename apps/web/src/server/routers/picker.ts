@@ -295,7 +295,7 @@ export const pickerRouter = router({
       }
 
       // New guest
-      const sessionToken = `guest_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const sessionToken = `guest_${crypto.randomUUID()}`;
       const participant = await ctx.prisma.pickerParticipant.create({
         data: {
           planId: input.planId,
@@ -332,6 +332,16 @@ export const pickerRouter = router({
       if (!participant) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Participant not found' });
       }
+
+      // Verify caller owns this participant (authenticated user or matching guest token)
+      if (ctx.userId) {
+        if (participant.userId !== ctx.userId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Not your participant' });
+        }
+      } else if (!participant.sessionToken) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Not your participant' });
+      }
+
       if (participant.plan.status !== 'VOTING') {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Voting is closed for this plan' });
       }

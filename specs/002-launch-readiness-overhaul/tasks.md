@@ -229,9 +229,9 @@
 
 ### Security (T106–T108)
 
-- [ ] T106 [US5] Run `pnpm audit --audit-level=high` from repo root — resolve ALL critical and high severity findings; for unavoidable moderate findings, document justification in `apps/web/package.json` comments; confirm clean run before proceeding
-- [ ] T107 [P] [US5] OWASP Top 10 manual audit of all new tRPC endpoints in `apps/web/src/server/routers/picker.ts` and `mood.ts` — verify: (A01) `picker.confirm` checks `organizerId === caller.userId`; (A01) `picker.vote` validates `participantId` ownership; (A02) guest cookies are `httpOnly: true, secure: true, sameSite: 'lax'`; (A03) all inputs use Zod schemas with `.max()` and regex constraints; (A04) rate limits present on `create`, `vote`, `setMood`; (A05) no secrets in source code; (A07) `onboardedProcedure` blocks unauthenticated access to protected mood endpoints; document findings and fix any issues
-- [ ] T108 [US5] Verify `apps/web/next.config.mjs` CSP headers — if MongoDB Atlas is configured, add Atlas connection endpoint to `connect-src`; verify `frame-ancestors 'none'` is set; verify no `unsafe-eval` in script-src for production; update `Content-Security-Policy` header accordingly
+- [X] T106 [US5] Run `pnpm audit --audit-level=high` from repo root — resolve ALL critical and high severity findings; for unavoidable moderate findings, document justification in `apps/web/package.json` comments; confirm clean run before proceeding
+- [X] T107 [P] [US5] OWASP Top 10 manual audit of all new tRPC endpoints in `apps/web/src/server/routers/picker.ts` and `mood.ts` — verify: (A01) `picker.confirm` checks `organizerId === caller.userId`; (A01) `picker.vote` validates `participantId` ownership; (A02) guest cookies are `httpOnly: true, secure: true, sameSite: 'lax'`; (A03) all inputs use Zod schemas with `.max()` and regex constraints; (A04) rate limits present on `create`, `vote`, `setMood`; (A05) no secrets in source code; (A07) `onboardedProcedure` blocks unauthenticated access to protected mood endpoints; document findings and fix any issues
+- [X] T108 [US5] Verify `apps/web/next.config.mjs` CSP headers — if MongoDB Atlas is configured, add Atlas connection endpoint to `connect-src`; verify `frame-ancestors 'none'` is set; verify no `unsafe-eval` in script-src for production; update `Content-Security-Policy` header accordingly
 
 ### Automated Tests (T109–T114)
 
