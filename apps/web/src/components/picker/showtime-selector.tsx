@@ -25,7 +25,7 @@ interface ShowtimeSelectorProps {
   isCreating: boolean;
 }
 
-export function ShowtimeSelector({ filmTitle, city, cinema, date, onCityChange, onSubmit, isCreating }: ShowtimeSelectorProps) {
+export function ShowtimeSelector({ filmTitle, city, cinema, date, onCityChange: _onCityChange, onSubmit, isCreating }: ShowtimeSelectorProps) {
   const { t } = useI18n();
   const [showtimes, setShowtimes] = useState<Showtime[]>([]);
   const [showManual, setShowManual] = useState(false);
@@ -66,7 +66,7 @@ export function ShowtimeSelector({ filmTitle, city, cinema, date, onCityChange, 
   const selectedShowtimes = showtimes.filter((s) => s.selected);
 
   const handleSubmit = () => {
-    onSubmit(selectedShowtimes.map(({ selected, ...s }) => s));
+    onSubmit(selectedShowtimes.map(({ selected: _selected, ...s }) => s));
   };
 
   // Group by cinema

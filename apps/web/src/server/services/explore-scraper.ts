@@ -131,6 +131,7 @@ async function fetchActivityRSS(username: string): Promise<string> {
   } catch (err) {
     throw new Error(
       `Network error fetching Letterboxd data for "${username}". Check your connection.`,
+      { cause: err },
     );
   }
 

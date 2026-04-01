@@ -2,10 +2,8 @@
 
 import Link from 'next/link';
 import { PublicHeader, PublicFooter } from '@/components/public-header';
-import { useI18n } from '@/lib/i18n';
 
 export default function TermsOfServicePage() {
-  const { t } = useI18n();
   return (
     <main className="min-h-screen bg-[var(--bg-primary)]">
       <PublicHeader />

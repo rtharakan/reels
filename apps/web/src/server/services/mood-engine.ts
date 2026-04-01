@@ -179,7 +179,6 @@ async function getVoyageVectorSuggestions(
   // mongodb is an optional peer dependency — only loaded when MONGODB_ATLAS_URI is set
   let MongoClient: { new(uri: string): { connect(): Promise<void>; close(): Promise<void>; db(name: string): { collection(name: string): { aggregate(pipeline: unknown[]): { toArray(): Promise<Record<string, unknown>[]> } } } } };
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const mod = await (Function('return import("mongodb")')() as Promise<{ MongoClient: typeof MongoClient }>);
     MongoClient = mod.MongoClient;
   } catch {

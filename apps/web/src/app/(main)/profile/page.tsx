@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { Film } from 'lucide-react';
 import { DeleteAccountDialog } from '@/components/delete-account-dialog';
 import { TmdbAttribution } from '@/components/tmdb-attribution';
 

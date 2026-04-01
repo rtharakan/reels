@@ -5,13 +5,8 @@ import Link from 'next/link';
 import {
   Lightbulb,
   ChevronUp,
-  Film,
-  Heart,
-  Search,
-  Shield,
   Plus,
   Sparkles,
-  MessageCircle,
   ArrowRight,
   Star,
   LogIn,

@@ -15,7 +15,6 @@ import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import {
   Search,
-  Loader2,
   ExternalLink,
   Radar,
   Users,

@@ -2,14 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 import { LanguageToggle } from '@/components/language-toggle';
 import { useI18n } from '@/lib/i18n';
 
 export default function LoginPage() {
   const { t } = useI18n();
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');

@@ -76,7 +76,7 @@ test.describe('Mood Reels Feature', () => {
     await page.goto('/discover');
     await page.waitForLoadState('networkidle');
 
-    const vibePrompt = page.locator('text=/vibe|mood/i');
+    const _vibePrompt = page.locator('text=/vibe|mood/i');
     // May or may not be visible depending on auth state
     const body = page.locator('body');
     await expect(body).toBeVisible();

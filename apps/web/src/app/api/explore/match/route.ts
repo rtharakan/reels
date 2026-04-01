@@ -12,7 +12,6 @@ import { fetchCityScreenings, DUTCH_CITIES } from '@/server/services/explore-scr
 import { findExploreMatchingScreenings } from '@/server/services/explore-film-matcher';
 import { enrichFilmsWithPosters } from '@/server/services/tmdb';
 import { rateLimit } from '@/lib/rate-limit';
-import type { ExploreFilm } from '@/server/services/explore-scraper';
 
 // Basic username validation
 const USERNAME_REGEX = /^[a-zA-Z0-9_-]{1,40}$/;

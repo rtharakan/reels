@@ -7,7 +7,7 @@ import { trpc } from '@/lib/trpc';
 import { authClient } from '@/lib/auth-client';
 import { useI18n } from '@/lib/i18n';
 import {
-  User, Shield, Bell, Globe, Moon, LogOut, ChevronRight,
+  User, Shield, Globe, LogOut, ChevronRight,
   Trash2, Lock, FileText, HelpCircle, Info, Eye, Download,
 } from 'lucide-react';
 

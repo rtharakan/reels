@@ -31,7 +31,7 @@ function cleanTitleForSearch(title: string): string[] {
   // ASCII apostrophe ('), curly quotes (' ' " " „), backtick (`)
   const noPunct = title
     .replace(/['''`""\u201C\u201D\u201E]/g, '') // Remove all apostrophes/quotes/backticks
-    .replace(/[:\-–—,;.!?&@#\/]/g, ' ')    // Replace punctuation with spaces
+    .replace(/[:\-–—,;.!?&@#/]/g, ' ')    // Replace punctuation with spaces
     .replace(/\s+/g, ' ')
     .trim();
   if (noPunct && !variants.includes(noPunct)) variants.push(noPunct);

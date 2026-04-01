@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { fetchCityScreenings, type ExploreScreening } from '../services/explore-screenings';
+import { fetchCityScreenings } from '../services/explore-screenings';
 
 // Simple in-memory rate limiter
 const rateLimits = new Map<string, { count: number; resetAt: number }>();

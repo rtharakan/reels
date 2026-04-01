@@ -87,7 +87,7 @@ export function captureMessage(
 /**
  * Set user context for error tracking.
  */
-export function setUser(user: { id: string; email?: string } | null): void {
+export function setUser(_user: { id: string; email?: string } | null): void {
   if (!IS_PRODUCTION || !SENTRY_DSN) return;
   // In production with Sentry SDK: Sentry.setUser(user);
 }

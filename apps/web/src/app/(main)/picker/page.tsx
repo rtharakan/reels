@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { Ticket, ArrowRight, MapPin, Film, Search } from 'lucide-react';
+import { Ticket, MapPin, Film, Search } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { trpc } from '@/lib/trpc';
 import { FilmSearch } from '@/components/picker/film-search';

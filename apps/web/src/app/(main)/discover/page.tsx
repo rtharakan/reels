@@ -12,7 +12,7 @@ export default function DiscoverPage() {
   const [matchAlert, setMatchAlert] = useState<string | null>(null);
   const [selectedProfile, setSelectedProfile] = useState<ProfileDetailData | null>(null);
 
-  const { data: feed, isLoading, refetch } = trpc.discover.getFeed.useQuery();
+  const { data: feed, isLoading } = trpc.discover.getFeed.useQuery();
   const expressInterest = trpc.discover.expressInterest.useMutation();
   const skip = trpc.discover.skip.useMutation();
 

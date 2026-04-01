@@ -102,10 +102,10 @@ test.describe('Navigation — Language Toggle', () => {
     // Look for language toggle button
     const langToggle = page.locator('button, a').filter({ hasText: /nl|en|dutch|english|🇳🇱|🇬🇧/i }).first();
     if (await langToggle.isVisible()) {
-      const textBefore = await page.locator('body').textContent();
+      const _textBefore = await page.locator('body').textContent();
       await langToggle.click();
       await page.waitForTimeout(500);
-      const textAfter = await page.locator('body').textContent();
+      const _textAfter = await page.locator('body').textContent();
       // Text should change (language switched)
       // Note: may not change if already in that language
     }

@@ -4,7 +4,7 @@ import { trpc } from '@/lib/trpc';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Film, ArrowLeft, Info } from 'lucide-react';
+import { ArrowLeft, Info } from 'lucide-react';
 
 function getMatchLabel(score: number): { text: string; emoji: string } {
   if (score >= 0.5) return { text: 'Soul Mates', emoji: '💕' };

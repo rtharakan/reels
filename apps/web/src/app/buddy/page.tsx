@@ -13,7 +13,6 @@ import {
   Ticket,
   UserPlus,
   Users,
-  Loader2,
   X,
 } from 'lucide-react';
 import { PublicHeader, PublicFooter } from '@/components/public-header';

@@ -20,10 +20,8 @@ import {
   Clock,
   Ticket,
   Sparkles,
-  Loader2,
   ChevronRight,
   ChevronDown,
-  ExternalLink,
 } from 'lucide-react';
 import { PublicHeader, PublicFooter } from '@/components/public-header';
 import { useI18n } from '@/lib/i18n';
@@ -199,7 +197,6 @@ function ExplorePageInner() {
       handleSubmit(null);
     }
     // Only run once on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const compatibility = result?.match

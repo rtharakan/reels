@@ -36,7 +36,7 @@ const STATUS_ICONS: Record<VoteStatus, { icon: string; color: string; label: str
 
 const CYCLE: VoteStatus[] = ['AVAILABLE', 'UNAVAILABLE', 'MAYBE'];
 
-export function VotingGrid({ showtimes, participants, currentParticipantId, planStatus }: VotingGridProps) {
+export function VotingGrid({ showtimes, participants: _participants, currentParticipantId, planStatus }: VotingGridProps) {
   const { t } = useI18n();
   const [votes, setVotes] = useState<Record<string, VoteStatus>>({});
   const voteMutation = trpc.picker.vote.useMutation();

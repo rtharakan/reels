@@ -13,10 +13,7 @@ import {
 } from '@/components/ui/card';
 import {
   Calendar,
-  ChevronLeft,
-  ChevronRight,
   Clock,
-  Loader2,
   MapPin,
   Ticket,
   Film,

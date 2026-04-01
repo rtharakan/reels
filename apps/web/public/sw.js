@@ -3,7 +3,6 @@
  * Handles push notifications, background sync, and offline caching.
  */
 
-/* eslint-disable no-restricted-globals */
 const CACHE_NAME = 'reels-v1';
 const STATIC_ASSETS = [
   '/',
