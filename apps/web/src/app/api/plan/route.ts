@@ -70,12 +70,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert scraped films to ExploreFilm format for the matcher
-    const watchlistFilms: ExploreFilm[] = scrapeResult.films.map((f) => ({
-      letterboxdSlug: f.slug,
-      title: f.title,
-      letterboxdUrl: `https://letterboxd.com/film/${f.slug}/`,
-    }));
+    // Convert scraped films to ExploreFilm format for the matcher.
+    // The scraper embeds year in the title (e.g. "Sinners (2025)") — strip it
+    // out so the fuzzy matcher can compare clean titles against Filmladder.
+    const TITLE_YEAR_RE = /\s*\((\d{4})\)\s*$/;
+    const watchlistFilms: ExploreFilm[] = scrapeResult.films.map((f) => {
+      const yearMatch = f.title.match(TITLE_YEAR_RE);
+      const title = yearMatch ? f.title.replace(TITLE_YEAR_RE, '').trim() : f.title;
+      const year = yearMatch ? parseInt(yearMatch[1]!, 10) : undefined;
+      return {
+        letterboxdSlug: f.slug,
+        title,
+        year,
+        letterboxdUrl: `https://letterboxd.com/film/${f.slug}/`,
+      };
+    });
 
     const watchlistData = {
       username,
