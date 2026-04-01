@@ -26,6 +26,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/scan') ||
     pathname.startsWith('/plan') ||
     pathname.startsWith('/buddy') ||
+    pathname.startsWith('/picker') ||
+    pathname.startsWith('/mood') ||
     pathname.startsWith('/help') ||
     pathname.startsWith('/features') ||
     pathname === '/' ||

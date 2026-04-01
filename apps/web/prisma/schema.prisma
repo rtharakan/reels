@@ -76,6 +76,13 @@ model User {
   buddyInterests   BuddyInterest[]  @relation("BuddyInterestUser")
   buddyMessages    BuddyMessage[]   @relation("BuddyMessageSender")
 
+  // Picker & Mood relations
+  pickerPlans            PickerPlan[]          @relation("PickerPlanOrganizer")
+  pickerParticipations   PickerParticipant[]
+  moods                  UserMood[]
+  moodSuggestions        MoodFilmSuggestion[]
+  moodTags               MoodFilmTag[]
+
   @@index([deletedAt])
   @@index([intent])
   @@index([onboardingCompletedAt])
@@ -137,6 +144,8 @@ model Film {
   watchedEntries   WatchedEntry[]
   ratingEntries    RatingEntry[]
   likedEntries     LikedEntry[]
+  moodSuggestions  MoodFilmSuggestion[]
+  moodTags         MoodFilmTag[]
 
   @@index([tmdbId])
 }
@@ -379,4 +388,169 @@ model BuddyMessage {
 
   @@index([requestId, createdAt])
   @@index([senderId])
+}
+
+// ─── Picker Feature ─────────────────────────────────────────
+
+enum PickerPathway {
+  FILM_FIRST
+  FULLY_SPECIFIED
+}
+
+enum PickerPlanStatus {
+  VOTING
+  CONFIRMED
+  EXPIRED
+  ARCHIVED
+}
+
+enum VoteStatus {
+  AVAILABLE
+  UNAVAILABLE
+  MAYBE
+}
+
+model PickerPlan {
+  id                  String           @id @default(cuid())
+  organizerId         String
+  filmTitle           String
+  filmTmdbId          Int?
+  filmPosterPath      String?
+  filmYear            Int?
+  pathway             PickerPathway
+  city                String?
+  cinema              String?
+  targetDate          String?
+  status              PickerPlanStatus @default(VOTING)
+  confirmedShowtimeId String?          @unique
+  createdAt           DateTime         @default(now())
+  expiresAt           DateTime
+
+  organizer          User               @relation("PickerPlanOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  showtimes          PickerShowtime[]   @relation("PlanShowtimes")
+  participants       PickerParticipant[]
+  confirmedShowtime  PickerShowtime?    @relation("ConfirmedShowtime", fields: [confirmedShowtimeId], references: [id])
+
+  @@index([organizerId])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([status, expiresAt])
+}
+
+model PickerShowtime {
+  id            String   @id @default(cuid())
+  planId        String
+  cinemaName    String
+  cinemaCity    String
+  date          String
+  time          String
+  ticketUrl     String?
+  isManualEntry Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  plan           PickerPlan  @relation("PlanShowtimes", fields: [planId], references: [id], onDelete: Cascade)
+  votes          PickerVote[]
+  confirmedPlan  PickerPlan? @relation("ConfirmedShowtime")
+
+  @@index([planId])
+  @@index([planId, date])
+}
+
+model PickerVote {
+  id            String     @id @default(cuid())
+  participantId String
+  showtimeId    String
+  status        VoteStatus
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  participant PickerParticipant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  showtime    PickerShowtime    @relation(fields: [showtimeId], references: [id], onDelete: Cascade)
+
+  @@unique([participantId, showtimeId])
+  @@index([participantId])
+  @@index([showtimeId])
+  @@index([showtimeId, status])
+}
+
+model PickerParticipant {
+  id           String   @id @default(cuid())
+  planId       String
+  userId       String?
+  displayName  String
+  sessionToken String?
+  isOrganizer  Boolean  @default(false)
+  joinedAt     DateTime @default(now())
+
+  plan  PickerPlan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+  user  User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  votes PickerVote[]
+
+  @@unique([planId, userId])
+  @@index([planId])
+  @@index([userId])
+  @@index([sessionToken])
+}
+
+// ─── Mood Reels Feature ─────────────────────────────────────
+
+enum MoodType {
+  NOSTALGIC
+  ADVENTUROUS
+  HEARTBROKEN
+  HYPE
+  CHILL
+  ROMANTIC
+  MYSTERIOUS
+  INSPIRED
+  MELANCHOLIC
+  COZY
+}
+
+model UserMood {
+  id         String   @id @default(cuid())
+  userId     String
+  mood       MoodType
+  isActive   Boolean  @default(true)
+  selectedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isActive])
+  @@index([mood, isActive])
+  @@index([userId, selectedAt])
+}
+
+model MoodFilmSuggestion {
+  id               String   @id @default(cuid())
+  userId           String
+  filmId           String
+  mood             MoodType
+  matchExplanation String
+  matchStrength    Float
+  source           String   @default("community")
+  createdAt        DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  film Film @relation(fields: [filmId], references: [id])
+
+  @@index([userId, mood])
+  @@index([filmId])
+  @@index([userId, createdAt])
+}
+
+model MoodFilmTag {
+  id         String   @id @default(cuid())
+  filmId     String
+  mood       MoodType
+  taggedById String
+  createdAt  DateTime @default(now())
+
+  film     Film @relation(fields: [filmId], references: [id])
+  taggedBy User @relation(fields: [taggedById], references: [id], onDelete: Cascade)
+
+  @@unique([filmId, mood, taggedById])
+  @@index([filmId, mood])
+  @@index([mood])
+  @@index([taggedById])
 }
