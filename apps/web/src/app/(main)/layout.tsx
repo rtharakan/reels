@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Heart, Users, User, Compass, Popcorn, Settings, Radar, HelpCircle } from 'lucide-react';
+import { Heart, Users, User, Popcorn } from 'lucide-react';
 import { useI18n } from '@/lib/i18n';
 import { trpc } from '@/lib/trpc';
+import { NavHeader } from '@/components/nav-header';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -13,53 +14,15 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
   const navItems = [
     { href: '/discover', label: t.common.discover, icon: Heart },
-    { href: '/explore', label: t.common.explore, icon: Compass },
-    { href: '/buddy', label: t.common.buddy, icon: Popcorn },
+    { href: '/explore', label: t.nav.match, icon: Heart },
+    { href: '/buddy', label: t.nav.buddy, icon: Popcorn },
     { href: '/matches', label: t.common.matches, icon: Users },
     { href: '/profile', label: t.common.profile, icon: User },
   ];
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Top header bar for authenticated pages */}
-      <header className="sticky top-0 z-50 border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <Link href="/discover" className="flex items-center gap-2" aria-label="Reels home">
-            <Popcorn className="h-5 w-5 text-[var(--accent)]" aria-hidden="true" />
-            <span className="text-base font-bold text-[var(--text-primary)]">Reels</span>
-          </Link>
-          <div className="flex items-center gap-1">
-            <Link
-              href="/scan"
-              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors"
-              aria-label="Scan for film twins"
-            >
-              <Radar className="h-3.5 w-3.5" aria-hidden="true" />
-              <span className="hidden sm:inline">{t.common.scan}</span>
-            </Link>
-            <Link
-              href="/plan"
-              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors"
-            >
-              <span className="hidden sm:inline">{t.common.plan}</span>
-            </Link>
-            <Link
-              href="/help"
-              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors"
-              aria-label="Help and FAQ"
-            >
-              <HelpCircle className="h-4 w-4" aria-hidden="true" />
-            </Link>
-            <Link
-              href="/settings"
-              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors"
-              aria-label="Settings"
-            >
-              <Settings className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
-      </header>
+      <NavHeader isAuthenticated={true} />
 
       {/* Bottom tab bar */}
       <nav

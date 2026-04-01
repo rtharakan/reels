@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Reels</string>
+
+    <!-- Navigation -->
+    <string name="nav_match">Match</string>
+    <string name="nav_film_twins">Film Twins</string>
+    <string name="nav_cinema_week">Cinema Week</string>
+    <string name="nav_buddy">Buddy</string>
+    <string name="nav_picker">Picker</string>
+    <string name="nav_mood_reels">Mood Reels</string>
+
+    <!-- Common -->
+    <string name="common_cancel">Cancel</string>
+    <string name="common_done">Done</string>
+    <string name="common_save">Save</string>
+    <string name="common_close">Close</string>
+    <string name="common_loading">Loading…</string>
+    <string name="common_error">Something went wrong</string>
+    <string name="common_retry">Retry</string>
+
+    <!-- Auth -->
+    <string name="auth_sign_in_title">Reels</string>
+    <string name="auth_sign_in_subtitle">Find your people through film.</string>
+    <string name="auth_sign_in_email_placeholder">Email address</string>
+    <string name="auth_sign_in_email_button">Continue with Email</string>
+    <string name="auth_sign_in_google_button">Continue with Google</string>
+
+    <!-- Discover -->
+    <string name="discover_title">Discover</string>
+    <string name="discover_empty">No one new right now. Check back later.</string>
+    <string name="discover_interested">Interested</string>
+    <string name="discover_skip">Skip</string>
+    <string name="discover_match_title">It\'s a Match!</string>
+
+    <!-- Matches -->
+    <string name="matches_title">Matches</string>
+    <string name="matches_empty">No matches yet. Keep discovering.</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_sign_out">Sign Out</string>
+    <string name="profile_delete_account">Delete Account</string>
+
+    <!-- Buddy -->
+    <string name="buddy_title">Buddy</string>
+    <string name="buddy_browse">Browse</string>
+    <string name="buddy_create">Create</string>
+
+    <!-- Picker -->
+    <string name="picker_title">Cinema Picker</string>
+    <string name="picker_subtitle">Plan a cinema trip with friends.</string>
+    <string name="picker_pathway_a">Pick a Film</string>
+    <string name="picker_pathway_b">I Know What I Want</string>
+    <string name="picker_create_plan">Create Plan</string>
+    <string name="picker_my_plans">My Plans</string>
+    <string name="picker_search_films">Search for a film…</string>
+    <string name="picker_select_showtimes">Select Showtimes</string>
+    <string name="picker_no_showtimes">No showtimes found — enter manually below.</string>
+    <string name="picker_add_showtime">Add Showtime</string>
+    <string name="picker_share_plan">Share Plan</string>
+    <string name="picker_copy_link">Copy Link</string>
+    <string name="picker_link_copied">Link copied!</string>
+    <string name="picker_plan_created">Plan created!</string>
+    <string name="picker_join_plan">Join Plan</string>
+    <string name="picker_display_name">Your name</string>
+    <string name="picker_voting">Voting</string>
+    <string name="picker_confirmed">Confirmed</string>
+    <string name="picker_expired">Expired</string>
+    <string name="picker_confirm_showtime">Confirm Showtime</string>
+    <string name="picker_create_new_plan">Create New Plan</string>
+    <string name="picker_participants">Participants</string>
+    <string name="picker_organizer">Organizer</string>
+    <string name="picker_buy_tickets">Buy Tickets</string>
+    <string name="picker_available">Available</string>
+    <string name="picker_unavailable">Unavailable</string>
+    <string name="picker_maybe">Maybe</string>
+
+    <!-- Mood Reels -->
+    <string name="mood_title">Mood Reels</string>
+    <string name="mood_beta_badge">Beta — Easter Egg</string>
+    <string name="mood_select_mood">Select your mood</string>
+    <string name="mood_vibe_prompt">What\'s your vibe today?</string>
+    <string name="mood_set_your_mood">Set your mood</string>
+    <string name="mood_suggestions">Film Suggestions</string>
+    <string name="mood_mood_twins">Mood Twins</string>
+    <string name="mood_mood_twins_empty">You\'re the first one in this mood today — check back later</string>
+    <string name="mood_connect">Connect</string>
+    <string name="mood_view_history">View history</string>
+    <string name="mood_match_strength">Match strength</string>
+    <string name="mood_source_community">Community</string>
+    <string name="mood_source_ai">AI Beta</string>
+    <string name="mood_nostalgic">Nostalgic</string>
+    <string name="mood_adventurous">Adventurous</string>
+    <string name="mood_heartbroken">Heartbroken</string>
+    <string name="mood_hype">Hype</string>
+    <string name="mood_chill">Chill</string>
+    <string name="mood_romantic">Romantic</string>
+    <string name="mood_mysterious">Mysterious</string>
+    <string name="mood_inspired">Inspired</string>
+    <string name="mood_melancholic">Melancholic</string>
+    <string name="mood_cozy">Cozy</string>
+</resources>

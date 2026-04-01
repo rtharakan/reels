@@ -5,6 +5,7 @@ import { trpc } from '@/lib/trpc';
 import { DiscoverCard } from '@/components/discover-card';
 import { ProfileDetail } from '@/components/profile-detail';
 import type { ProfileDetailData } from '@/components/profile-detail';
+import { VibePrompt } from '@/components/mood/vibe-prompt';
 
 export default function DiscoverPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -90,7 +91,12 @@ export default function DiscoverPage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 pt-6">
-      <h1 className="mb-6 text-lg font-semibold text-[var(--text-primary)]">Discover</h1>
+      <h1 className="mb-4 text-lg font-semibold text-[var(--text-primary)]">Discover</h1>
+
+      {/* Mood Reels vibe prompt */}
+      <div className="mb-4">
+        <VibePrompt />
+      </div>
 
       {/* Accessible live region for match announcements */}
       <div aria-live="assertive" aria-atomic="true" role="status">

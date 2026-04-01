@@ -46,6 +46,20 @@
       "description": "Compare two Letterboxd profiles",
       "url": "/explore",
       "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Picker",
+      "short_name": "Picker",
+      "description": "Plan a cinema trip with friends",
+      "url": "/picker",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Mood Reels",
+      "short_name": "Mood",
+      "description": "Discover films that match your mood",
+      "url": "/mood",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
     }
   ],
   "screenshots": [

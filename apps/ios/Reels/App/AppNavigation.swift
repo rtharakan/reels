@@ -5,22 +5,50 @@ struct AppNavigation: View {
     @ObservedObject private var lang = LanguageManager.shared
 
     enum Tab: String {
-        case discover, buddy, matches, profile
+        case discover, filmTwins, cinemaWeek, buddy, picker, mood, matches, profile
     }
 
     var body: some View {
         TabView(selection: $selectedTab) {
             DiscoverView()
                 .tabItem {
-                    Label(lang.localizedString("discover.title"), systemImage: "heart")
+                    Label(lang.localizedString("nav.match"), systemImage: "heart.fill")
                 }
                 .tag(Tab.discover)
 
+            // Film Twins placeholder — feature exists on web at /scan
+            Text(lang.localizedString("nav.filmTwins"))
+                .tabItem {
+                    Label(lang.localizedString("nav.filmTwins"), systemImage: "dot.radiowaves.left.and.right")
+                }
+                .tag(Tab.filmTwins)
+
+            // Cinema Week placeholder — feature exists on web at /plan
+            Text(lang.localizedString("nav.cinemaWeek"))
+                .tabItem {
+                    Label(lang.localizedString("nav.cinemaWeek"), systemImage: "calendar")
+                }
+                .tag(Tab.cinemaWeek)
+
             BuddyView()
                 .tabItem {
-                    Label(lang.localizedString("buddy.title"), systemImage: "popcorn")
+                    Label(lang.localizedString("nav.buddy"), systemImage: "popcorn.fill")
                 }
                 .tag(Tab.buddy)
+
+            // Picker
+            PickerView()
+                .tabItem {
+                    Label(lang.localizedString("nav.picker"), systemImage: "ticket.fill")
+                }
+                .tag(Tab.picker)
+
+            // Mood Reels
+            MoodReelsView()
+                .tabItem {
+                    Label(lang.localizedString("nav.moodReels"), systemImage: "sparkles")
+                }
+                .tag(Tab.mood)
 
             MatchesListView()
                 .tabItem {
