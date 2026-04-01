@@ -180,13 +180,10 @@ export async function fetchCityScreenings(
   const films = extractFilmsFromListingPage(html);
   const allScreenings: ExploreScreening[] = [];
 
-  // Limit to first 30 films to avoid excessive requests
-  const filmsToFetch = films.slice(0, 30);
-
-  // Parallel batching: 5 concurrent requests with 500ms delay between batches
-  const BATCH_SIZE = 5;
-  for (let i = 0; i < filmsToFetch.length; i += BATCH_SIZE) {
-    const batch = filmsToFetch.slice(i, i + BATCH_SIZE);
+  // Parallel batching: 10 concurrent requests with 200ms delay between batches
+  const BATCH_SIZE = 10;
+  for (let i = 0; i < films.length; i += BATCH_SIZE) {
+    const batch = films.slice(i, i + BATCH_SIZE);
     const batchResults = await Promise.all(
       batch.map((film) =>
         fetchFilmScreeningsFromFilmladder(film.slug, film.title, film.year, city)
@@ -196,8 +193,8 @@ export async function fetchCityScreenings(
       allScreenings.push(...results);
     }
     // Rate limiting between batches (skip after last batch)
-    if (i + BATCH_SIZE < filmsToFetch.length) {
-      await new Promise((r) => setTimeout(r, 500));
+    if (i + BATCH_SIZE < films.length) {
+      await new Promise((r) => setTimeout(r, 200));
     }
   }
 
