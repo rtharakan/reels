@@ -196,6 +196,70 @@ async function main() {
   }
   console.log('Computed match scores');
 
+  // Seed community mood tags for day-one launch (T062)
+  const allFilms = await prisma.film.findMany({ take: 20 });
+  const moodTags: Array<{ mood: string; filmIndex: number }> = [
+    { mood: 'NOSTALGIC', filmIndex: 0 }, { mood: 'NOSTALGIC', filmIndex: 5 },
+    { mood: 'ADVENTUROUS', filmIndex: 6 }, { mood: 'ADVENTUROUS', filmIndex: 12 },
+    { mood: 'HEARTBROKEN', filmIndex: 14 }, { mood: 'HEARTBROKEN', filmIndex: 18 },
+    { mood: 'HYPE', filmIndex: 2 }, { mood: 'HYPE', filmIndex: 7 },
+    { mood: 'CHILL', filmIndex: 5 }, { mood: 'CHILL', filmIndex: 19 },
+    { mood: 'ROMANTIC', filmIndex: 18 }, { mood: 'ROMANTIC', filmIndex: 14 },
+    { mood: 'MYSTERIOUS', filmIndex: 10 }, { mood: 'MYSTERIOUS', filmIndex: 12 },
+    { mood: 'INSPIRED', filmIndex: 13 }, { mood: 'INSPIRED', filmIndex: 17 },
+    { mood: 'MELANCHOLIC', filmIndex: 8 }, { mood: 'MELANCHOLIC', filmIndex: 3 },
+    { mood: 'COZY', filmIndex: 19 }, { mood: 'COZY', filmIndex: 15 },
+  ];
+
+  if (allFilms.length >= 20 && users.length > 0) {
+    for (const tag of moodTags) {
+      const film = allFilms[tag.filmIndex];
+      if (film) {
+        await prisma.moodFilmTag.upsert({
+          where: {
+            filmId_mood_taggedById: { filmId: film.id, mood: tag.mood as never, taggedById: users[0]!.user.id },
+          },
+          create: { filmId: film.id, mood: tag.mood as never, taggedById: users[0]!.user.id },
+          update: {},
+        });
+      }
+    }
+    console.log('Seeded mood film tags');
+  }
+
+  // Seed a sample Picker plan for demo (T128)
+  if (users.length >= 2) {
+    const organizer = users[0]!.user;
+    const participant = users[1]!.user;
+    const samplePlan = await prisma.pickerPlan.create({
+      data: {
+        organizerId: organizer.id,
+        filmTitle: 'Pulp Fiction',
+        filmTmdbId: 680,
+        filmPosterPath: '/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg',
+        filmYear: 1994,
+        pathway: 'FILM_FIRST',
+        city: 'Amsterdam',
+        status: 'VOTING',
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        showtimes: {
+          create: [
+            { cinemaName: 'Pathé Tuschinski', cinemaCity: 'Amsterdam', date: '2026-04-10', time: '20:00', ticketUrl: 'https://filmladder.nl' },
+            { cinemaName: 'Eye Filmmuseum', cinemaCity: 'Amsterdam', date: '2026-04-11', time: '19:30' },
+            { cinemaName: 'Kriterion', cinemaCity: 'Amsterdam', date: '2026-04-12', time: '21:00' },
+          ],
+        },
+        participants: {
+          create: [
+            { userId: organizer.id, displayName: organizer.name ?? 'Organizer', isOrganizer: true },
+            { userId: participant.id, displayName: participant.name ?? 'Participant', isOrganizer: false },
+          ],
+        },
+      },
+    });
+    console.log(`Seeded sample Picker plan: ${samplePlan.id}`);
+  }
+
   console.log('\nSeed complete! Demo users:');
   for (const { user } of users) {
     console.log(`  - ${user.name} (${user.email})`);

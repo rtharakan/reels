@@ -402,6 +402,13 @@ export const en = {
     targetDate: 'Target date',
     city: 'City',
     cinema: 'Cinema',
+    planNotFound: 'Plan not found',
+    expiredDesc: 'This plan has expired. You can create a new one.',
+    organizedBy: 'Organized by',
+    expiresOn: 'Expires on',
+    confirm: 'Confirm',
+    join: 'Join',
+    joinError: 'Unable to join. Please try again.',
   },
 
   // Mood Reels feature

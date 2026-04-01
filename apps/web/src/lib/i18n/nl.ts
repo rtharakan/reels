@@ -404,6 +404,13 @@ export const nl: Translations = {
     targetDate: 'Gewenste datum',
     city: 'Stad',
     cinema: 'Bioscoop',
+    planNotFound: 'Plan niet gevonden',
+    expiredDesc: 'Dit plan is verlopen. Je kunt een nieuw plan maken.',
+    organizedBy: 'Georganiseerd door',
+    expiresOn: 'Verloopt op',
+    confirm: 'Bevestigen',
+    join: 'Deelnemen',
+    joinError: 'Kan niet deelnemen. Probeer het opnieuw.',
   },
 
   // Mood Reels feature

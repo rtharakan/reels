@@ -5,6 +5,8 @@ import { discoverRouter } from './discover';
 import { matchRouter } from './match';
 import { safetyRouter } from './safety';
 import { deviceRouter } from './device';
+import { pickerRouter } from './picker';
+import { moodRouter } from './mood';
 
 export const appRouter = router({
   user: userRouter,
@@ -13,6 +15,8 @@ export const appRouter = router({
   match: matchRouter,
   safety: safetyRouter,
   device: deviceRouter,
+  picker: pickerRouter,
+  mood: moodRouter,
 });
 
 export type AppRouter = typeof appRouter;
