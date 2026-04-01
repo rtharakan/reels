@@ -1,6 +1,7 @@
 {
   "buildCommand": "pnpm build --filter=@reels/web...",
   "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
   "regions": ["iad1"]
 }
