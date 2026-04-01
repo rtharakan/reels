@@ -43,6 +43,7 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const mobileRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   const isActive = (href: string) =>
     pathname === href || pathname?.startsWith(href + '/');
@@ -58,15 +59,25 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [moreOpen]);
 
-  // Close mobile menu on outside click
+  // Close mobile menu on outside click — exclude the hamburger button itself
+  // to prevent the mousedown/touchstart handler racing with the button's onClick
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (mobileRef.current && !mobileRef.current.contains(e.target as Node)) {
+    function handleOutside(e: MouseEvent | TouchEvent) {
+      const target = e.target as Node;
+      const insideMenu = mobileRef.current?.contains(target);
+      const insideButton = hamburgerRef.current?.contains(target);
+      if (!insideMenu && !insideButton) {
         setMobileOpen(false);
       }
     }
-    if (mobileOpen) document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    if (mobileOpen) {
+      document.addEventListener('mousedown', handleOutside);
+      document.addEventListener('touchstart', handleOutside, { passive: true });
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleOutside);
+      document.removeEventListener('touchstart', handleOutside);
+    };
   }, [mobileOpen]);
 
   // Close on ESC
@@ -101,6 +112,7 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
   };
 
   return (
+    <>
     <header className="sticky top-0 z-50 border-b border-[var(--border-default)] bg-[var(--bg-primary)]/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         {/* Logo */}
@@ -215,6 +227,7 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
 
           {/* Mobile hamburger — visible below md */}
           <button
+            ref={hamburgerRef}
             type="button"
             className="md:hidden flex items-center justify-center h-10 w-10 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-accent)] transition-colors"
             onClick={() => setMobileOpen((o) => !o)}
@@ -226,16 +239,19 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
           </button>
         </div>
       </div>
+    </header>
 
-      {/* Mobile slide-in overlay */}
-      {mobileOpen && (
-        <div
-          ref={mobileRef}
-          id="mobile-nav-menu"
-          className="md:hidden fixed top-[56px] left-0 right-0 bottom-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-xl overflow-y-auto motion-safe:animate-in motion-safe:slide-in-from-top-2"
-          role="navigation"
-          aria-label="Mobile navigation"
-        >
+    {/* Mobile slide-in overlay — rendered outside the header so that
+        the header's backdrop-filter stacking context does not break
+        position:fixed on iOS Safari */}
+    {mobileOpen && (
+      <div
+        ref={mobileRef}
+        id="mobile-nav-menu"
+        className="md:hidden fixed inset-x-0 top-[57px] bottom-0 z-40 bg-[var(--bg-primary)] overflow-y-auto motion-safe:animate-in motion-safe:slide-in-from-top-2"
+        role="navigation"
+        aria-label="Mobile navigation"
+      >
           <nav className="flex flex-col p-4 gap-1">
             {FEATURE_LINKS.map(({ href, icon: Icon, i18nKey }) => (
               <Link
@@ -314,6 +330,6 @@ export function NavHeader({ isAuthenticated }: NavHeaderProps) {
           </nav>
         </div>
       )}
-    </header>
+    </>
   );
 }
